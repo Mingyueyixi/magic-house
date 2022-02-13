@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Foolish-Egg</string>
+    <string name="log">Log</string>
+    <string name="home">Home</string>
+    <string name="about">About</string>
+    <string name="store">Store</string>
+</resources>
