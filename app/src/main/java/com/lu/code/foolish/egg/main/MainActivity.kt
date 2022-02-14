@@ -1,17 +1,15 @@
 package com.lu.code.foolish.egg.main
 
 import android.os.Bundle
-import android.view.View
-import androidx.core.util.Supplier
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.lu.code.foolish.egg.ui.BaseActivity
+import com.google.android.material.tabs.TabLayoutMediator
 import com.lu.code.foolish.egg.R
 import com.lu.code.foolish.egg.databinding.ActivityMainBinding
+import com.lu.code.foolish.egg.ui.BaseActivity
 import com.lu.code.foolish.egg.util.FragmentUtil
-import java.lang.reflect.Method
-import java.util.ArrayList
 
 
 class MainActivity : BaseActivity() {
@@ -44,8 +42,50 @@ class MainActivity : BaseActivity() {
                 binding.mainBottomTabLayout.addTab(tab)
             }
         }
-
+        //水平滚动
+        binding.mainContentViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.mainContentViewPager.adapter = PageAdapter(this, pageModelList)
+        binding.mainContentViewPager.offscreenPageLimit = pageModelList.size
+        TabLayoutMediator(binding.mainBottomTabLayout,
+            binding.mainContentViewPager,
+            true,
+            object : TabLayoutMediator.TabConfigurationStrategy {
+                override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
+                    var item = pageModelList[position]
+                    tab.setText(item.textId)
+                    tab.setIcon(item.iconId)
+                }
+
+            }).attach()
+
+//      自行实现绑定：
+//        binding.mainContentViewPager.registerOnPageChangeCallback(object :
+//            ViewPager2.OnPageChangeCallback() {
+//            override fun onPageSelected(position: Int) {
+//                super.onPageSelected(position)
+//                var item = pageModelList[position]
+//                binding.mainBottomTabLayout.getTabAt(position)?.apply {
+//                    setText(item.textId)
+//                    setIcon(item.iconId)
+//                    select()
+//                }
+//            }
+//        })
+//        binding.mainBottomTabLayout.addOnTabSelectedListener(object :
+//            TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                var position: Int = tab?.position ?: 0
+//                binding.mainContentViewPager.setCurrentItem(position, true)
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//
+//            }
+//        })
 
     }
 
@@ -59,6 +99,5 @@ class MainActivity : BaseActivity() {
         override fun createFragment(position: Int): Fragment {
             return viewModelList[position].createFragment()
         }
-
     }
 }
