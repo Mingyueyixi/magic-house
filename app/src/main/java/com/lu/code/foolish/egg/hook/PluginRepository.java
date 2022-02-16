@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class PluginRepository {
     private HashMap<String, List<BaseHookPlugin>> mPluginRepoMap = new HashMap<>();
+    private List<BaseHookPlugin> mNoPackageRepoList = new ArrayList<>();
 
     private static final class Single {
         private final static PluginRepository sInstance = new PluginRepository();
@@ -26,6 +27,10 @@ public class PluginRepository {
         }
         for (BaseHookPlugin plugin : plugins) {
             List<String> packageNameList = plugin.getBindPackageNameList();
+            if (packageNameList == null || packageNameList.size() == 0) {
+                mNoPackageRepoList.add(plugin);
+                continue;
+            }
             for (String s : packageNameList) {
                 List<BaseHookPlugin> packagePluginList = mPluginRepoMap.get(s);
                 if (packagePluginList == null) {
@@ -68,7 +73,12 @@ public class PluginRepository {
         return mPluginRepoMap;
     }
 
+    public List<BaseHookPlugin> getNoPackageRepoList() {
+        return mNoPackageRepoList;
+    }
+
     public void clear() {
+        mNoPackageRepoList.clear();
         mPluginRepoMap.clear();
     }
 
