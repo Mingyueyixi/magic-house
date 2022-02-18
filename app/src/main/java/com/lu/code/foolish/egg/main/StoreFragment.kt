@@ -1,6 +1,7 @@
 package com.lu.code.foolish.egg.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +17,8 @@ import com.lu.code.foolish.egg.ui.BaseFragment
 import com.lu.code.foolish.egg.ui.recycler.MultiAdapter
 import com.lu.code.foolish.egg.ui.recycler.MultiItemType
 import com.lu.code.foolish.egg.ui.recycler.MultiViewHolder
+import com.lu.code.foolish.egg.util.ClassUtil
+import com.lu.code.foolish.egg.util.log.LogUtil
 
 class StoreFragment : BaseFragment() {
     override fun onCreateView(
@@ -41,7 +44,10 @@ class StoreFragment : BaseFragment() {
                     //参数不传类型？而传string？
                     //todo 待定
                     PluginItemModel("测试", "com.lu.code.foolish.egg.hook.TestHookPlugin"),
-                    PluginItemModel("安全截图", "com.lu.code.foolish.egg.hook.TestHookPlugin.DisableFlagSecurePlugin")
+                    PluginItemModel(
+                        "安全截图",
+                        "com.lu.code.foolish.egg.hook.TestHookPlugin.DisableFlagSecurePlugin"
+                    )
                 )
                 .addItemType(object : MultiItemType<PluginItemModel> {
                     override fun getItemViewType(
@@ -113,5 +119,7 @@ class StoreFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        Log.d(">>>", ClassUtil.getClassList(context,"com.lu.code.foolish.egg.hook").toString())
+
     }
 }

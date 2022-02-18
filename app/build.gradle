@@ -52,6 +52,7 @@ dependencies {
     // https://mvnrepository.com/artifact/de.robv.android.xposed/api
     // 只参与编译，不参与打包，最终由xposed提供
     compileOnly 'de.robv.android.xposed:api:82'
+//    implementation 'de.robv.android.xposed:api:82'
 
     // Flex布局依赖，可配合RecyclerView也可以单独使用
     // https://mvnrepository.com/artifact/com.google.android.flexbox/flexbox
