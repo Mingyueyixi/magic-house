@@ -2,6 +2,8 @@ package com.lu.code.foolish.egg.util.log;
 
 import android.util.Log;
 
+import com.lu.code.foolish.egg.util.EnvUtil;
+
 import de.robv.android.xposed.XposedBridge;
 
 /**
@@ -14,26 +16,38 @@ public class LogUtil {
 
     public static void d(Object... objects) {
         String text = logger.process(objects);
-        XposedBridge.log(logger.flower + "  " + text);
-//        Log.d(logger.flower, text);
+        if (EnvUtil.isOnXposed()) {
+            XposedBridge.log(logger.flower + "  " + text);
+            return;
+        }
+        Log.d(logger.flower, text);
     }
 
     public static void i(Object... objects) {
         String text = logger.process(objects);
-        XposedBridge.log(logger.flower + "  " + text);
-//        Log.i(logger.flower, text);
+        if (EnvUtil.isOnXposed()) {
+            XposedBridge.log(logger.flower + "  " + text);
+            return;
+        }
+        Log.i(logger.flower, text);
     }
 
     public static void w(Object... objects) {
         String text = logger.process(objects);
-        XposedBridge.log(logger.flower + "  " + text);
-//        Log.i(logger.flower, text);
+        if (EnvUtil.isOnXposed()) {
+            XposedBridge.log(logger.flower + "  " + text);
+            return;
+        }
+        Log.w(logger.flower, text);
     }
 
     public static void e(Object... objects) {
         String text = logger.process(objects);
-        XposedBridge.log(logger.flower + "  " + text);
-//        Log.e(logger.flower, text);
+        if (EnvUtil.isOnXposed()) {
+            XposedBridge.log(logger.flower + "  " + text);
+            return;
+        }
+        Log.e(logger.flower, text);
     }
 
     private static class LogDog {
@@ -59,5 +73,6 @@ public class LogUtil {
         }
 
     }
+
 
 }

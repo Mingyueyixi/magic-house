@@ -19,6 +19,8 @@ import com.lu.code.foolish.egg.ui.recycler.MultiAdapter
 import com.lu.code.foolish.egg.ui.recycler.MultiItemType
 import com.lu.code.foolish.egg.ui.recycler.MultiViewHolder
 import com.lu.code.foolish.egg.util.ClassUtil
+import com.lu.code.foolish.egg.util.PackageUtil
+import com.lu.code.foolish.egg.util.log.LogUtil
 
 class StoreFragment : BaseFragment() {
     override fun onCreateView(
@@ -127,7 +129,10 @@ class StoreFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d(">>>", ClassUtil.getClassList(context, "com.lu.code.foolish.egg.hook").toString())
+//        Log.d(">>>", ClassUtil.getClassList(context, "com.lu.code.foolish.egg.hook").toString())
+        PackageUtil.getInstallPackageNameListByShell().onEach {
+            LogUtil.d(it)
+        }
 
     }
 }
