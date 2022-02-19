@@ -1,15 +1,12 @@
 package com.lu.code.foolish.egg.hook;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.view.View;
 import android.view.Window;
 
-import com.lu.code.foolish.egg.App;
 import com.lu.code.foolish.egg.util.ViewUtil;
 import com.lu.code.foolish.egg.util.log.LogUtil;
 
-import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -32,33 +29,22 @@ public class FuckAppUpdateDialogPlugin extends BaseHookPlugin {
         XposedHelpers.findAndHookMethod("android.app.Dialog",
                 lpparam.classLoader,
                 "show",
-
                 new XC_MethodReplacement() {
-                    private Dialog dialog;
-                    private boolean needReplace = false;
-
                     @Override
                     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                        if (needReplace) {
-                            return null;
-                        }
-
-                        return null;
-                    }
-
-                    @Override
-                    protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-                        super.beforeHookedMethod(param);
-                        dialog = (Dialog) param.thisObject;
+                        Dialog dialog = (Dialog) param.thisObject;
                         Window window = dialog.getWindow();
                         View rootView = window.getDecorView();
-
+                        boolean needReplace = false;
                         if (ViewUtil.haveText(rootView, "更新")) {
                             needReplace = true;
-                        }else {
-//                            dialog.show();
                         }
                         LogUtil.d("hide微书房更新对话框:", needReplace);
+                        if (needReplace) {
+                            //啥都不执行
+                            return null;
+                        }
+                        return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
                     }
 
                 }
