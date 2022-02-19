@@ -13,7 +13,7 @@ import com.lu.code.foolish.egg.util.FragmentUtil
 
 
 class MainActivity : BaseActivity() {
-    private lateinit var pageModelList: ArrayList<PageViewModel>
+    private lateinit var pageModelList: ArrayList<PageModel>
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,13 +21,13 @@ class MainActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         pageModelList = arrayListOf(
-            PageViewModel(R.drawable.ic_icon_store, R.string.store) {
+            PageModel(R.drawable.ic_icon_store, R.string.store) {
                 FragmentUtil.newInstance<StoreFragment>()
             },
-            PageViewModel(R.drawable.ic_icon_log, R.string.log) {
+            PageModel(R.drawable.ic_icon_log, R.string.log) {
                 FragmentUtil.newInstance<LogFragment>()
             },
-            PageViewModel(R.drawable.ic_icon_about, R.string.about) {
+            PageModel(R.drawable.ic_icon_about, R.string.about) {
                 FragmentUtil.newInstance<AboutFragment>()
             }
         )
@@ -90,7 +90,7 @@ class MainActivity : BaseActivity() {
     }
 
 
-    private class PageAdapter(var activity: MainActivity, var viewModelList: List<PageViewModel>) :
+    private class PageAdapter(var activity: MainActivity, var viewModelList: List<PageModel>) :
         FragmentStateAdapter(activity) {
         override fun getItemCount(): Int {
             return viewModelList.size

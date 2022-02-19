@@ -4,7 +4,7 @@ import androidx.core.util.Supplier
 import com.lu.code.foolish.egg.ui.BaseFragment
 
 
-class PageViewModel(
+class PageModel(
     var iconId: Int,
     var textId: Int,
     var fragmentProvider: Supplier<out BaseFragment>
@@ -13,4 +13,5 @@ class PageViewModel(
     fun createFragment(): BaseFragment {
         return fragmentProvider.get()
     }
+
 }

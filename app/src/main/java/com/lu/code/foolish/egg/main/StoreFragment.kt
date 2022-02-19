@@ -12,13 +12,13 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.lu.code.foolish.egg.R
 import com.lu.code.foolish.egg.databinding.FragmentStoreBinding
 import com.lu.code.foolish.egg.hook.DisableFlagSecurePlugin
-import com.lu.code.foolish.egg.hook.TestHookPlugin
+import com.lu.code.foolish.egg.main.store.ItemModel
+import com.lu.code.foolish.egg.main.store.TitleModel
 import com.lu.code.foolish.egg.ui.BaseFragment
 import com.lu.code.foolish.egg.ui.recycler.MultiAdapter
 import com.lu.code.foolish.egg.ui.recycler.MultiItemType
 import com.lu.code.foolish.egg.ui.recycler.MultiViewHolder
 import com.lu.code.foolish.egg.util.ClassUtil
-import com.lu.code.foolish.egg.util.log.LogUtil
 
 class StoreFragment : BaseFragment() {
     override fun onCreateView(
@@ -38,31 +38,40 @@ class StoreFragment : BaseFragment() {
             FragmentStoreBinding.inflate(inflater, container, false)
         }.apply {
             binding.mStoreRecyclerView.layoutManager = flexboxLayoutManager
-            binding.mStoreRecyclerView.adapter = MultiAdapter<PluginItemModel>()
+            binding.mStoreRecyclerView.adapter = MultiAdapter<ItemModel>()
                 .addData(
                     //由于gradle配置xpose库只参与编译，没实际打包，TestHookPlugin等实际找不到class，compileOnly
                     //参数不传类型？而传string？
                     //todo 待定
-                    PluginItemModel("测试", "com.lu.code.foolish.egg.hook.TestHookPlugin"),
-                    PluginItemModel(
+                    TitleModel("测试"),
+                    ItemModel(
+                        "测试",
+                        "com.lu.code.foolish.egg.hook.TestHookPlugin"
+                    ),
+                    ItemModel(
                         "安全截图",
                         "com.lu.code.foolish.egg.hook.TestHookPlugin.DisableFlagSecurePlugin"
-                    )
+                    ),
+
+                    TitleModel("禁止"),
+                    ItemModel("对话框", "com.lu.code.foolish.egg.hook.DisableFlagSecurePlugin")
+
+
                 )
-                .addItemType(object : MultiItemType<PluginItemModel> {
+                .addItemType(object : MultiItemType<ItemModel> {
                     override fun getItemViewType(
-                        adapter: MultiAdapter<PluginItemModel>,
-                        itemModel: PluginItemModel,
+                        adapter: MultiAdapter<ItemModel>,
+                        itemModel: ItemModel,
                         position: Int
                     ): Boolean {
-                        return true
+                        return itemModel.javaClass == TitleModel::class.java
                     }
 
                     override fun createViewHolder(
                         parent: ViewGroup,
                         viewType: Int
-                    ): MultiViewHolder<PluginItemModel> {
-                        return object : MultiViewHolder<PluginItemModel>(
+                    ): MultiViewHolder<ItemModel> {
+                        return object : MultiViewHolder<ItemModel>(
                             inflater.inflate(
                                 R.layout.item_store_plugin_sub,
                                 parent,
@@ -73,8 +82,8 @@ class StoreFragment : BaseFragment() {
                                 itemView.findViewById<TextView>(R.id.tvItemPluginSub)
 
                             override fun onBindView(
-                                adapter: MultiAdapter<PluginItemModel>,
-                                itemModel: PluginItemModel,
+                                adapter: MultiAdapter<ItemModel>,
+                                itemModel: ItemModel,
                                 position: Int,
                             ) {
                                 tvItemPluginSub.text = itemModel.name
@@ -83,27 +92,26 @@ class StoreFragment : BaseFragment() {
                         }
                     }
                 })
-                .addItemType(object : MultiItemType<PluginItemModel> {
+                .addItemType(object : MultiItemType<ItemModel> {
                     override fun getItemViewType(
-                        adapter: MultiAdapter<PluginItemModel>,
-                        itemModel: PluginItemModel,
+                        adapter: MultiAdapter<ItemModel>,
+                        itemModel: ItemModel,
                         position: Int
                     ): Boolean {
-//                        return itemModel.clazz != null
-                        return true
+                        return itemModel.javaClass == ItemModel::class.java
                     }
 
                     override fun createViewHolder(
                         parent: ViewGroup,
                         viewType: Int
-                    ): MultiViewHolder<PluginItemModel> {
+                    ): MultiViewHolder<ItemModel> {
                         var itemView = LayoutInflater.from(parent.context)
                             .inflate(R.layout.item_store_plugin_cake, parent, false)
-                        return object : MultiViewHolder<PluginItemModel>(itemView) {
+                        return object : MultiViewHolder<ItemModel>(itemView) {
                             var tvName = itemView.findViewById<TextView>(R.id.tvItemPluginName)
                             override fun onBindView(
-                                adapter: MultiAdapter<PluginItemModel>,
-                                itemModel: PluginItemModel,
+                                adapter: MultiAdapter<ItemModel>,
+                                itemModel: ItemModel,
                                 position: Int
                             ) {
                                 tvName.text = itemModel.name
@@ -119,7 +127,7 @@ class StoreFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d(">>>", ClassUtil.getClassList(context,"com.lu.code.foolish.egg.hook").toString())
+        Log.d(">>>", ClassUtil.getClassList(context, "com.lu.code.foolish.egg.hook").toString())
 
     }
 }

@@ -1,11 +1,11 @@
-package com.lu.code.foolish.egg.main;
+package com.lu.code.foolish.egg.main.store;
 
 
-public class PluginItemModel {
+public class ItemModel {
     private String name;
     private String clazz;
 
-    public PluginItemModel(String name, String clazz) {
+    public ItemModel(String name, String clazz) {
         this.name = name;
         this.clazz = clazz;
     }
