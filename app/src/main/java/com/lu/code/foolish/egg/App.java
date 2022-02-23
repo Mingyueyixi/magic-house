@@ -3,6 +3,8 @@ package com.lu.code.foolish.egg;
 import android.app.Application;
 import android.content.Context;
 
+import com.lu.code.foolish.egg.util.AppUtil;
+
 /**
  * @Author: Lu
  * Date: 2022/02/18
@@ -22,6 +24,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AppUtil.init(this);
     }
 
 }
