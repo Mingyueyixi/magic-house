@@ -7,7 +7,7 @@ import androidx.annotation.MainThread;
 
 import com.lu.code.foolish.egg.hook.BaseHookPlugin;
 import com.lu.code.foolish.egg.hook.DisableFlagSecurePlugin;
-import com.lu.code.foolish.egg.hook.FuckAppUpdateDialogPlugin;
+import com.lu.code.foolish.egg.hook.FuckDialogPlugin;
 import com.lu.code.foolish.egg.hook.PluginRepository;
 import com.lu.code.foolish.egg.hook.TestHookPlugin;
 import com.lu.code.foolish.egg.util.AppUtil;
@@ -33,7 +33,7 @@ public class HookMainEntry implements IXposedHookLoadPackage {
         repository.add(new HookSelfEntry());
         repository.add(new DisableFlagSecurePlugin());
         repository.add(new TestHookPlugin());
-        repository.add(new FuckAppUpdateDialogPlugin());
+        repository.add(new FuckDialogPlugin());
     }
 
     @Override
@@ -82,6 +82,8 @@ public class HookMainEntry implements IXposedHookLoadPackage {
                 noPackagePlugin.handleLoadPackage(lpparam);
             }
         }
+
+
         List<BaseHookPlugin> registerPlugins = repository.get(lpparam.packageName);
         if (!CollectionUtil.isEmpty(registerPlugins)) {
             for (BaseHookPlugin plugin : registerPlugins) {

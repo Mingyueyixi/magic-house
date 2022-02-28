@@ -6,12 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.lu.code.foolish.egg.R
 import com.lu.code.foolish.egg.databinding.FragmentStoreBinding
 import com.lu.code.foolish.egg.hook.DisableFlagSecurePlugin
+import com.lu.code.foolish.egg.hook.FuckDialogPlugin
+import com.lu.code.foolish.egg.main.plugin.FuckDialogFragment
 import com.lu.code.foolish.egg.main.store.ItemModel
 import com.lu.code.foolish.egg.main.store.TitleModel
 import com.lu.code.foolish.egg.ui.BaseFragment
@@ -42,22 +45,14 @@ class StoreFragment : BaseFragment() {
             binding.mStoreRecyclerView.layoutManager = flexboxLayoutManager
             binding.mStoreRecyclerView.adapter = MultiAdapter<ItemModel>()
                 .addData(
-                    //由于gradle配置xpose库只参与编译，没实际打包，TestHookPlugin等实际找不到class，compileOnly
-                    //参数不传类型？而传string？
-                    //todo 待定
                     TitleModel("测试"),
-                    ItemModel(
-                        "测试",
-                        "com.lu.code.foolish.egg.hook.TestHookPlugin"
-                    ),
-                    ItemModel(
-                        "安全截图",
-                        "com.lu.code.foolish.egg.hook.TestHookPlugin.DisableFlagSecurePlugin"
-                    ),
-
+                    ItemModel("测试", null),
+                    ItemModel("安全截图", null),
                     TitleModel("禁止"),
-                    ItemModel("对话框", "com.lu.code.foolish.egg.hook.DisableFlagSecurePlugin")
-
+                    ItemModel(
+                        "对话框",
+                        FuckDialogFragment::class.java
+                    )
 
                 )
                 .addItemType(object : MultiItemType<ItemModel> {
@@ -73,6 +68,7 @@ class StoreFragment : BaseFragment() {
                         parent: ViewGroup,
                         viewType: Int
                     ): MultiViewHolder<ItemModel> {
+
                         return object : MultiViewHolder<ItemModel>(
                             inflater.inflate(
                                 R.layout.item_store_plugin_sub,
@@ -82,6 +78,12 @@ class StoreFragment : BaseFragment() {
                         ) {
                             var tvItemPluginSub: TextView =
                                 itemView.findViewById<TextView>(R.id.tvItemPluginSub)
+//
+//                            init {
+//                                itemView.setOnClickListener {
+//
+//                                }
+//                            }
 
                             override fun onBindView(
                                 adapter: MultiAdapter<ItemModel>,
@@ -89,6 +91,13 @@ class StoreFragment : BaseFragment() {
                                 position: Int,
                             ) {
                                 tvItemPluginSub.text = itemModel.name
+                                itemView.setOnClickListener {
+                                    if (itemModel.pageCls != null)
+                                        PluginConfigActivity.start(
+                                            itemView.context,
+                                            itemModel.pageCls!!
+                                        )
+                                }
                             }
 
                         }
@@ -109,6 +118,7 @@ class StoreFragment : BaseFragment() {
                     ): MultiViewHolder<ItemModel> {
                         var itemView = LayoutInflater.from(parent.context)
                             .inflate(R.layout.item_store_plugin_cake, parent, false)
+
                         return object : MultiViewHolder<ItemModel>(itemView) {
                             var tvName = itemView.findViewById<TextView>(R.id.tvItemPluginName)
                             override fun onBindView(
@@ -118,10 +128,8 @@ class StoreFragment : BaseFragment() {
                             ) {
                                 tvName.text = itemModel.name
                             }
-
                         }
                     }
-
                 })
         }
         return bindingWrap.binding.root
