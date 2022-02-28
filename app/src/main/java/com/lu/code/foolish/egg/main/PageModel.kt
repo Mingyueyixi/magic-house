@@ -2,6 +2,7 @@ package com.lu.code.foolish.egg.main
 
 import androidx.core.util.Supplier
 import com.lu.code.foolish.egg.ui.BaseFragment
+import com.lu.code.foolish.egg.ui.BindingFragment
 
 
 class PageModel(

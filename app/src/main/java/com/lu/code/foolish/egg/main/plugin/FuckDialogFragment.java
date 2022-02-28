@@ -7,15 +7,18 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.viewbinding.ViewBinding;
 
-import com.lu.code.foolish.egg.ui.BaseFragment;
+import com.lu.code.foolish.egg.ui.BindingFragment;
 
-public class FuckDialogFragment extends BaseFragment {
+public class FuckDialogFragment extends BindingFragment {
+
+
+
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+    public ViewBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return null;
     }
-
 }
