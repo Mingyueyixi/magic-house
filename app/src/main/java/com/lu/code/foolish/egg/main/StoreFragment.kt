@@ -63,6 +63,7 @@ class StoreFragment : BaseFragment() {
                 }
 
                 override fun createViewHolder(
+                    adapter: MultiAdapter<ItemModel>,
                     parent: ViewGroup,
                     viewType: Int
                 ): MultiViewHolder<ItemModel> {
@@ -76,12 +77,6 @@ class StoreFragment : BaseFragment() {
                     ) {
                         var tvItemPluginSub: TextView =
                             itemView.findViewById<TextView>(R.id.tvItemPluginSub)
-//
-//                            init {
-//                                itemView.setOnClickListener {
-//
-//                                }
-//                            }
 
                         override fun onBindView(
                             adapter: MultiAdapter<ItemModel>,
@@ -89,13 +84,6 @@ class StoreFragment : BaseFragment() {
                             position: Int,
                         ) {
                             tvItemPluginSub.text = itemModel.name
-                            itemView.setOnClickListener {
-                                if (itemModel.pageCls != null)
-                                    PluginConfigActivity.start(
-                                        itemView.context,
-                                        itemModel.pageCls!!
-                                    )
-                            }
                         }
 
                     }
@@ -111,14 +99,27 @@ class StoreFragment : BaseFragment() {
                 }
 
                 override fun createViewHolder(
+                    adapter: MultiAdapter<ItemModel>,
                     parent: ViewGroup,
                     viewType: Int
                 ): MultiViewHolder<ItemModel> {
+
                     var itemView = LayoutInflater.from(parent.context)
                         .inflate(R.layout.item_store_plugin_cake, parent, false)
 
                     return object : MultiViewHolder<ItemModel>(itemView) {
                         var tvName = itemView.findViewById<TextView>(R.id.tvItemPluginName)
+
+                        init {
+                            itemView.setOnClickListener {
+                                var item = adapter.getItem(layoutPosition)
+                                if (item?.pageCls != null) {
+                                    PluginConfigActivity.start(itemView.context, item)
+                                }
+
+                            }
+                        }
+
                         override fun onBindView(
                             adapter: MultiAdapter<ItemModel>,
                             itemModel: ItemModel,

@@ -4,5 +4,5 @@ import android.view.ViewGroup
 
 interface MultiItemType<E> {
     fun getItemViewType(adapter: MultiAdapter<E>, itemModel: E, position: Int): Boolean
-    fun createViewHolder(parent: ViewGroup, viewType: Int): MultiViewHolder<E>
+    fun createViewHolder(adapter: MultiAdapter<E>, parent: ViewGroup, viewType: Int): MultiViewHolder<E>
 }

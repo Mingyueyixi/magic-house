@@ -20,14 +20,15 @@ open abstract class BindingFragment<T : ViewBinding> : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return onViewBinding(inflater, container, savedInstanceState)?.root
+        _binding = onViewBinding(inflater, container, savedInstanceState)
+        return binding.root
     }
 
     abstract fun onViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): T?
+    ): T
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -35,6 +36,5 @@ open abstract class BindingFragment<T : ViewBinding> : BaseFragment() {
         //get时强制断言不为空，只是方便调用。实际存在空指针风险，因为onDestroyView时需要置空
         _binding = null
     }
-
 
 }

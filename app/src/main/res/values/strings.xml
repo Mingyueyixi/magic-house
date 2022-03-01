@@ -4,5 +4,7 @@
     <string name="home">Home</string>
     <string name="about">About</string>
     <string name="store">Store</string>
+    <string name="js">JS</string>
+    <string name="dev">Dev</string>
     <string name="app_xposed_description">foolish-egg box</string>
 </resources>

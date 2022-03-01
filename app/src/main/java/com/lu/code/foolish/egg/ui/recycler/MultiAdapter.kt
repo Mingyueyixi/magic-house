@@ -45,6 +45,10 @@ open class MultiAdapter<E>() : RecyclerView.Adapter<MultiViewHolder<E>>() {
         return itemTypeList
     }
 
+    fun getItem(position: Int): E? {
+        return data[position];
+    }
+
     override fun getItemViewType(position: Int): Int {
         val itemModel = data[position]
         for (i in itemTypeList.indices) {
@@ -57,7 +61,7 @@ open class MultiAdapter<E>() : RecyclerView.Adapter<MultiViewHolder<E>>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiViewHolder<E> {
-        return itemTypeList[viewType].createViewHolder(parent, viewType)
+        return itemTypeList[viewType].createViewHolder(this, parent, viewType)
     }
 
     override fun onBindViewHolder(holder: MultiViewHolder<E>, position: Int) {

@@ -36,7 +36,8 @@
         </activity>
         <activity
             android:name=".main.PluginConfigActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.FoolishEgg.NoActionBar"/>
     </application>
 
 </manifest>

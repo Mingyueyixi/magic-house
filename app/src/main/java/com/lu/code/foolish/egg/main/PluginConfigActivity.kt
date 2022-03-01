@@ -5,18 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.lu.code.foolish.egg.databinding.ActivityPluginConfigBinding
+import com.lu.code.foolish.egg.main.store.ItemModel
 import com.lu.code.foolish.egg.ui.BaseActivity
 
 class PluginConfigActivity : BaseActivity() {
     private lateinit var binding: ActivityPluginConfigBinding
-    private lateinit var fragmentCls: Class<out Fragment>
+    private lateinit var routeItem: ItemModel
 
     companion object {
-        private const val KEY_FRAGMENT_CLS = "fragment-cls"
+        private const val KEY_ROUTE_ITEM = "KEY_ROUTE_ITEM"
 
-        fun start(context: Context, fragmentCls: Class<out Fragment>) {
-            val intent = Intent(context, PluginConfigActivity.javaClass)
-            intent.putExtra(KEY_FRAGMENT_CLS, fragmentCls)
+        fun start(context: Context, item: ItemModel) {
+            if (item.pageCls == null) {
+                return
+            }
+            val intent = Intent(context, PluginConfigActivity::class.java)
+            intent.putExtra(KEY_ROUTE_ITEM, item)
             context.startActivity(intent)
         }
     }
@@ -24,15 +28,26 @@ class PluginConfigActivity : BaseActivity() {
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityPluginConfigBinding.inflate(layoutInflater)
-        var fragmentCls = intent.getSerializableExtra(KEY_FRAGMENT_CLS)
-        if (fragmentCls == null) {
+        setContentView(binding.root)
+        routeItem = intent.getSerializableExtra(KEY_ROUTE_ITEM) as ItemModel
+        if (routeItem == null) {
             finish()
             return
         }
-        var fragment: Fragment = fragmentCls.javaClass.newInstance() as Fragment
+        if (routeItem.pageCls == null) {
+            return
+        }
+
+        attachPage()
+    }
+
+    private fun attachPage() {
+        var fragment: Fragment = (routeItem.pageCls as Class<Fragment>).newInstance()
         supportFragmentManager.beginTransaction().also {
-            it.replace(binding.fragmentContainer.id, fragment, fragmentCls.toString())
+            it.replace(binding.fragmentContainer.id, fragment, routeItem.pageCls.toString())
+            it.commit()
         }
     }
 }
+
 

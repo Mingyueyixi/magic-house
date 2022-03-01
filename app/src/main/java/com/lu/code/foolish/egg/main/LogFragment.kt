@@ -12,7 +12,7 @@ class LogFragment : BindingFragment<FragmentLogBinding>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): FragmentLogBinding? {
+    ): FragmentLogBinding {
         return FragmentLogBinding.inflate(inflater, container, false)
     }
 

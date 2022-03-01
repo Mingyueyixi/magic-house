@@ -2,23 +2,24 @@ package com.lu.code.foolish.egg.main.plugin;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.viewbinding.ViewBinding;
 
+import com.lu.code.foolish.egg.databinding.FragmentFuckDialogBinding;
 import com.lu.code.foolish.egg.ui.BindingFragment;
 
-public class FuckDialogFragment extends BindingFragment {
-
-
-
+/**
+ * @author lu
+ */
+public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBinding> {
 
     @Nullable
     @Override
-    public ViewBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return null;
+    public FragmentFuckDialogBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        @NonNull FragmentFuckDialogBinding binding = FragmentFuckDialogBinding.inflate(inflater, container, false);
+        return binding;
     }
+
 }
