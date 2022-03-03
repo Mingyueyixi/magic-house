@@ -43,22 +43,19 @@ public class HookMainEntry implements IXposedHookLoadPackage {
             return;
         }
         if (AppUtil.getInstance().getAppContext() == null) {
-            AppUtil.init();
-//            if (AppUtil.getInstance().getAppContext() == null) {
-//                XposedHelpers.findAndHookMethod(Application.class,
-//                        "onCreate",
-//                        new XC_MethodHook() {
-//                            @Override
-//                            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//                                Context context = (Context) param.thisObject;
-//                                AppUtil.getInstance().attachContext(context.getApplicationContext());
-//                                LogUtil.d("是空的hook", lpparam.packageName, lpparam.processName);
-//                            }
-//                        });
-//            } else {
-//            }
-            dispatchHookPlugins(lpparam);
-            LogUtil.d("是空的2", lpparam.packageName, lpparam.processName);
+            if (AppUtil.init()) {
+                return;
+            }
+            XposedHelpers.findAndHookMethod(Application.class,
+                    "onCreate",
+                    new XC_MethodHook() {
+                        @Override
+                        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            Context context = (Context) param.thisObject;
+                            AppUtil.init(context.getApplicationContext());
+                            dispatchHookPlugins(lpparam);
+                        }
+                    });
         } else {
             LogUtil.d("不是空的", lpparam.packageName, lpparam.processName);
             dispatchHookPlugins(lpparam);
@@ -78,7 +75,7 @@ public class HookMainEntry implements IXposedHookLoadPackage {
         List<BaseHookPlugin> noPackagePlugins = repository.getNoPackageRepoList();
         if (!CollectionUtil.isEmpty(noPackagePlugins)) {
             for (BaseHookPlugin noPackagePlugin : noPackagePlugins) {
-                LogUtil.d("handle plugin:", noPackagePlugin.getClass(), lpparam.packageName);
+                LogUtil.d("handle plugin:", noPackagePlugin.getClass(), lpparam.processName);
                 noPackagePlugin.handleLoadPackage(lpparam);
             }
         }
@@ -87,7 +84,7 @@ public class HookMainEntry implements IXposedHookLoadPackage {
         List<BaseHookPlugin> registerPlugins = repository.get(lpparam.packageName);
         if (!CollectionUtil.isEmpty(registerPlugins)) {
             for (BaseHookPlugin plugin : registerPlugins) {
-                LogUtil.d("handle plugin:", plugin.getClass(), lpparam.packageName);
+                LogUtil.d("handle plugin:", plugin.getClass(), lpparam.processName);
                 plugin.handleLoadPackage(lpparam);
             }
         }

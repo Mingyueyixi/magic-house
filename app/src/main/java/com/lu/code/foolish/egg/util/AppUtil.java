@@ -26,9 +26,18 @@ public class AppUtil {
         return sInstance;
     }
 
-    public static void init() {
-        Application app = getApplicationByReflect();
+    public static boolean init() {
+        Application app = null;
+        try {
+            app = getApplicationByReflect();
+        } catch (NullPointerException e) {
+
+        }
+        if (app == null) {
+            return false;
+        }
         init(app);
+        return true;
     }
 
     public static void init(Context context) {
