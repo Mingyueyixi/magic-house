@@ -12,6 +12,7 @@ import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.FragmentStoreBinding
 import com.lu.code.magic.main.fuckdialog.FuckDialogFragment
 import com.lu.code.magic.main.store.ItemModel
+import com.lu.code.magic.main.store.PageModel
 import com.lu.code.magic.main.store.TitleModel
 import com.lu.code.magic.ui.BaseFragment
 import com.lu.code.magic.ui.LifecycleAutoViewBinding
@@ -44,13 +45,10 @@ class StoreFragment : BaseFragment() {
         binding.mStoreRecyclerView.adapter = MultiAdapter<ItemModel>()
             .addData(
                 TitleModel("测试"),
-                ItemModel("测试", null),
-                ItemModel("安全截图", null),
+                ItemModel("测试", PageModel()),
+                ItemModel("安全截图", PageModel()),
                 TitleModel("对话框"),
-                ItemModel(
-                    "禁止显示",
-                    FuckDialogFragment::class.java
-                )
+                ItemModel("禁止显示", PageModel("对话框-禁止显示", FuckDialogFragment::class.java))
 
             )
             .addItemType(object : MultiItemType<ItemModel> {
@@ -113,8 +111,10 @@ class StoreFragment : BaseFragment() {
                         init {
                             itemView.setOnClickListener {
                                 var item = adapter.getItem(layoutPosition)
-                                if (item?.pageCls != null) {
-                                    PluginConfigActivity.start(itemView.context, item)
+                                if (item != null) {
+                                    if (item.page.pageCls != null) {
+                                        PluginConfigActivity.start(itemView.context, item)
+                                    }
                                 }
 
                             }
