@@ -14,7 +14,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * Date: 2022/03/03
  * Description:
  */
-public class LocationPlugin extends BaseHookPlugin {
+public class LocationPlugin extends BaseMagicPlugin {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         hookGPSProviderStatus();

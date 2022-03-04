@@ -6,14 +6,14 @@ import java.util.List;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 
-public abstract class BaseHookPlugin implements IXposedHookLoadPackage {
+public abstract class BaseMagicPlugin implements IXposedHookLoadPackage {
     private List<String> bindPackageNameList;
 
-    public BaseHookPlugin() {
+    public BaseMagicPlugin() {
         bindPackageNameList = new ArrayList<>();
     }
 
-    public BaseHookPlugin(String... bindPackageName) {
+    public BaseMagicPlugin(String... bindPackageName) {
         bindPackageNameList = new ArrayList<>();
         bindPackageNameList.addAll(Arrays.asList(bindPackageName));
     }

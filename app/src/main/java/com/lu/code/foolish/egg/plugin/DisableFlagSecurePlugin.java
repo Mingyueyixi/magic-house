@@ -7,7 +7,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-public class DisableFlagSecurePlugin extends BaseHookPlugin {
+public class DisableFlagSecurePlugin extends BaseMagicPlugin {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {

@@ -17,7 +17,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * Date: 2022/02/18
  * Description: fuck dialog
  */
-public class FuckDialogPlugin extends BaseHookPlugin {
+public class FuckDialogPlugin extends BaseMagicPlugin {
 
     public static class Config {
         public String matchText;

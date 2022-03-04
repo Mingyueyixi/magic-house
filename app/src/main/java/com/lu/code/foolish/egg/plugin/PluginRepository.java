@@ -10,8 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 public class PluginRepository {
-    private HashMap<String, List<BaseHookPlugin>> mPluginRepoMap = new HashMap<>();
-    private List<BaseHookPlugin> mNoPackageRepoList = new ArrayList<>();
+    private HashMap<String, List<BaseMagicPlugin>> mPluginRepoMap = new HashMap<>();
+    private List<BaseMagicPlugin> mNoPackageRepoList = new ArrayList<>();
 
     private static final class Single {
         private final static PluginRepository sInstance = new PluginRepository();
@@ -21,18 +21,18 @@ public class PluginRepository {
         return Single.sInstance;
     }
 
-    public void add(BaseHookPlugin... plugins) {
+    public void add(BaseMagicPlugin... plugins) {
         if (CollectionUtil.isEmptyArray(plugins)) {
             return;
         }
-        for (BaseHookPlugin plugin : plugins) {
+        for (BaseMagicPlugin plugin : plugins) {
             List<String> packageNameList = plugin.getBindPackageNameList();
             if (packageNameList == null || packageNameList.size() == 0) {
                 mNoPackageRepoList.add(plugin);
                 continue;
             }
             for (String s : packageNameList) {
-                List<BaseHookPlugin> packagePluginList = mPluginRepoMap.get(s);
+                List<BaseMagicPlugin> packagePluginList = mPluginRepoMap.get(s);
                 if (packagePluginList == null) {
                     packagePluginList = new ArrayList<>();
                     mPluginRepoMap.put(s, packagePluginList);
@@ -42,19 +42,19 @@ public class PluginRepository {
         }
     }
 
-    public void remove(BaseHookPlugin... plugins) {
+    public void remove(BaseMagicPlugin... plugins) {
         if (CollectionUtil.isEmptyArray(plugins)) {
             return;
         }
-        Set<Map.Entry<String, List<BaseHookPlugin>>> entrySet = mPluginRepoMap.entrySet();
-        Iterator<Map.Entry<String, List<BaseHookPlugin>>> it = entrySet.iterator();
+        Set<Map.Entry<String, List<BaseMagicPlugin>>> entrySet = mPluginRepoMap.entrySet();
+        Iterator<Map.Entry<String, List<BaseMagicPlugin>>> it = entrySet.iterator();
         while (it.hasNext()) {
-            Map.Entry<String, List<BaseHookPlugin>> eleMap = it.next();
-            List<BaseHookPlugin> pluginList = eleMap.getValue();
+            Map.Entry<String, List<BaseMagicPlugin>> eleMap = it.next();
+            List<BaseMagicPlugin> pluginList = eleMap.getValue();
             if (pluginList == null || pluginList.size() == 0) {
                 continue;
             }
-            for (BaseHookPlugin plugin : plugins) {
+            for (BaseMagicPlugin plugin : plugins) {
                 //移除掉
                 CollectionUtil.removeByIterator(pluginList, plugin);
             }
@@ -65,15 +65,15 @@ public class PluginRepository {
         mPluginRepoMap.remove(packageName);
     }
 
-    public List<BaseHookPlugin> get(String packageName) {
+    public List<BaseMagicPlugin> get(String packageName) {
         return mPluginRepoMap.get(packageName);
     }
 
-    public HashMap<String, List<BaseHookPlugin>> getPluginRepoMap() {
+    public HashMap<String, List<BaseMagicPlugin>> getPluginRepoMap() {
         return mPluginRepoMap;
     }
 
-    public List<BaseHookPlugin> getNoPackageRepoList() {
+    public List<BaseMagicPlugin> getNoPackageRepoList() {
         return mNoPackageRepoList;
     }
 

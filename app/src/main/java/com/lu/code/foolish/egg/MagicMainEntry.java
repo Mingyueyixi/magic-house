@@ -3,11 +3,11 @@ package com.lu.code.foolish.egg;
 import android.app.Application;
 import android.content.Context;
 
-import com.lu.code.foolish.egg.plugin.BaseHookPlugin;
+import com.lu.code.foolish.egg.plugin.BaseMagicPlugin;
 import com.lu.code.foolish.egg.plugin.DisableFlagSecurePlugin;
 import com.lu.code.foolish.egg.plugin.FuckDialogPlugin;
 import com.lu.code.foolish.egg.plugin.PluginRepository;
-import com.lu.code.foolish.egg.plugin.TestHookPlugin;
+import com.lu.code.foolish.egg.plugin.TestMagicPlugin;
 import com.lu.code.foolish.egg.util.AppUtil;
 import com.lu.code.foolish.egg.util.CollectionUtil;
 import com.lu.code.foolish.egg.util.log.LogUtil;
@@ -24,13 +24,13 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * Date: 2022/02/18
  * Description: kook 入口
  */
-public class HookMainEntry implements IXposedHookLoadPackage {
+public class MagicMainEntry implements IXposedHookLoadPackage {
     private static PluginRepository repository = PluginRepository.getInstance();
 
     static {
-        repository.add(new HookSelfEntry());
+        repository.add(new MagicSelfEntry());
         repository.add(new DisableFlagSecurePlugin());
-        repository.add(new TestHookPlugin());
+        repository.add(new TestMagicPlugin());
         repository.add(new FuckDialogPlugin());
     }
 
@@ -61,27 +61,27 @@ public class HookMainEntry implements IXposedHookLoadPackage {
     }
 
     private void dispatchSelfHookPlugins(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        List<BaseHookPlugin> plugins = repository.get(lpparam.packageName);
+        List<BaseMagicPlugin> plugins = repository.get(lpparam.packageName);
         if (!CollectionUtil.isEmpty(plugins)) {
-            for (BaseHookPlugin plugin : plugins) {
+            for (BaseMagicPlugin plugin : plugins) {
                 plugin.handleLoadPackage(lpparam);
             }
         }
     }
 
     private void dispatchHookPlugins(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        List<BaseHookPlugin> noPackagePlugins = repository.getNoPackageRepoList();
+        List<BaseMagicPlugin> noPackagePlugins = repository.getNoPackageRepoList();
         if (!CollectionUtil.isEmpty(noPackagePlugins)) {
-            for (BaseHookPlugin noPackagePlugin : noPackagePlugins) {
+            for (BaseMagicPlugin noPackagePlugin : noPackagePlugins) {
                 LogUtil.d("handle plugin:", noPackagePlugin.getClass(), lpparam.processName);
                 noPackagePlugin.handleLoadPackage(lpparam);
             }
         }
 
 
-        List<BaseHookPlugin> registerPlugins = repository.get(lpparam.packageName);
+        List<BaseMagicPlugin> registerPlugins = repository.get(lpparam.packageName);
         if (!CollectionUtil.isEmpty(registerPlugins)) {
-            for (BaseHookPlugin plugin : registerPlugins) {
+            for (BaseMagicPlugin plugin : registerPlugins) {
                 LogUtil.d("handle plugin:", plugin.getClass(), lpparam.processName);
                 plugin.handleLoadPackage(lpparam);
             }
