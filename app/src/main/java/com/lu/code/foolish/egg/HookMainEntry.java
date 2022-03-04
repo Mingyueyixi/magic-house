@@ -3,13 +3,11 @@ package com.lu.code.foolish.egg;
 import android.app.Application;
 import android.content.Context;
 
-import androidx.annotation.MainThread;
-
-import com.lu.code.foolish.egg.hook.BaseHookPlugin;
-import com.lu.code.foolish.egg.hook.DisableFlagSecurePlugin;
-import com.lu.code.foolish.egg.hook.FuckDialogPlugin;
-import com.lu.code.foolish.egg.hook.PluginRepository;
-import com.lu.code.foolish.egg.hook.TestHookPlugin;
+import com.lu.code.foolish.egg.plugin.BaseHookPlugin;
+import com.lu.code.foolish.egg.plugin.DisableFlagSecurePlugin;
+import com.lu.code.foolish.egg.plugin.FuckDialogPlugin;
+import com.lu.code.foolish.egg.plugin.PluginRepository;
+import com.lu.code.foolish.egg.plugin.TestHookPlugin;
 import com.lu.code.foolish.egg.util.AppUtil;
 import com.lu.code.foolish.egg.util.CollectionUtil;
 import com.lu.code.foolish.egg.util.log.LogUtil;

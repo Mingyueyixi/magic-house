@@ -1,4 +1,4 @@
-package com.lu.code.foolish.egg.hook;
+package com.lu.code.foolish.egg.plugin;
 
 import java.util.ArrayList;
 import java.util.Arrays;

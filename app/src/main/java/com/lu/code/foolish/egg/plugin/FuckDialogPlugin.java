@@ -1,4 +1,4 @@
-package com.lu.code.foolish.egg.hook;
+package com.lu.code.foolish.egg.plugin;
 
 import android.app.Dialog;
 import android.view.View;
