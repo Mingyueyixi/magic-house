@@ -40,7 +40,7 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.lu.code.foolish.egg.ui.CircleView
+    <com.lu.code.magic.ui.CircleView
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:background="@drawable/ic_launcher_background"
