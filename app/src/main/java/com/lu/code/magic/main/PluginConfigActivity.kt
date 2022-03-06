@@ -59,7 +59,8 @@ class PluginConfigActivity : BaseActivity() {
 
 
     private fun attachPage() {
-        var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
+//        var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
+        var fragment: Fragment = SelectAppFragment()
         supportFragmentManager.beginTransaction().also {
             it.replace(binding.fragmentContainer.id, fragment, routeItem.page.pageCls.toString())
             it.commit()
