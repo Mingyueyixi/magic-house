@@ -4,7 +4,7 @@ import androidx.core.util.Supplier;
 
 import com.lu.code.magic.util.thread.AppExecutor;
 
-public class MemoryLoaderWorker<E> implements ILoadWorker<E> {
+public class MemoryLoaderWorker<E extends Object> implements ILoadWorker<E> {
     private final MemoryRepositoryImp<E> mMemoryRepositoryImp;
     private String objectKey;
     private Supplier<E> supplier;
@@ -15,11 +15,11 @@ public class MemoryLoaderWorker<E> implements ILoadWorker<E> {
     }
 
     @Override
-    public ILoadWorker<E> load(String key, Supplier<E> supplier) {
+    public MemoryLoaderWorker<E> load(String key, Supplier<E> supplier) {
         return this.load(key, supplier, false);
     }
 
-    public ILoadWorker<E> load(String key, Supplier<E> supplier, boolean sync) {
+    public MemoryLoaderWorker<E> load(String key, Supplier<E> supplier, boolean sync) {
         this.objectKey = key;
         this.supplier = supplier;
         this.loadWithSync = sync;
@@ -28,7 +28,7 @@ public class MemoryLoaderWorker<E> implements ILoadWorker<E> {
 
 
     @Override
-    public void into(LoadTarget loadTarget) {
+    public void into(LoadTarget<E> loadTarget) {
         if (loadWithSync) {
             realLoadSync(loadTarget);
         } else {
@@ -50,16 +50,16 @@ public class MemoryLoaderWorker<E> implements ILoadWorker<E> {
 
     protected void realLoad(LoadTarget<E> loadTarget) {
         loadTarget.onStart();
-        Object object = mMemoryRepositoryImp.get(objectKey);
+        E object = mMemoryRepositoryImp.get(objectKey);
         if (object != null) {
-            loadTarget.onComplete((E) object);
+            loadTarget.onComplete(object);
             return;
         }
         AppExecutor.executeIO(() -> {
             E loadObject = supplier.get();
             AppExecutor.executeMain(() -> {
                 mMemoryRepositoryImp.put(objectKey, loadObject);
-                loadTarget.onComplete((E) loadObject);
+                loadTarget.onComplete(loadObject);
             });
         });
     }

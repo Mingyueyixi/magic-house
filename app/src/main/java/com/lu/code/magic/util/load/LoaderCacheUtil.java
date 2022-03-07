@@ -12,4 +12,9 @@ public class LoaderCacheUtil {
         return imageLoader;
     }
 
+    public static CacheObjectLoader newObjectLoader() {
+        return new CacheObjectLoader();
+    }
+
+
 }

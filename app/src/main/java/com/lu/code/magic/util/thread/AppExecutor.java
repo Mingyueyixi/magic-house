@@ -41,6 +41,7 @@ public class AppExecutor {
     private static final ThreadFactory sThreadFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);
 
+        @Override
         public Thread newThread(Runnable r) {
             return new Thread(r, "AppExecutor@IO #" + mCount.getAndIncrement());
         }

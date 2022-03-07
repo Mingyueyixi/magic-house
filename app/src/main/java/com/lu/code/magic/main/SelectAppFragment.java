@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.util.Supplier;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,10 +23,10 @@ import com.lu.code.magic.ui.recycler.MultiAdapter;
 import com.lu.code.magic.ui.recycler.MultiViewHolder;
 import com.lu.code.magic.ui.recycler.SimpleItemType;
 import com.lu.code.magic.util.PackageUtil;
+import com.lu.code.magic.util.TextUtil;
+import com.lu.code.magic.util.load.CacheObjectLoader;
 import com.lu.code.magic.util.load.LoadTarget;
 import com.lu.code.magic.util.load.LoaderCacheUtil;
-import com.lu.code.magic.util.load.SimpleImageLoader;
-import com.lu.code.magic.util.TextUtil;
 import com.lu.code.magic.util.log.LogUtil;
 import com.lu.code.magic.util.thread.AppExecutor;
 
@@ -40,6 +39,7 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
     private MultiAdapter<AppListModel> appListAdapter;
     private HashMap<String, PackageInfo> installPackageInfoMap;
 
+
     @NonNull
     @Override
     public FragmentSelectAppBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +49,23 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        appListAdapter = new MultiAdapter<AppListModel>()
+
+        appListAdapter = new MultiAdapter<AppListModel>() {
+
+        }
+                .setDataObserver(new RecyclerView.AdapterDataObserver() {
+                    @Override
+                    public void onChanged() {
+                        super.onChanged();
+                        //fix，规避kotlin BindingFragment binding!!非空断言导致的崩溃。
+                        //当横竖屏切换时，fragment重新销毁，binding会被置空，调用binding会崩溃
+                        if (!isAdded()) {
+                            //取消destroy时取消监听，也可规避
+                            return;
+                        }
+                        getBinding().tvAppCount.setText("数量：" + appListAdapter.getData().size() + "");
+                    }
+                })
                 .addItemType(new SimpleItemType<AppListModel>() {
                     @NonNull
                     @Override
@@ -101,11 +117,20 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
         });
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        //fix，规避kotlin BindingFragment binding!!非空断言导致的崩溃。
+        //当横竖屏切换时，fragment重新销毁，binding会被置空，调用binding会崩溃
+        appListAdapter.removeDataObserver();
+    }
+
     private class ItemVIewHolder extends MultiViewHolder<AppListModel> {
         private TextView tvPackageName;
         private TextView tvAppName;
         private ImageView ivAppIcon;
         private SwitchButton sbEnableItem;
+        private CacheObjectLoader objectLoader;
 
         public ItemVIewHolder(@NonNull View itemView) {
             super(itemView);
@@ -113,6 +138,8 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             tvAppName = itemView.findViewById(R.id.tvAppName);
             tvPackageName = itemView.findViewById(R.id.tvPackageName);
             sbEnableItem = itemView.findViewById(R.id.sbEnableItem);
+
+            objectLoader = LoaderCacheUtil.newObjectLoader();
         }
 
         @Override
@@ -121,33 +148,39 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             tvPackageName.setText(itemModel.getPackageName());
             sbEnableItem.setChecked(itemModel.getEnable());
 
-            LoaderCacheUtil.imageLoader()
-                    .with()
+
+            objectLoader.<AppListModel>with()
                     .load(itemModel.getPackageName(), () -> {
                         PackageInfo packageInfo = installPackageInfoMap.get(itemModel.getPackageName());
                         ApplicationInfo appInfo = packageInfo.applicationInfo;
                         Drawable drawable = appInfo.loadIcon(getContext().getPackageManager());
-                        return drawable;
+                        String name = appInfo.loadLabel(getContext().getPackageManager()).toString();
+                        return new AppListModel(name, itemModel.getPackageName(), drawable, itemModel.getEnable());
                     })
-                    .into(new LoadTarget<Drawable>() {
+                    .into(new LoadTarget<AppListModel>() {
                         @Override
                         public void onStart() {
                             //每次加载前都设置tag
-                            ivAppIcon.setTag(ivAppIcon.getId(), position);
+                            ivAppIcon.setTag(position);
                         }
 
                         @Override
-                        public void onComplete(Drawable drawable) {
-                            Object tag = ivAppIcon.getTag(ivAppIcon.getId());
+                        public void onComplete(AppListModel target) {
+                            Object tag = ivAppIcon.getTag();
                             if (!Integer.valueOf(position).equals(tag)) {
                                 //tag不相等，说明异步加载出的图片不是要展示的。
                                 //加载需要时间，划view到不可见后，被view复用时，会重新走到设置tag
                                 //忽略掉，防止错位、闪现
                                 return;
                             }
-                            ivAppIcon.setImageDrawable(drawable);
+                            LogUtil.d(">>>position", position);
+                            tvAppName.setText(target.getName());
+                            ivAppIcon.setImageDrawable(target.getIcon());
+                            tvPackageName.setText(target.getPackageName());
+
                         }
                     });
+
         }
     }
 

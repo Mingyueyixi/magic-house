@@ -10,11 +10,11 @@ public class CacheObjectLoader {
     }
 
     public CacheObjectLoader(LruCache<String, Object> pools) {
-        mCachePoolImp = new MemoryRepositoryImp(pools);
+        mCachePoolImp = new MemoryRepositoryImp<Object>(pools);
     }
 
-    public ILoadWorker with() {
-        return new MemoryLoaderWorker(mCachePoolImp);
+    public <E> ILoadWorker<E> with() {
+        return new MemoryLoaderWorker<>(mCachePoolImp);
     }
 
 }

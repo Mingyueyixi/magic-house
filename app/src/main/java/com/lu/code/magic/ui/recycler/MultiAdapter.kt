@@ -2,50 +2,75 @@ package com.lu.code.magic.ui.recycler
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 
 open class MultiAdapter<E>() : RecyclerView.Adapter<MultiViewHolder<E>>() {
     private val data: MutableList<E>
     private val itemTypeList: MutableList<MultiItemType<E>>
+    private var customDataObserver: AdapterDataObserver
 
     init {
         data = ArrayList()
         this.itemTypeList = ArrayList()
+        customDataObserver = object : AdapterDataObserver() {
+
+        }
     }
 
-    fun addItemTypes(vararg itemTypeArrays: MultiItemType<E>): MultiAdapter<E> {
+    open fun setDataObserver(dataObserver: AdapterDataObserver): MultiAdapter<E> {
+        if (hasObservers()) {
+            try {
+                unregisterAdapterDataObserver(customDataObserver)
+            } catch (e: Exception) {
+                e.toString()
+            }
+        }
+        customDataObserver = dataObserver
+        if (dataObserver == null) {
+            return this
+        }
+        registerAdapterDataObserver(dataObserver)
+        return this
+    }
+
+    open fun removeDataObserver() {
+        unregisterAdapterDataObserver(customDataObserver)
+    }
+
+    open fun addItemTypes(vararg itemTypeArrays: MultiItemType<E>): MultiAdapter<E> {
         this.itemTypeList.addAll(itemTypeArrays)
         return this
     }
 
-    fun addItemType(itemType: MultiItemType<E>): MultiAdapter<E> {
+    open fun addItemType(itemType: MultiItemType<E>): MultiAdapter<E> {
         this.itemTypeList.add(itemType)
         return this
     }
 
-    fun setData(data: List<E>) {
+    open fun setData(data: List<E>) {
         this.data.clear()
         this.data.addAll(data)
     }
 
-    fun addData(data: List<E>): MultiAdapter<E> {
+    open fun addData(data: List<E>): MultiAdapter<E> {
         this.data.addAll(data)
         return this
     }
 
-    fun addData(vararg ele: E): MultiAdapter<E> {
+    open fun addData(vararg ele: E): MultiAdapter<E> {
         this.data.addAll(ele)
         return this
     }
 
-    fun getData(): List<E> {
+    open fun getData(): List<E> {
         return data
     }
 
-    fun getListeners(): List<MultiItemType<E>> {
+    open fun getListeners(): List<MultiItemType<E>> {
         return itemTypeList
     }
 
-    fun getItem(position: Int): E? {
+    open fun getItem(position: Int): E? {
         return data[position];
     }
 
@@ -70,6 +95,10 @@ open class MultiAdapter<E>() : RecyclerView.Adapter<MultiViewHolder<E>>() {
 
     override fun getItemCount(): Int {
         return data.size
+    }
+
+    interface DataObserver<E> {
+        fun onDataChanged(atapter: MultiAdapter<E>)
     }
 
 }
