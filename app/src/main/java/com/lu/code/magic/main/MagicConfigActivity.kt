@@ -3,14 +3,15 @@ package com.lu.code.magic.main;
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.view.Window
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.lu.code.magic.magic.databinding.ActivityPluginConfigBinding
 import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.ui.BaseActivity
 
-class PluginConfigActivity : BaseActivity() {
+class MagicConfigActivity : BaseActivity() {
+    private lateinit var viewModel: MagicConfigViewModel
     private lateinit var binding: ActivityPluginConfigBinding
     private lateinit var routeItem: ItemModel
 
@@ -21,7 +22,7 @@ class PluginConfigActivity : BaseActivity() {
             if (item.page.pageCls == null) {
                 return
             }
-            val intent = Intent(context, PluginConfigActivity::class.java)
+            val intent = Intent(context, MagicConfigActivity::class.java)
             intent.putExtra(KEY_ROUTE_ITEM, item)
             context.startActivity(intent)
         }
@@ -42,10 +43,11 @@ class PluginConfigActivity : BaseActivity() {
         if (routeItem.page.pageCls == null) {
             return
         }
-
+        viewModel = ViewModelProvider(this).get(MagicConfigViewModel::class.java)
         initToolBar()
-        attachPage()
+        initAttachPage()
     }
+
 
     private fun initToolBar() {
         binding.toolbar.title = routeItem.page.title
@@ -57,16 +59,28 @@ class PluginConfigActivity : BaseActivity() {
         }
     }
 
+    private fun initAttachPage() {
+        showSelectPage()
+    }
 
-    private fun attachPage() {
-//        var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
+    fun showSelectPage() {
         var fragment: Fragment = SelectAppFragment()
         supportFragmentManager.beginTransaction().also {
             it.replace(binding.fragmentContainer.id, fragment, routeItem.page.pageCls.toString())
             it.commit()
         }
-
     }
+
+    fun showConfigPage(itemData: AppListModel) {
+        viewModel.appListModel = itemData
+
+        var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
+        supportFragmentManager.beginTransaction().also {
+            it.replace(binding.fragmentContainer.id, fragment, routeItem.page.pageCls.toString())
+            it.commit()
+        }
+    }
+
 
 }
 

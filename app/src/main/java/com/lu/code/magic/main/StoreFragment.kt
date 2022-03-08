@@ -113,7 +113,7 @@ class StoreFragment : BaseFragment() {
                                 var item = adapter.getItem(layoutPosition)
                                 if (item != null) {
                                     if (item.page.pageCls != null) {
-                                        PluginConfigActivity.start(itemView.context, item)
+                                        MagicConfigActivity.start(itemView.context, item)
                                     }
                                 }
 

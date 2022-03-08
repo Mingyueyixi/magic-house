@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.lu.code.magic.main.PluginConfigActivity"
+            android:name="com.lu.code.magic.main.MagicConfigActivity"
             android:exported="false"
             android:theme="@style/Theme.FoolishEgg.NoActionBar" />
     </application>

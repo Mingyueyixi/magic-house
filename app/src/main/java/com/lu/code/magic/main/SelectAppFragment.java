@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.collection.LruCache;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -71,7 +73,7 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
                     @Override
                     public MultiViewHolder<AppListModel> createViewHolder(@NonNull MultiAdapter<AppListModel> adapter, @NonNull ViewGroup parent, int viewType) {
                         View v = LayoutInflater.from(getContext()).inflate(R.layout.item_app_list, parent, false);
-                        return new ItemVIewHolder(v);
+                        return new ItemViewHolder(v);
                     }
                 });
         RecyclerView rvAppList = getBinding().rvAppList;
@@ -125,21 +127,30 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
         appListAdapter.removeDataObserver();
     }
 
-    private class ItemVIewHolder extends MultiViewHolder<AppListModel> {
+    private class ItemViewHolder extends MultiViewHolder<AppListModel> {
         private TextView tvPackageName;
         private TextView tvAppName;
         private ImageView ivAppIcon;
         private SwitchButton sbEnableItem;
-        private CacheObjectLoader objectLoader;
+        private CacheObjectLoader<AppListModel> appListModelLoader;
 
-        public ItemVIewHolder(@NonNull View itemView) {
+        public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
             ivAppIcon = itemView.findViewById(R.id.ivAppIcon);
             tvAppName = itemView.findViewById(R.id.tvAppName);
             tvPackageName = itemView.findViewById(R.id.tvPackageName);
             sbEnableItem = itemView.findViewById(R.id.sbEnableItem);
 
-            objectLoader = LoaderCacheUtil.newObjectLoader();
+            appListModelLoader = LoaderCacheUtil.newObjectLoader(new LruCache<>(100));
+
+            itemView.setOnClickListener(v -> {
+                int clickPosition = getLayoutPosition();
+                AppListModel itemData = appListAdapter.getItem(clickPosition);
+                FragmentActivity activity = getActivity();
+                if (activity instanceof MagicConfigActivity) {
+                    ((MagicConfigActivity) activity).showConfigPage(itemData);
+                }
+            });
         }
 
         @Override
@@ -148,8 +159,7 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             tvPackageName.setText(itemModel.getPackageName());
             sbEnableItem.setChecked(itemModel.getEnable());
 
-
-            objectLoader.<AppListModel>with()
+            appListModelLoader.with()
                     .load(itemModel.getPackageName(), () -> {
                         PackageInfo packageInfo = installPackageInfoMap.get(itemModel.getPackageName());
                         ApplicationInfo appInfo = packageInfo.applicationInfo;
