@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.LruCache;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,32 +54,44 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
         super.onViewCreated(view, savedInstanceState);
 
         appListAdapter = new MultiAdapter<AppListModel>() {
-
-        }
-                .setDataObserver(new RecyclerView.AdapterDataObserver() {
-                    @Override
-                    public void onChanged() {
-                        super.onChanged();
-                        //fix，规避kotlin BindingFragment binding!!非空断言导致的崩溃。
-                        //当横竖屏切换时，fragment重新销毁，binding会被置空，调用binding会崩溃
-                        if (!isAdded()) {
-                            //取消destroy时取消监听，也可规避
-                            return;
-                        }
-                        getBinding().tvAppCount.setText("数量：" + appListAdapter.getData().size() + "");
-                    }
-                })
-                .addItemType(new SimpleItemType<AppListModel>() {
-                    @NonNull
-                    @Override
-                    public MultiViewHolder<AppListModel> createViewHolder(@NonNull MultiAdapter<AppListModel> adapter, @NonNull ViewGroup parent, int viewType) {
-                        View v = LayoutInflater.from(getContext()).inflate(R.layout.item_app_list, parent, false);
-                        return new ItemViewHolder(v);
-                    }
-                });
+        }.setDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                //fix，规避kotlin BindingFragment binding!!非空断言导致的崩溃。
+                //当横竖屏切换时，fragment重新销毁，binding会被置空，调用binding会崩溃
+                if (!isAdded()) {
+                    //取消destroy时取消监听，也可规避
+                    return;
+                }
+                getBinding().tvAppCount.setText("数量：" + appListAdapter.getData().size() + "");
+            }
+        }).addItemType(new SimpleItemType<AppListModel>() {
+            @NonNull
+            @Override
+            public MultiViewHolder<AppListModel> createViewHolder(@NonNull MultiAdapter<AppListModel> adapter, @NonNull ViewGroup parent, int viewType) {
+                View v = LayoutInflater.from(getContext()).inflate(R.layout.item_app_list, parent, false);
+                return new ItemViewHolder(v);
+            }
+        });
         RecyclerView rvAppList = getBinding().rvAppList;
         rvAppList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvAppList.setAdapter(appListAdapter);
+
+        View editFrame = getBinding().searchView.findViewById(androidx.appcompat.R.id.search_edit_frame);
+
+
+        getBinding().searchView.setOnSearchClickListener(v -> {
+            ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) getBinding().searchView.getLayoutParams();
+            lp.startToEnd = getBinding().textView.getId();
+            getBinding().searchView.setLayoutParams(lp);
+        });
+        getBinding().searchView.setOnCloseListener(() -> {
+            ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) getBinding().searchView.getLayoutParams();
+            lp.startToEnd = ConstraintLayout.LayoutParams.UNSET;
+            getBinding().searchView.setLayoutParams(lp);
+            return false;
+        });
 
         loadInstallInfoList();
 
