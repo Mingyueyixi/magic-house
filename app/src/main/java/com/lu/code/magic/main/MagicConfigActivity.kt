@@ -9,11 +9,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.lu.code.magic.magic.databinding.ActivityPluginConfigBinding
 import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.ui.BaseActivity
+import com.lu.code.magic.ui.FragmentNavigation
+import java.util.*
 
 class MagicConfigActivity : BaseActivity() {
+    private lateinit var fragmentNavigation: FragmentNavigation
     private lateinit var viewModel: MagicConfigViewModel
     private lateinit var binding: ActivityPluginConfigBinding
     private lateinit var routeItem: ItemModel
+
 
     companion object {
         private const val KEY_ROUTE_ITEM = "KEY_ROUTE_ITEM"
@@ -43,9 +47,18 @@ class MagicConfigActivity : BaseActivity() {
         if (routeItem.page.pageCls == null) {
             return
         }
+        fragmentNavigation = FragmentNavigation(this, binding.fragmentContainer)
+
         viewModel = ViewModelProvider(this).get(MagicConfigViewModel::class.java)
         initToolBar()
         initAttachPage()
+    }
+
+    override fun onBackPressed() {
+        var backResult = fragmentNavigation.navigateBack()
+        if (!backResult) {
+            super.onBackPressed()
+        }
     }
 
 
@@ -55,30 +68,26 @@ class MagicConfigActivity : BaseActivity() {
         setSupportActionBar(binding.toolbar)
         //设置导航点击监听，在setSupportActionBar之后，否则无效
         binding.toolbar.setNavigationOnClickListener {
-            finish()
+            if (!fragmentNavigation.navigateBack()) {
+                finish()
+            }
         }
+
     }
 
     private fun initAttachPage() {
         showSelectPage()
     }
 
-    fun showSelectPage() {
+    private fun showSelectPage() {
         var fragment: Fragment = SelectAppFragment()
-        supportFragmentManager.beginTransaction().also {
-            it.replace(binding.fragmentContainer.id, fragment, routeItem.page.pageCls.toString())
-            it.commit()
-        }
+        fragmentNavigation.navigate(fragment)
     }
 
     fun showConfigPage(itemData: AppListModel) {
         viewModel.appListModel = itemData
-
         var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
-        supportFragmentManager.beginTransaction().also {
-            it.replace(binding.fragmentContainer.id, fragment, routeItem.page.pageCls.toString())
-            it.commit()
-        }
+        fragmentNavigation.navigate(fragment)
     }
 
 
