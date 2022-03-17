@@ -1,7 +1,7 @@
 package com.lu.code.magic.util.load;
 
 
-public interface LoadTarget<E> {
+public interface ILoadTargetInto<E> {
     void onStart();
 
     void onComplete(E target);

@@ -20,6 +20,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Consumer;
+import androidx.core.util.Supplier;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

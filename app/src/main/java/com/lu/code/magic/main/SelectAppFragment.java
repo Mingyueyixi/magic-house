@@ -27,8 +27,6 @@ import com.lu.code.magic.ui.recycler.MultiViewHolder;
 import com.lu.code.magic.ui.recycler.SimpleItemType;
 import com.lu.code.magic.util.PackageUtil;
 import com.lu.code.magic.util.TextUtil;
-import com.lu.code.magic.util.load.CacheObjectLoader;
-import com.lu.code.magic.util.load.LoadTarget;
 import com.lu.code.magic.util.load.LoaderCacheUtil;
 import com.lu.code.magic.util.log.LogUtil;
 import com.lu.code.magic.util.thread.AppExecutor;
@@ -141,20 +139,20 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
     }
 
     private class ItemViewHolder extends MultiViewHolder<AppListModel> {
+        private final LoaderCacheUtil.ObjectLoader<AppListModel> appListModelLoader;
         private TextView tvPackageName;
         private TextView tvAppName;
         private ImageView ivAppIcon;
         private SwitchButton sbEnableItem;
-        private CacheObjectLoader<AppListModel> appListModelLoader;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
+            appListModelLoader = LoaderCacheUtil.createObjectLoader(new LruCache<String, AppListModel>(100));
+
             ivAppIcon = itemView.findViewById(R.id.ivAppIcon);
             tvAppName = itemView.findViewById(R.id.tvAppName);
             tvPackageName = itemView.findViewById(R.id.tvPackageName);
             sbEnableItem = itemView.findViewById(R.id.sbEnableItem);
-
-            appListModelLoader = LoaderCacheUtil.newObjectLoader(new LruCache<>(100));
 
             itemView.setOnClickListener(v -> {
                 int clickPosition = getLayoutPosition();
@@ -172,37 +170,29 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             tvPackageName.setText(itemModel.getPackageName());
             sbEnableItem.setChecked(itemModel.getEnable());
 
-            appListModelLoader.with()
-                    .load(itemModel.getPackageName(), () -> {
-                        PackageInfo packageInfo = installPackageInfoMap.get(itemModel.getPackageName());
-                        ApplicationInfo appInfo = packageInfo.applicationInfo;
-                        Drawable drawable = appInfo.loadIcon(getContext().getPackageManager());
-                        String name = appInfo.loadLabel(getContext().getPackageManager()).toString();
-                        return new AppListModel(name, itemModel.getPackageName(), drawable, itemModel.getEnable());
-                    })
-                    .into(new LoadTarget<AppListModel>() {
-                        @Override
-                        public void onStart() {
-                            //每次加载前都设置tag
-                            ivAppIcon.setTag(position);
-                        }
+            //每次加载前都设置tag
+            ivAppIcon.setTag(position);
+            appListModelLoader.loadIO(itemModel.getPackageName(), () -> {
+                PackageInfo packageInfo = installPackageInfoMap.get(itemModel.getPackageName());
+                ApplicationInfo appInfo = packageInfo.applicationInfo;
+                Drawable drawable = appInfo.loadIcon(getContext().getPackageManager());
+                String name = appInfo.loadLabel(getContext().getPackageManager()).toString();
+                return new AppListModel(name, itemModel.getPackageName(), drawable, itemModel.getEnable());
+            }).intoMain(appListModel -> {
+                Object tag = ivAppIcon.getTag();
+                if (!Integer.valueOf(position).equals(tag)) {
+                    //tag不相等，说明异步加载出的图片不是要展示的。
+                    //加载需要时间，划view到不可见后，被view复用时，会重新走到设置tag
+                    //忽略掉，防止错位、闪现
+                    return;
+                }
+                LogUtil.d(">>>position", position);
+                tvAppName.setText(appListModel.getName());
+                ivAppIcon.setImageDrawable(appListModel.getIcon());
+                tvPackageName.setText(appListModel.getPackageName());
 
-                        @Override
-                        public void onComplete(AppListModel target) {
-                            Object tag = ivAppIcon.getTag();
-                            if (!Integer.valueOf(position).equals(tag)) {
-                                //tag不相等，说明异步加载出的图片不是要展示的。
-                                //加载需要时间，划view到不可见后，被view复用时，会重新走到设置tag
-                                //忽略掉，防止错位、闪现
-                                return;
-                            }
-                            LogUtil.d(">>>position", position);
-                            tvAppName.setText(target.getName());
-                            ivAppIcon.setImageDrawable(target.getIcon());
-                            tvPackageName.setText(target.getPackageName());
+            });
 
-                        }
-                    });
 
         }
     }
