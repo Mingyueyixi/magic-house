@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:padding="24dp">
 
 
@@ -23,6 +24,7 @@
             android:textStyle="bold" />
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etSearchKeyWord"
             android:layout_width="match_parent"
             android:layout_height="72dp"
             android:layout_marginTop="18dp"
@@ -42,6 +44,7 @@
             android:layout_height="wrap_content">
 
             <RadioGroup
+                android:id="@+id/rgSelectMode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checkedButton="@id/rb_normal_mode"
@@ -63,6 +66,7 @@
             </RadioGroup>
 
             <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/tbDotLineOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
@@ -74,19 +78,13 @@
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 
-    <com.kyleduo.switchbutton.SwitchButton
-        android:layout_width="128dp"
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
-        android:checked="true"
-        android:textSize="24dp"
-        app:kswTextOff="OFF"
-        app:kswTextOn="ON"
-        app:kswThumbHeight="36dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:layout_gravity="center"
+        android:layout_marginTop="36dp"
+        android:text="确定" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.appcompat.widget.LinearLayoutCompat>
 
