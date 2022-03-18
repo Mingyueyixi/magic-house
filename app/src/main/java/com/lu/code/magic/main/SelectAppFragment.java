@@ -81,7 +81,7 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
 
         getBinding().searchView.setOnSearchClickListener(v -> {
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) getBinding().searchView.getLayoutParams();
-            lp.startToEnd = getBinding().textView.getId();
+            lp.startToEnd = getBinding().searchSelectView.getId();
             getBinding().searchView.setLayoutParams(lp);
         });
         getBinding().searchView.setOnCloseListener(() -> {
@@ -91,6 +91,9 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             return false;
         });
 
+        getBinding().searchSelectView.setOnClickListener(v -> {
+
+        });
         loadInstallInfoList();
 
     }

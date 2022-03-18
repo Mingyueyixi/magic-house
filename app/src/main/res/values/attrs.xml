@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SelectView">
+        <attr name="android:text" />
+        <attr name="android:textSize" />
+        <attr name="android:textStyle" />
+        <attr name="android:textColor" />
+        <attr name="tipColor" format="color" />
+        <attr name="tipSpace" format="dimension" />
+    </declare-styleable>
+</resources>

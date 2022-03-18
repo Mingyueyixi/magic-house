@@ -15,12 +15,11 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <TextView
-            android:id="@+id/textView"
+        <com.lu.code.magic.ui.SelectView
+            android:id="@+id/searchSelectView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="选择应用"
+            android:text="尼玛的"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
