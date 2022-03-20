@@ -3,9 +3,11 @@ package com.lu.code.magic.main;
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.ActivityPluginConfigBinding
 import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.ui.BaseActivity
@@ -89,7 +91,6 @@ class MagicConfigActivity : BaseActivity() {
         var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
         fragmentNavigation.navigate(fragment)
     }
-
 
 }
 

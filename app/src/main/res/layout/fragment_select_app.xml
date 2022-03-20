@@ -19,12 +19,14 @@
             android:id="@+id/searchSelectView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="尼玛的"
+            android:text="选择应用"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:menu="@menu/select_app"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"

@@ -7,5 +7,6 @@
         <attr name="android:textColor" />
         <attr name="tipColor" format="color" />
         <attr name="tipSpace" format="dimension" />
+        <attr name="menu" format="reference" />
     </declare-styleable>
 </resources>

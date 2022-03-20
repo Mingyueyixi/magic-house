@@ -7,4 +7,11 @@
     <string name="js">JS</string>
     <string name="dev">Dev</string>
     <string name="app_xposed_description">foolish-egg box</string>
+    <string name="sort">Sort</string>
+    <string name="app_label">App Name</string>
+    <string name="package_name_A_Z">Package Name(A-Z)</string>
+    <string name="package_name_Z_A">Package Name(A-Z)</string>
+    <string name="filter">Filter</string>
+    <string name="hide_system_application">Hide System App</string>
+    <string name="show_system_application">Show System App</string>
 </resources>

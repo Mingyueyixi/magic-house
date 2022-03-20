@@ -5,6 +5,8 @@ import android.content.pm.PackageInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,15 +38,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding> {
-
     private MultiAdapter<AppListModel> appListAdapter;
     private HashMap<String, PackageInfo> installPackageInfoMap;
-
+    private int sortActionId;
+    private int filterActionId;
 
     @NonNull
     @Override
     public FragmentSelectAppBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return FragmentSelectAppBinding.inflate(inflater, container, false);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -91,10 +99,32 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             return false;
         });
 
-        getBinding().searchSelectView.setOnClickListener(v -> {
-
+        getBinding().searchSelectView.setOnMenuItemClickListener(item -> {
+            item.setChecked(true);
+            switch (item.getGroupId()) {
+                case R.id.action_sort:
+                    sortActionId = item.getItemId();
+                    break;
+                case R.id.action_filter:
+                    filterActionId = item.getItemId();
+                    break;
+            }
+            updateInstallInfoList();
+            return false;
         });
+
         loadInstallInfoList();
+
+    }
+
+    private void updateInstallInfoList() {
+
+    }
+
+    private void filterHideSystemApp() {
+
+    }
+    private void filterShowSystemApp(){
 
     }
 
@@ -131,6 +161,13 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             });
 
         });
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.select_app, menu);
     }
 
     @Override
