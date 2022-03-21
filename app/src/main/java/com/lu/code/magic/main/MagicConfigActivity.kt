@@ -40,12 +40,12 @@ class MagicConfigActivity : BaseActivity() {
         binding = ActivityPluginConfigBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        routeItem = intent.getSerializableExtra(KEY_ROUTE_ITEM) as ItemModel
-        if (routeItem == null) {
+        var route = intent.getSerializableExtra(KEY_ROUTE_ITEM) as ItemModel?
+        if (route == null) {
             finish()
             return
         }
-
+        routeItem = route
         if (routeItem.page.pageCls == null) {
             return
         }

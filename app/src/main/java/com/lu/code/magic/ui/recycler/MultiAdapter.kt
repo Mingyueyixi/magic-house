@@ -52,6 +52,25 @@ open class MultiAdapter<E>() : RecyclerView.Adapter<MultiViewHolder<E>>() {
         this.data.addAll(data)
     }
 
+    open fun updateData(data: List<E>) {
+        this.data.clear()
+        this.data.addAll(data)
+        notifyDataSetChanged()
+    }
+
+    open fun updateData(ele: E) {
+        var index = data.indexOf(ele)
+        updateData(index)
+    }
+
+    open fun updateData(position: Int) {
+        if (position < 0 || position >= data.size) {
+            return
+        }
+        notifyItemChanged(position)
+    }
+
+
     open fun addData(data: List<E>): MultiAdapter<E> {
         this.data.addAll(data)
         return this

@@ -1,6 +1,7 @@
 package com.lu.code.magic.util
 
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 
 
@@ -18,6 +19,19 @@ class PackageUtil {
         fun getInstallPackageInfoList(context: Context): MutableList<PackageInfo> {
             val pm = context.packageManager
             return pm.getInstalledPackages(0)
+        }
+
+        fun isSystemApp(pkg: PackageInfo): Boolean {
+            return hasFlag(pkg.applicationInfo, ApplicationInfo.FLAG_SYSTEM)
+        }
+
+        fun isDebugApp(pkg: PackageInfo): Boolean {
+            return hasFlag(pkg.applicationInfo, ApplicationInfo.FLAG_DEBUGGABLE)
+        }
+
+        fun hasFlag(appInfo: ApplicationInfo, flag: Int): Boolean {
+            //二进制位与。原先|设置
+            return appInfo.flags and flag === flag
         }
     }
 }

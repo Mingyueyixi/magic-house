@@ -31,11 +31,16 @@ import com.lu.code.magic.util.PackageUtil;
 import com.lu.code.magic.util.TextUtil;
 import com.lu.code.magic.util.load.LoaderCacheUtil;
 import com.lu.code.magic.util.log.LogUtil;
-import com.lu.code.magic.util.thread.AppExecutor;
+import com.lu.code.magic.util.thread.WorkerUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding> {
     private MultiAdapter<AppListModel> appListAdapter;
@@ -118,30 +123,86 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
     }
 
     private void updateInstallInfoList() {
+        WorkerUtil.loadSingle(() -> {
+            List<AppListModel> filterApp = filterApp();
+            sortApp(filterApp);
+            return filterApp;
+        }).intoMain(appListModels -> {
+            appListAdapter.updateData(appListModels);
+            getBinding().rvAppList.smoothScrollToPosition(0);
+        });
 
     }
 
-    private void filterHideSystemApp() {
+    private List<AppListModel> filterApp() {
+        Set<Map.Entry<String, PackageInfo>> entrySet = installPackageInfoMap.entrySet();
+        int filterId = filterActionId;
+        List<AppListModel> appListModels = new ArrayList<>();
+        Iterator<Map.Entry<String, PackageInfo>> it = entrySet.iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, PackageInfo> item = it.next();
+            PackageInfo v = item.getValue();
+            String appName = v.applicationInfo.name;
+            appName = appName == null ? "" : appName;
+            AppListModel model = new AppListModel(appName, v.packageName, false);
+            switch (filterId) {
+                case R.id.action_only_show_system_app:
+                    if (PackageUtil.Companion.isSystemApp(v)) {
+                        appListModels.add(model);
+                    }
+                    break;
+                case R.id.action_hide_system_app:
+                    if (!PackageUtil.Companion.isSystemApp(v)) {
+                        appListModels.add(model);
+                    }
+                    break;
+                case R.id.action_only_show_debug_app:
+                    if (PackageUtil.Companion.isDebugApp(v)) {
+                        appListModels.add(model);
+                    }
+                    break;
+                default:
+                    appListModels.add(model);
+                    break;
+            }
+        }
 
+        return appListModels;
     }
-    private void filterShowSystemApp(){
 
+    private void sortApp(List<AppListModel> appListModels) {
+        int sortId = sortActionId;
+        Collections.sort(appListModels, (o1, o2) -> {
+            switch (sortId) {
+                case R.id.action_sort_app_name_A_Z:
+                    return o1.getName().compareTo(o2.getName());
+                case R.id.action_sort_app_name_Z_A:
+                    return o2.getName().compareTo(o1.getName());
+                case R.id.action_sort_package_name_A_Z:
+                    return o1.getPackageName().compareTo(o2.getPackageName());
+                case R.id.action_sort_package_name_Z_A:
+                    return o2.getPackageName().compareTo(o1.getPackageName());
+                default:
+                    break;
+            }
+            return 0;
+        });
     }
+
 
     private void loadInstallInfoList() {
         installPackageInfoMap = new HashMap<>();
-        List<AppListModel> appListModels = new ArrayList<>();
-        AppExecutor.executeIO(() -> {
+
+        WorkerUtil.loadSingle(() -> {
             List<PackageInfo> installInfoList = PackageUtil.Companion.getInstallPackageInfoList(getContext());
+            List<AppListModel> appListModels = new ArrayList<>();
             for (PackageInfo packageInfo : installInfoList) {
                 ApplicationInfo appInfo = packageInfo.applicationInfo;
                 String appName = appInfo.name;
                 String packageName = appInfo.packageName == null ? "" : appInfo.packageName;
                 if (TextUtil.isEmpty(appName)) {
-                    appName = "";
+                    appName = appInfo.loadLabel(getContext().getPackageManager()) + "";
                     LogUtil.d("app名为空", packageName);
-//                    appName = getContext().getPackageManager().getApplicationLabel(appInfo).toString();
-//                    appName = appInfo.loadLabel(getContext().getPackageManager()).toString();
                     if (TextUtil.isEmpty(appName)) {
                         LogUtil.d("app label名为空", packageName);
                     }
@@ -154,14 +215,11 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
                 installPackageInfoMap.put(packageName, packageInfo);
                 appListModels.add(appListModel);
             }
-
-            AppExecutor.executeMain(() -> {
-                appListAdapter.setData(appListModels);
-                appListAdapter.notifyDataSetChanged();
-            });
-
+            return appListModels;
+        }).intoMain(appListModels -> {
+            appListAdapter.updateData(appListModels);
+            getBinding().rvAppList.smoothScrollToPosition(0);
         });
-
     }
 
     @Override
