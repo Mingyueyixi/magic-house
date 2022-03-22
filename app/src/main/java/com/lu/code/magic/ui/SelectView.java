@@ -8,16 +8,14 @@ import android.graphics.Path;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.widget.FrameLayout;
+import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import androidx.appcompat.widget.LinearLayoutCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
 
 import com.lu.code.magic.magic.R;
 
@@ -33,8 +31,8 @@ public class SelectView extends LinearLayout {
     private int tipSpace;
     private int tipColor;
     private MenuInflater menuInflater;
-    private PopupMenu mPopMenu;
-    private int menuRes;
+    private PopSelectMenu mPopMenu;
+    private int mMenuResId;
     private TextView textView;
 
     public SelectView(Context context) {
@@ -65,7 +63,7 @@ public class SelectView extends LinearLayout {
         int textColor = a.getColor(R.styleable.SelectView_android_textColor, 0xFF757575);
         tipSpace = a.getColor(R.styleable.SelectView_tipSpace, (int) dp2px(36));
         tipColor = a.getColor(R.styleable.SelectView_tipColor, 0xFF757575);
-        menuRes = a.getResourceId(R.styleable.SelectView_menu, 0);
+        int menuRes = a.getResourceId(R.styleable.SelectView_menuSrc, -1);
 
         a.recycle();
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -80,10 +78,8 @@ public class SelectView extends LinearLayout {
         addView(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         setWillNotDraw(false);
 
-        mPopMenu = new PopupMenu(context, this);
-        if (menuRes != 0) {
-            inflateMenu(mPopMenu, mPopMenu.getMenu(), menuRes);
-        }
+        mPopMenu = new PopSelectMenu(context, this);
+        setMenuRes(menuRes);
         setClickable(true);
         setFocusable(true);
         setOnClickListener(v -> {
@@ -95,12 +91,18 @@ public class SelectView extends LinearLayout {
         mPopMenu.setOnMenuItemClickListener(listener);
     }
 
-    public void setOnDismissListener(PopupMenu.OnDismissListener listener) {
+    public void setOnMenuDismissListener(PopupMenu.OnDismissListener listener) {
         mPopMenu.setOnDismissListener(listener);
     }
 
+    public void setOnMenuShowListener(PopSelectMenu.OnShowListener listener) {
+        mPopMenu.setOnShowListener(listener);
+    }
+
     public void showMenu() {
-        mPopMenu.show();
+        if (mPopMenu.getMenu().size() > 0) {
+            mPopMenu.show();
+        }
     }
 
     public void dismissMenu() {
@@ -115,8 +117,11 @@ public class SelectView extends LinearLayout {
         textView.setText(text);
     }
 
-    public void inflateMenu(PopupMenu popupMenu, Menu menu, int menuRes) {
-        popupMenu.getMenuInflater().inflate(menuRes, menu);
+    public void setMenuRes(int menuRes) {
+        if (mMenuResId != menuRes) {
+            mMenuResId = menuRes;
+            mPopMenu.getMenuInflater().inflate(menuRes, mPopMenu.getMenu());
+        }
     }
 
     @Override
@@ -170,4 +175,27 @@ public class SelectView extends LinearLayout {
         return tipSpace;
     }
 
+    public static class PopSelectMenu extends PopupMenu {
+        private OnShowListener mOnShowListener;
+
+        public PopSelectMenu(@NonNull Context context, @NonNull View anchor) {
+            super(context, anchor);
+        }
+
+        @Override
+        public void show() {
+            super.show();
+            if (mOnShowListener != null) {
+                mOnShowListener.onShow(this);
+            }
+        }
+
+        public void setOnShowListener(@Nullable OnShowListener listener) {
+            this.mOnShowListener = listener;
+        }
+
+        public interface OnShowListener {
+            void onShow(PopupMenu popupMenu);
+        }
+    }
 }

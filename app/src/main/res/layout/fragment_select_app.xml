@@ -22,7 +22,7 @@
             android:text="选择应用"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:menu="@menu/select_app"
+            app:menuSrc="@menu/select_app"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
