@@ -13,7 +13,7 @@
     <string name="app_name_Z_A">应用名(Z-A)</string>
     <string name="package_name_A_Z">包名(A-Z)</string>
     <string name="package_name_Z_A">包名(Z-A)</string>
-    <string name="filter">Filter</string>
+    <string name="filter">过滤</string>
     <string name="show_all_application">显示所有应用</string>
     <string name="only_show_system_application">只显示系统应用</string>
     <string name="hide_system_application">隐藏系统应用</string>
