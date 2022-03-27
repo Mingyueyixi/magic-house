@@ -31,12 +31,12 @@ public class App extends Application {
     }
 
     private void initSec() {
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectNonSdkApiUsage()
-                .detectLeakedSqlLiteObjects()
-                .detectLeakedClosableObjects() //API等级11
-                .penaltyLog()
-                .penaltyDeath()
-                .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//                .detectNonSdkApiUsage()
+//                .detectLeakedSqlLiteObjects()
+//                .detectLeakedClosableObjects() //API等级11
+//                .penaltyLog()
+//                .penaltyDeath()
+//                .build());
     }
 }
