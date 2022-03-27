@@ -66,7 +66,7 @@
             </RadioGroup>
 
             <androidx.appcompat.widget.AppCompatCheckBox
-                android:id="@+id/tbDotLineOption"
+                android:id="@+id/cbDotLineOption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"

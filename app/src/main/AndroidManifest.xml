@@ -24,6 +24,11 @@
             android:name="xposedminversion"
             android:value="82" />
 
+        <provider
+            android:name="com.lu.code.magic.Share"
+            android:authorities="com.lu.code.magic"
+            android:exported="true" />
+
         <activity
             android:name="com.lu.code.magic.main.MainActivity"
             android:exported="true">

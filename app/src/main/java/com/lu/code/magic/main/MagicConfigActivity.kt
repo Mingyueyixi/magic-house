@@ -12,6 +12,7 @@ import com.lu.code.magic.magic.databinding.ActivityPluginConfigBinding
 import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.ui.BaseActivity
 import com.lu.code.magic.ui.FragmentNavigation
+import com.lu.code.magic.util.log.LogUtil
 import java.util.*
 
 class MagicConfigActivity : BaseActivity() {
@@ -78,10 +79,6 @@ class MagicConfigActivity : BaseActivity() {
     }
 
     private fun initAttachPage() {
-        showSelectPage()
-    }
-
-    private fun showSelectPage() {
         var fragment: Fragment = SelectAppFragment()
         fragmentNavigation.navigate(fragment)
     }
@@ -89,7 +86,9 @@ class MagicConfigActivity : BaseActivity() {
     fun showConfigPage(itemData: AppListModel) {
         viewModel.appListModel = itemData
         var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
+        LogUtil.d(">>>show $fragment")
         fragmentNavigation.navigate(fragment)
+//        fragmentNavigation.navigate(routeItem.page.pageCls!!)
     }
 
 }
