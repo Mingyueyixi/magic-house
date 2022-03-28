@@ -41,6 +41,7 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
         String packageName = model.getPackageName();
 
         config = ConfigUtil.getFuckDialogConfig(packageName);
+
         if (config == null) {
             config = new FuckDialogConfig(false, "", new FuckDialogConfig.NormalModeDTO(), new FuckDialogConfig.RegexModeDTO());
             config.setMode("normal");

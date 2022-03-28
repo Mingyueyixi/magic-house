@@ -1,4 +1,4 @@
-package com.lu.code.magic;
+package com.lu.code.magic.share;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -12,15 +12,20 @@ import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CancellationSignal;
+import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContentValuesKt;
 
 import com.google.gson.JsonElement;
 import com.lu.code.magic.bean.Query;
 import com.lu.code.magic.magic.BuildConfig;
 import com.lu.code.magic.util.GsonUtil;
 import com.lu.code.magic.util.TextUtil;
+
+import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -36,17 +41,18 @@ import java.util.Set;
  * content://com.lu.code.magic/mmkv/
  * content://com.lu.code.magic/sp/
  */
-public class Share extends ContentProvider {
+public class StoreContentProvider extends ContentProvider {
 
     // UriMatcher类使用:在ContentProvider 中注册URI
     private static final UriMatcher sMatcher;
-    private static final String AUTOHORITY = BuildConfig.APPLICATION_ID;
+    public static final String AUTOHORITY = "com.lu.code.magic";
     private static final String PATH_SP = "sp";
     private static final String PATH_MKV = "mmkv";
 
     private static final int PATH_SP_CODE = 1;
     private static final int PATH_MMKV_CODE = 2;
 
+    public static final String baseUri = "content://com.lu.code.magic";
 
     static {
         sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -61,11 +67,6 @@ public class Share extends ContentProvider {
         return true;
     }
 
-    @Nullable
-    @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable Bundle queryArgs, @Nullable CancellationSignal cancellationSignal) {
-        return super.query(uri, projection, queryArgs, cancellationSignal);
-    }
 
     //        Uri uri = Uri.parse("content://www.baidu.com/mmkv/getString?table=123&key=abc&defValue=a");
     @Nullable
@@ -115,7 +116,7 @@ public class Share extends ContentProvider {
                     v = (Serializable) allV;
                     break;
             }
-            bundle.putSerializable(key, v);
+            bundle.putSerializable("VALUE_KEY", v);
         }
         return new BundleCursor(bundle);
     }
@@ -135,6 +136,11 @@ public class Share extends ContentProvider {
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
         return 0;
+    }
+
+    @Override
+    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable Bundle extras) {
+        return super.update(uri, values, extras);
     }
 
     @Override
@@ -163,17 +169,16 @@ public class Share extends ContentProvider {
 
     private void doActionCommitApply(SharedPreferences.Editor editor, ContentValues contentValues, String action) {
         Set<Map.Entry<String, Object>> valueSet = contentValues.valueSet();
+
         for (Map.Entry<String, Object> ele : valueSet) {
             String k = ele.getKey();
             Object q = ele.getValue();
             if (q instanceof Query == false) {
                 continue;
             }
+
             Query qBean = (Query) q;
             Object v = qBean.getValue();
-            if (qBean.getFunction().equals("remove")) {
-                editor.remove(k);
-            }
             String func = qBean.getFunction();
             switch (func) {
                 case "remove":
@@ -235,5 +240,6 @@ public class Share extends ContentProvider {
             return mBundle;
         }
     }
+
 
 }

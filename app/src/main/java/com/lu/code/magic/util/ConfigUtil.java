@@ -1,6 +1,7 @@
 package com.lu.code.magic.util;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 
 import com.google.gson.JsonObject;
 import com.lu.code.magic.bean.FuckDialogConfig;
+import com.lu.code.magic.bean.Query;
 import com.lu.code.magic.util.log.LogUtil;
 
 import java.util.HashMap;
@@ -48,5 +50,24 @@ public class ConfigUtil {
 //        SharedPreferences.Editor editor = sp().edit();
 //        editor.putString(packageName, GsonUtil.toJson(fuckDialogConfig));
 //        editor.commit();
+        ContentResolver contentResolver = AppUtil.getInstance().getAppContext().getContentResolver();
+
+        String json = GsonUtil.toJson(fuckDialogConfig);
+        Query<String> query = new Query<String>();
+        query.setFunction("putString");
+        query.setKey(packageName);
+        query.setValue(json);
+
+        String queryJson = GsonUtil.toJson(query);
+        ContentValues values = new ContentValues();
+        values.put("queryJson", queryJson);
+
+        int result = contentResolver.update(
+                Uri.parse("content://com.lu.code.magic/sp/commit?table=config"),
+                values,
+                null,
+                null
+        );
+
     }
 }
