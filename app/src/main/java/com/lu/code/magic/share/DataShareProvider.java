@@ -1,37 +1,26 @@
 package com.lu.code.magic.share;
 
 import android.content.ContentProvider;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.CursorWrapper;
 import android.database.MatrixCursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.CancellationSignal;
-import android.os.Parcel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContentValuesKt;
 
-import com.google.gson.JsonElement;
 import com.lu.code.magic.bean.Query;
-import com.lu.code.magic.magic.BuildConfig;
-import com.lu.code.magic.util.GsonUtil;
 import com.lu.code.magic.util.TextUtil;
-
-import org.json.JSONObject;
-import org.json.JSONStringer;
+import com.lu.code.magic.util.log.LogUtil;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -40,8 +29,10 @@ import java.util.Set;
  * <prefix>://<authority>/<data_type>/<id>
  * content://com.lu.code.magic/mmkv/
  * content://com.lu.code.magic/sp/
+ *
+ * @author Lu
  */
-public class StoreContentProvider extends ContentProvider {
+public class DataShareProvider extends ContentProvider {
 
     // UriMatcher类使用:在ContentProvider 中注册URI
     private static final UriMatcher sMatcher;
@@ -64,61 +55,18 @@ public class StoreContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        SharedPreferences sp = getSharePreferences("nima");
+        sp.edit().putString("hh", "旺旺~~~")
+                .putInt("int", 1)
+                .putBoolean("bool", true)
+                .commit();
         return true;
     }
 
-
-    //        Uri uri = Uri.parse("content://www.baidu.com/mmkv/getString?table=123&key=abc&defValue=a");
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        int id = sMatcher.match(uri);
-        String action = uri.getLastPathSegment();
-        String table = uri.getQueryParameter("table");
-
-        String key = selectionArgs[0];
-        String defValue = selectionArgs[1];
-        if (TextUtil.isEmpty(table)) {
-            return null;
-        }
-        Bundle bundle = new Bundle();
-        if (id == PATH_SP_CODE) {
-            SharedPreferences sp = getSharePreferences(table);
-            Serializable v = null;
-            switch (action) {
-                case "getString":
-                    v = sp.getString(key, defValue);
-                    break;
-                case "getInt":
-                    v = sp.getInt(key, Integer.parseInt(defValue));
-                    break;
-                case "getBoolean":
-                    v = Boolean.parseBoolean(defValue);
-                    break;
-                case "getFloat":
-                    v = sp.getFloat(key, Float.parseFloat(defValue));
-                    break;
-                case "getLong":
-                    v = sp.getLong(key, Long.parseLong(defValue));
-                    break;
-                case "getStringSet":
-                    Set<String> defValueSet = new LinkedHashSet<>();
-                    if (projection != null) {
-                        defValueSet = new LinkedHashSet<>(Arrays.asList(projection));
-                    }
-                    v = (Serializable) sp.getStringSet(key, defValueSet);
-                    break;
-                case "getAll":
-                    Map<String, ?> allV = sp.getAll();
-                    if (allV instanceof HashMap == false) {
-                        allV = new HashMap<>(allV);
-                    }
-                    v = (Serializable) allV;
-                    break;
-            }
-            bundle.putSerializable("VALUE_KEY", v);
-        }
-        return new BundleCursor(bundle);
+        return null;
     }
 
     @Nullable
@@ -130,7 +78,7 @@ public class StoreContentProvider extends ContentProvider {
     @Nullable
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return uri;
+        return null;
     }
 
     @Override
@@ -139,31 +87,7 @@ public class StoreContentProvider extends ContentProvider {
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable Bundle extras) {
-        return super.update(uri, values, extras);
-    }
-
-    @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        int id = sMatcher.match(uri);
-        if (values == null) {
-            return 0;
-        }
-        String table = uri.getQueryParameter("table");
-        String action = uri.getLastPathSegment();
-
-        if (id == PATH_SP_CODE) {
-            SharedPreferences sp = getSharePreferences(table);
-            SharedPreferences.Editor editor = sp.edit();
-            switch (action) {
-                case "commit":
-                case "apply":
-                    doActionCommitApply(editor, values, action);
-                    break;
-                default:
-                    break;
-            }
-        }
         return 0;
     }
 
@@ -176,7 +100,6 @@ public class StoreContentProvider extends ContentProvider {
             if (q instanceof Query == false) {
                 continue;
             }
-
             Query qBean = (Query) q;
             Object v = qBean.getValue();
             String func = qBean.getFunction();
@@ -221,24 +144,90 @@ public class StoreContentProvider extends ContentProvider {
         return getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
-    private static final class BundleCursor extends MatrixCursor {
-        private Bundle mBundle;
+    public Bundle getValue(Bundle extras, String method, String table) {
+        String key = extras.getString("k");
+        Object defValue = extras.get("v");
+        Bundle res = new Bundle();
 
-        public BundleCursor(Bundle extras) {
-            super(new String[]{}, 0);
-            mBundle = extras;
+        Serializable resultV = null;
+        try {
+            resultV = getValueFromSp(method, table, key, defValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+            res.putSerializable("throw", e);
         }
+        res.putSerializable(key, resultV);
+        return res;
+    }
 
-        @Override
-        public Bundle getExtras() {
-            return mBundle;
+    private Serializable getValueFromSp(String method, String table, String key, Object defValue) {
+        SharedPreferences sp = getSharePreferences(table);
+        Serializable resultV = null;
+        switch (method) {
+            case "getString":
+//                res.putString(key, sp.getString(key, (String) defValue));
+                resultV = sp.getString(key, (String) defValue);
+                break;
+            case "getInt":
+//                res.putInt(key, sp.getInt(key, (Integer) defValue));
+                resultV = sp.getInt(key, (Integer) defValue);
+                break;
+            case "getLong":
+//                res.putLong(key, sp.getLong(key, (Long) defValue));
+                resultV = sp.getLong(key, (Long) defValue);
+                break;
+            case "getFloat":
+//                res.putFloat(key, sp.getFloat(key, (Float) defValue));
+                resultV = sp.getFloat(key, (Float) defValue);
+                break;
+            case "getStringSet":
+                Set<String> setResult = sp.getStringSet(key, (Set<String>) defValue);
+//                res.putStringArray(key, setResult.toArray(new String[setResult.size()]));
+                if (setResult instanceof Serializable == false) {
+                    setResult = new LinkedHashSet<>(setResult);
+                }
+                resultV = (Serializable) setResult;
+                break;
+            case "getAll":
+                Map<String, ?> mapResult = sp.getAll();
+                if (mapResult instanceof Serializable == false) {
+                    mapResult = new LinkedHashMap<>(mapResult);
+                }
+//                res.putSerializable(key, (Serializable) mapResult);
+                resultV = (Serializable) mapResult;
+                break;
+            case "getBoolean":
+//                res.putBoolean(key, sp.getBoolean(key, (Boolean) defValue));
+                resultV = sp.getBoolean(key, (Boolean) defValue);
+                break;
+            default:
+                break;
         }
+        return resultV;
 
-        @Override
-        public Bundle respond(Bundle extras) {
-            mBundle = extras;
-            return mBundle;
+    }
+//
+//    @Nullable
+//    @Override
+//    public Bundle call(@NonNull String authority, @NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+//        if (!AUTOHORITY.equals(authority)) {
+//            LogUtil.e(">>>", "鉴权不通过");
+//            return null;
+//        }
+//        return getValue(extras, method);
+//    }
+
+    @Nullable
+    @Override
+    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        switch (method) {
+            case "commit":
+
+                break;
+            case "apply":
+                break;
         }
+        return getValue(extras, method, arg);
     }
 
 

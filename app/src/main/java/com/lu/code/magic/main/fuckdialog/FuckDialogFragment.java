@@ -63,4 +63,9 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
         });
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }
