@@ -25,7 +25,7 @@
             android:value="82" />
 
         <provider
-            android:name="com.lu.code.magic.share.DataShareProvider"
+            android:name="com.lu.code.magic.provider.DataShareProvider"
             android:authorities="com.lu.code.magic"
             android:exported="true" />
 

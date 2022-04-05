@@ -8,7 +8,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.ActivityMainBinding
-import com.lu.code.magic.share.XPreference
+import com.lu.code.magic.provider.XPreference
 import com.lu.code.magic.ui.BaseActivity
 import com.lu.code.magic.util.FragmentUtil
 import com.lu.code.magic.util.log.LogUtil
@@ -62,11 +62,10 @@ class MainActivity : BaseActivity() {
         binding.mainBottomTabLayout.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val sp = XPreference("nima", this@MainActivity.contentResolver)
-                var v = sp.getString("int", "123")
+                val sp = XPreference(this@MainActivity, "nima")
+                var v = sp.getString("hh", "123")
 
-
-                LogUtil.d(">>>", sp.all)
+                LogUtil.d(">>>", v, sp.all)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -118,5 +117,13 @@ class MainActivity : BaseActivity() {
         override fun createFragment(position: Int): Fragment {
             return viewModelList[position].createFragment()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sp = XPreference(this@MainActivity, "nima")
+        var v = sp.getString("hh", "123")
+
+        LogUtil.d(">>>", v, sp.all)
     }
 }

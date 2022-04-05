@@ -1,73 +1,33 @@
 package com.lu.code.magic.util;
 
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
+import android.content.Context;
 
-import com.google.gson.JsonObject;
 import com.lu.code.magic.bean.FuckDialogConfig;
-import com.lu.code.magic.bean.Query;
-import com.lu.code.magic.util.log.LogUtil;
+import com.lu.code.magic.provider.XPreference;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class ConfigUtil {
+    private static XPreference sp;
 
-
-    public static Map<String, JsonObject> getAll(SharedPreferences sp) {
-//        String text = sp.getString("config", "{}");
-//        return GsonUtil.fromJson(text, GsonUtil.getMapType(String.class, JsonObject.class));
-        //
-        return new HashMap<>();
+    public static void init(Context context) {
+        if (sp == null) {
+            sp = new XPreference(context, "config");
+        }
     }
 
-    public static FuckDialogConfig getFuckDialogConfig(String packageName) {
-//        Map<String, JsonObject> map = getAll(sp);
-//        JsonObject json = map.get(packageName);
-//        if (json == null) {
-//            json = new JsonObject();
-//        }
-//        FuckDialogConfig fuckDialogConfig = GsonUtil.fromJson(json, FuckDialogConfig.class);
-        ContentResolver contentResolver = AppUtil.getInstance().getAppContext().getContentResolver();
-        Cursor cursor = contentResolver.query(Uri.parse("content://com.lu.code.magic/sp/getString?table=config"),
-                null,
-                null,
-                new String[]{"fuckDialog", "{}"},
-                null);
-        cursor.moveToNext();
-        Bundle bundle = cursor.getExtras();
-        LogUtil.d(">>>", bundle);
-        cursor.close();
+    public static Map<String, Object> getAll() {
+        return (Map<String, Object>) sp.getAll();
+    }
 
-        return new FuckDialogConfig();
+    public static FuckDialogConfig getFuckDialogConfig(String processName) {
+        String json = sp.getString(processName, "{}");
+        FuckDialogConfig entity = GsonUtil.fromJson(json, FuckDialogConfig.class);
+        return entity;
     }
 
     public static void setFuckDialogConfig(String packageName, FuckDialogConfig fuckDialogConfig) {
-//        SharedPreferences.Editor editor = sp().edit();
-//        editor.putString(packageName, GsonUtil.toJson(fuckDialogConfig));
-//        editor.commit();
-        ContentResolver contentResolver = AppUtil.getInstance().getAppContext().getContentResolver();
 
-        String json = GsonUtil.toJson(fuckDialogConfig);
-        Query<String> query = new Query<String>();
-        query.setFunction("putString");
-        query.setKey(packageName);
-        query.setValue(json);
-
-        String queryJson = GsonUtil.toJson(query);
-        ContentValues values = new ContentValues();
-        values.put("queryJson", queryJson);
-
-        int result = contentResolver.update(
-                Uri.parse("content://com.lu.code.magic/sp/commit?table=config"),
-                values,
-                null,
-                null
-        );
 
     }
 }
