@@ -2,8 +2,6 @@ package com.lu.code.magic;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.os.StrictMode;
 
 import com.lu.code.magic.util.AppUtil;
 
@@ -27,7 +25,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initSec();
-        AppUtil.init(this);
+        AppUtil.doInit(this);
     }
 
     private void initSec() {

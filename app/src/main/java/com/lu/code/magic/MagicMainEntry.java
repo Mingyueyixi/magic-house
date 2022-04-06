@@ -41,8 +41,13 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
             dispatchSelfHookPlugins(lpparam);
             return;
         }
-        if (AppUtil.getInstance().getAppContext() == null) {
-            if (AppUtil.init()) {
+        if (AppUtil.hasInit()) {
+            LogUtil.d("不是空的", lpparam.packageName, lpparam.processName);
+            dispatchHookPlugins(lpparam);
+        } else {
+            Application app = AppUtil.getApplicationByReflect();
+            if (app != null) {
+                AppUtil.doInit(app);
                 return;
             }
             XposedHelpers.findAndHookMethod(Application.class,
@@ -51,13 +56,10 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             Context context = (Context) param.thisObject;
-                            AppUtil.init(context.getApplicationContext());
+                            AppUtil.doInit(context.getApplicationContext());
                             dispatchHookPlugins(lpparam);
                         }
                     });
-        } else {
-            LogUtil.d("不是空的", lpparam.packageName, lpparam.processName);
-            dispatchHookPlugins(lpparam);
         }
     }
 

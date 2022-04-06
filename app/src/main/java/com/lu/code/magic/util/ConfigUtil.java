@@ -26,8 +26,8 @@ public class ConfigUtil {
         return entity;
     }
 
-    public static void setFuckDialogConfig(String packageName, FuckDialogConfig fuckDialogConfig) {
-
-
+    public static void setFuckDialogConfig(String processName, FuckDialogConfig fuckDialogConfig) {
+        String json = GsonUtil.toJson(fuckDialogConfig);
+        sp.edit().putString(processName, json).apply();
     }
 }

@@ -6,10 +6,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lu.code.magic.bean.FuckDialogConfig
 import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.ActivityMainBinding
 import com.lu.code.magic.provider.XPreference
 import com.lu.code.magic.ui.BaseActivity
+import com.lu.code.magic.util.ConfigUtil
 import com.lu.code.magic.util.FragmentUtil
 import com.lu.code.magic.util.log.LogUtil
 
@@ -62,10 +64,11 @@ class MainActivity : BaseActivity() {
         binding.mainBottomTabLayout.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                val sp = XPreference(this@MainActivity, "nima")
-                var v = sp.getString("hh", "123")
-                
-                LogUtil.d(">>>", v, sp.all)
+                var f = FuckDialogConfig()
+                f.isEnable = true;
+                f.keyword = "wangwang"
+                ConfigUtil.setFuckDialogConfig(packageName, f)
+                LogUtil.d(">>>", f)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
