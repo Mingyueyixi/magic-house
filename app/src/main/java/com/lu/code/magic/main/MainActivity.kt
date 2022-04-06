@@ -64,7 +64,7 @@ class MainActivity : BaseActivity() {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 val sp = XPreference(this@MainActivity, "nima")
                 var v = sp.getString("hh", "123")
-
+                
                 LogUtil.d(">>>", v, sp.all)
             }
 

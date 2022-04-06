@@ -1,12 +1,7 @@
 package com.lu.code.magic.provider;
 
-import android.content.ContentProvider;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.UriMatcher;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -31,70 +26,43 @@ import java.util.Set;
  *
  * @author Lu
  */
-public class DataShareProvider extends ContentProvider {
-
-    // UriMatcher类使用:在ContentProvider 中注册URI
-    private static final UriMatcher sMatcher;
+public class DataShareProvider extends BaseCallProvider {
     public static final String AUTOHORITY = "com.lu.code.magic";
-    private static final String PATH_SP = "sp";
-    private static final String PATH_MKV = "mmkv";
-
-    private static final int PATH_SP_CODE = 1;
-    private static final int PATH_MMKV_CODE = 2;
-
     public static final String baseUri = "content://com.lu.code.magic";
 
-    static {
-        sMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        // 初始化
-        // sp/gutString/table?=tv&key?=v&def?=0
-        sMatcher.addURI(AUTOHORITY, "sp/*", PATH_SP_CODE);
-        sMatcher.addURI(AUTOHORITY, "mmkv/*", PATH_MMKV_CODE);
-    }
-
-    @Override
-    public boolean onCreate() {
-        SharedPreferences sp = getSharePreferences("nima");
-        sp.edit().putString("hh", "旺旺~~~")
-                .putInt("int", 1)
-                .putBoolean("bool", true)
-                .commit();
-        return true;
-    }
-
     @Nullable
     @Override
-    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
+        return dispatchCallMethod(method, arg, extras);
     }
 
-    @Nullable
-    @Override
-    public String getType(@NonNull Uri uri) {
-        return null;
+
+    private Bundle dispatchCallMethod(String mode, String table, Bundle extras) {
+        ContractRequest request = ContractUtil.toContractRequest(extras);
+        ContractResponse<Serializable> response = new ContractResponse<>(null, null);
+        switch (request.mode) {
+            case ModeValue.READ:
+                if (request.actions != null && request.actions.size() > 0) {
+                    response = readValue(request.group, table, request.actions.get(0));
+                }
+                break;
+            case ModeValue.WRITE:
+                if (request.actions != null && request.actions.size() > 0) {
+                    response = writeValue(request.group, table, request.actions);
+                }
+                break;
+            default:
+                break;
+        }
+        return ContractUtil.toBundleResponse(response);
     }
 
-    @Nullable
-    @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
-    }
-
-    @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
-    }
-
-    @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
-    }
 
     private SharedPreferences getSharePreferences(String name) {
         return getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
 
-    public ContractResponse<Serializable> readValue(String group, String table, ContractRequest.Action<?> bundleAction) {
+    public ContractResponse<Serializable> readValue(@GroupValue String group, String table, ContractRequest.Action<?> bundleAction) {
         String function = bundleAction.function;
         String key = bundleAction.key;
         Object defValue = bundleAction.value;
@@ -110,11 +78,11 @@ public class DataShareProvider extends ContentProvider {
         return new ContractResponse<>(resultV, null);
     }
 
-    private boolean containsKeySp(String function, String table, String key) {
+    private boolean containsKeySp(@FunctionValue String function, String table, String key) {
         return getSharePreferences(table).contains(key);
     }
 
-    private Serializable getValueSp(String function, String table, String key, Object defValue) {
+    private Serializable getValueSp(@FunctionValue String function, String table, String key, Object defValue) {
         SharedPreferences sp = getSharePreferences(table);
         Serializable resultV = null;
         switch (function) {
@@ -154,34 +122,8 @@ public class DataShareProvider extends ContentProvider {
 
     }
 
-    @Nullable
-    @Override
-    public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
-        return dispatchCallMethod(method, arg, extras);
-    }
 
-    private Bundle dispatchCallMethod(String mode, String table, Bundle extras) {
-        ContractRequest request = ContractUtil.toRequest(extras);
-        ContractResponse<Serializable> response = new ContractResponse<>(null, null);
-        switch (request.mode) {
-            case ModeValue.READ:
-                if (request.actions != null && request.actions.size() > 0) {
-                    response = readValue(request.group, table, request.actions.get(0));
-                }
-                break;
-            case ModeValue.WRITE:
-                if (request.actions != null && request.actions.size() > 0) {
-                    response = writeValue(request.group, table, request.actions);
-                }
-                break;
-            default:
-                break;
-        }
-        return ContractUtil.toBundleResponse(response);
-    }
-
-
-    private ContractResponse writeValue(String group, String table, List<ContractRequest.Action<?>> bundleActions) {
+    private ContractResponse writeValue(@GroupValue String group, String table, List<ContractRequest.Action<?>> bundleActions) {
         switch (group) {
             case GroupValue.COMMIT:
                 return commitValue(table, bundleActions);

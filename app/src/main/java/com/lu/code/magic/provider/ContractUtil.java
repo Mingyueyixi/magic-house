@@ -19,9 +19,9 @@ public class ContractUtil {
         return builder.path(path).appendQueryParameter(DtoKey.TABLE, tableName).build();
     }
 
-    public static <T> ContractResponse<T> request(ContentResolver cp, Uri uri, ContractRequest req, Class<T> dataCls) {
+    public static <T> ContractResponse<T> request(ContentResolver resolver, Uri uri, ContractRequest req, Class<T> dataCls) {
         Bundle bundleRequest = toBundleRequest(req);
-        Bundle bundleResponse = cp.call(uri, req.mode, req.table, bundleRequest);
+        Bundle bundleResponse = resolver.call(uri, req.mode, req.table, bundleRequest);
         ContractResponse<T> response = ContractUtil.toContractResponse(bundleResponse, dataCls);
         try {
             checkResultThrow(response);
@@ -48,7 +48,7 @@ public class ContractUtil {
         throw result.exception;
     }
 
-    public static ContractRequest toRequest(Bundle bundle) {
+    public static ContractRequest toContractRequest(Bundle bundle) {
         String mode = bundle.getString(DtoKey.MODE);
         String group = bundle.getString(DtoKey.GROUP);
         Bundle[] bundleActions = (Bundle[]) bundle.get(DtoKey.ACTIONS);
