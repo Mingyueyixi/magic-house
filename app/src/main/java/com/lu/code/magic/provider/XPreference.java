@@ -11,10 +11,8 @@ import androidx.annotation.Nullable;
 import com.lu.code.magic.provider.annotation.FunctionValue;
 import com.lu.code.magic.provider.annotation.GroupValue;
 import com.lu.code.magic.provider.annotation.ModeValue;
-import com.lu.code.magic.util.GsonUtil;
 
 import java.io.Serializable;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -151,7 +149,6 @@ public class XPreference implements SharedPreferences {
     private <T> T getValue(Uri uri, String function, String key, T defValue, Class<T> rClass) {
         ContractRequest.Action<T> action = new ContractRequest.Action<>(function, key, defValue);
         ContractRequest request = new ContractRequest(ModeValue.READ, tableName, GroupValue.GET, Arrays.asList(action));
-
         ContractResponse<T> response = ContractUtil.request(contentResolver, uri, request, rClass);
         return response.data == null ? defValue : response.data;
     }

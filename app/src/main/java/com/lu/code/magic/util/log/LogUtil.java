@@ -15,39 +15,19 @@ public class LogUtil {
     private final static LogDog logger = new LogDog(">>>");
 
     public static void d(Object... objects) {
-        String text = logger.process(objects);
-        if (EnvUtil.isOnXposed()) {
-            XposedBridge.log(logger.flower + "  " + text);
-            return;
-        }
-        Log.d(logger.flower, text);
+        logger.d(objects);
     }
 
     public static void i(Object... objects) {
-        String text = logger.process(objects);
-        if (EnvUtil.isOnXposed()) {
-            XposedBridge.log(logger.flower + "  " + text);
-            return;
-        }
-        Log.i(logger.flower, text);
+        logger.i(objects);
     }
 
     public static void w(Object... objects) {
-        String text = logger.process(objects);
-        if (EnvUtil.isOnXposed()) {
-            XposedBridge.log(logger.flower + "  " + text);
-            return;
-        }
-        Log.w(logger.flower, text);
+        logger.w(objects);
     }
 
     public static void e(Object... objects) {
-        String text = logger.process(objects);
-        if (EnvUtil.isOnXposed()) {
-            XposedBridge.log(logger.flower + "  " + text);
-            return;
-        }
-        Log.e(logger.flower, text);
+        logger.e(objects);
     }
 
     private static class LogDog {
@@ -72,6 +52,40 @@ public class LogUtil {
             return sb.toString();
         }
 
+        public void d(Object... obj) {
+            String text = logger.process(obj);
+            Log.d(logger.flower, text);
+            xposedLog(text);
+        }
+
+        public void i(Object... obj) {
+            String text = logger.process(obj);
+            Log.i(logger.flower, text);
+            xposedLog(text);
+        }
+
+        public void w(Object... obj) {
+            String text = logger.process(obj);
+            Log.w(logger.flower, text);
+            xposedLog(text);
+        }
+
+        public void e(Object... obj) {
+            String text = logger.process(obj);
+            Log.e(logger.flower, text);
+            xposedLog(text);
+        }
+
+        private void xposedLog(String text) {
+            if (!EnvUtil.isOnXposed()) {
+                return;
+            }
+            try {
+                XposedBridge.log(logger.flower + "  " + text);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 

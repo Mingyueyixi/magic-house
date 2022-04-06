@@ -33,13 +33,23 @@ public class DataShareProvider extends BaseCallProvider {
     @Nullable
     @Override
     public Bundle call(@NonNull String method, @Nullable String arg, @Nullable Bundle extras) {
-        return dispatchCallMethod(method, arg, extras);
+        ContractResponse<?> response = null;
+        try {
+            response = dispatchCallMethod(method, arg, extras);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = new ContractResponse<>(null, e);
+        }
+        if (response == null) {
+            response = new ContractResponse<>();
+        }
+        return ContractUtil.toResponseBundle(response);
     }
 
 
-    private Bundle dispatchCallMethod(String mode, String table, Bundle extras) {
+    private ContractResponse<?> dispatchCallMethod(String mode, String table, Bundle extras) {
         ContractRequest request = ContractUtil.toContractRequest(extras);
-        ContractResponse<Serializable> response = new ContractResponse<>(null, null);
+        ContractResponse<Serializable> response = null;
         switch (request.mode) {
             case ModeValue.READ:
                 if (request.actions != null && request.actions.size() > 0) {
@@ -54,7 +64,7 @@ public class DataShareProvider extends BaseCallProvider {
             default:
                 break;
         }
-        return ContractUtil.toBundleResponse(response);
+        return response;
     }
 
 

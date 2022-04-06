@@ -11,8 +11,8 @@ import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.ActivityMainBinding
 import com.lu.code.magic.provider.XPreference
 import com.lu.code.magic.ui.BaseActivity
-import com.lu.code.magic.util.ConfigUtil
 import com.lu.code.magic.util.FragmentUtil
+import com.lu.code.magic.util.config.ConfigUtil
 import com.lu.code.magic.util.log.LogUtil
 
 
@@ -64,11 +64,11 @@ class MainActivity : BaseActivity() {
         binding.mainBottomTabLayout.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                var f = FuckDialogConfig()
-                f.isEnable = true;
-                f.keyword = "wangwang"
-                ConfigUtil.setFuckDialogConfig(packageName, f)
-                LogUtil.d(">>>", f)
+//                var f = FuckDialogConfig()
+//                f.isEnable = true;
+//                f.keyword = "wangwang"
+//                ConfigUtil.setFuckDialogConfig(packageName, f)
+//                LogUtil.d(">>>", f)
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -122,11 +122,4 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val sp = XPreference(this@MainActivity, "nima")
-        var v = sp.getString("hh", "123")
-
-        LogUtil.d(">>>", v, sp.all)
-    }
 }

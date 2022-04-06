@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,21 +20,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.LruCache;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.util.Consumer;
-import androidx.core.util.Supplier;
 import androidx.fragment.app.FragmentActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.gson.JsonObject;
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lu.code.magic.bean.BaseConfig;
 import com.lu.code.magic.magic.R;
 import com.lu.code.magic.magic.databinding.FragmentSelectAppBinding;
+import com.lu.code.magic.main.store.ItemModel;
 import com.lu.code.magic.ui.BindingFragment;
 import com.lu.code.magic.ui.recycler.MultiAdapter;
 import com.lu.code.magic.ui.recycler.MultiViewHolder;
 import com.lu.code.magic.ui.recycler.SimpleItemType;
 import com.lu.code.magic.util.PackageUtil;
-import com.lu.code.magic.util.TextUtil;
+import com.lu.code.magic.util.config.ConfigUtil;
+import com.lu.code.magic.util.config.SheetName;
 import com.lu.code.magic.util.load.LoaderCacheUtil;
 import com.lu.code.magic.util.log.LogUtil;
 import com.lu.code.magic.util.thread.WorkerUtil;
@@ -67,32 +71,12 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initViewForAppList();
+        initViewForSearch();
+        loadInstallInfoList();
+    }
 
-        appListAdapter = new MultiAdapter<AppListModel>() {
-        }.setDataObserver(new RecyclerView.AdapterDataObserver() {
-            @Override
-            public void onChanged() {
-                super.onChanged();
-                //fix，规避kotlin BindingFragment binding!!非空断言导致的崩溃。
-                //当横竖屏切换时，fragment重新销毁，binding会被置空，调用binding会崩溃
-                if (!isAdded()) {
-                    //取消destroy时取消监听，也可规避
-                    return;
-                }
-                getBinding().tvAppCount.setText("数量：" + appListAdapter.getData().size() + "");
-            }
-        }).addItemType(new SimpleItemType<AppListModel>() {
-            @NonNull
-            @Override
-            public MultiViewHolder<AppListModel> createViewHolder(@NonNull MultiAdapter<AppListModel> adapter, @NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(getContext()).inflate(R.layout.item_app_list, parent, false);
-                return new ItemViewHolder(v);
-            }
-        });
-        RecyclerView rvAppList = getBinding().rvAppList;
-        rvAppList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvAppList.setAdapter(appListAdapter);
-
+    private void initViewForSearch() {
         View editFrame = getBinding().searchView.findViewById(androidx.appcompat.R.id.search_edit_frame);
 
         getBinding().searchView.setOnSearchClickListener(v -> {
@@ -133,7 +117,37 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             return false;
         });
 
-        loadInstallInfoList();
+    }
+
+    private void initViewForAppList() {
+
+        appListAdapter = new MultiAdapter<AppListModel>() {
+
+        }.setDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+                //fix，规避kotlin BindingFragment binding!!非空断言导致的崩溃。
+                //当横竖屏切换时，fragment重新销毁，binding会被置空，调用binding会崩溃
+                if (!isAdded()) {
+                    //取消destroy时取消监听，也可规避
+                    return;
+                }
+                getBinding().tvAppCount.setText("数量：" + appListAdapter.getData().size() + "");
+            }
+        }).addItemType(new SimpleItemType<AppListModel>() {
+            @NonNull
+            @Override
+            public MultiViewHolder<AppListModel> createViewHolder(@NonNull MultiAdapter<AppListModel> adapter, @NonNull ViewGroup parent, int viewType) {
+                View v = LayoutInflater.from(getContext()).inflate(R.layout.item_app_list, parent, false);
+                return new ItemViewHolder(v);
+            }
+        });
+
+        RecyclerView rvAppList = getBinding().rvAppList;
+        rvAppList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        rvAppList.setAdapter(appListAdapter);
+
     }
 
     private void updateInstallInfoList() {
@@ -203,8 +217,15 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
 
 
     private void loadInstallInfoList() {
+        MagicConfigActivity activity = (MagicConfigActivity) getActivity();
+        if (activity == null) {
+            return;
+        }
+        ItemModel routeItem = activity.getRouteItem();
+
         WorkerUtil.loadSingle(() -> {
             HashMap<String, AppListModel> appModelMap = new HashMap<>();
+            Map<String, BaseConfig> enableMap = ConfigUtil.getConfigSheet(routeItem.getPage().getSheet(), BaseConfig.class);
 
             List<PackageInfo> installInfoList = PackageUtil.Companion.getInstallPackageInfoList(getContext());
             for (PackageInfo packageInfo : installInfoList) {
@@ -213,7 +234,10 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
 //                String appName = appInfo.loadLabel(getContext().getPackageManager()) + "";
                 String appName = appInfo.name == null ? "" : appInfo.name;
                 String packageName = appInfo.packageName == null ? "" : appInfo.packageName;
-                AppListModel model = new AppListModel(packageInfo, appName, packageName, null, false);
+
+                BaseConfig configBean = enableMap.get(packageName);
+                boolean enable = configBean != null && configBean.isEnable();
+                AppListModel model = new AppListModel(packageInfo, appName, packageName, null, enable);
                 appModelMap.put(packageName, model);
             }
             installAppModelMap.putAll(appModelMap);
@@ -282,6 +306,20 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
                 if (activity instanceof MagicConfigActivity) {
                     ((MagicConfigActivity) activity).showConfigPage(itemData);
                 }
+            });
+
+//            sbEnableItem.setOnCheckedChangeListener((buttonView, isChecked) -> {
+//
+//            });
+
+            sbEnableItem.setOnClickListener(v -> {
+                CompoundButton compoundButton = ((CompoundButton) v);
+                boolean check = compoundButton.isChecked();
+                int clickPosition = getLayoutPosition();
+                AppListModel itemData = appListAdapter.getItem(clickPosition);
+                itemData.setEnable(check);
+                String packageName = itemData.getPackageName();
+                ConfigUtil.enableConfigCell(SheetName.FUCK_DIALOG, packageName, check);
             });
         }
 

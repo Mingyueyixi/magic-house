@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import com.lu.code.magic.util.GsonUtil;
+import com.lu.code.magic.util.log.LogUtil;
+
 import java.io.InvalidClassException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +23,15 @@ public class ContractUtil {
     }
 
     public static <T> ContractResponse<T> request(ContentResolver resolver, Uri uri, ContractRequest req, Class<T> dataCls) {
-        Bundle bundleRequest = toBundleRequest(req);
-        Bundle bundleResponse = resolver.call(uri, req.mode, req.table, bundleRequest);
+        Bundle bundleRequest = toRequestBundle(req);
+        Bundle bundleResponse = null;
+        try {
+            bundleResponse = resolver.call(uri, req.mode, req.table, bundleRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         ContractResponse<T> response = ContractUtil.toContractResponse(bundleResponse, dataCls);
+        LogUtil.e(">>>>>哈哈", GsonUtil.toJson(response));
         try {
             checkResultThrow(response);
         } catch (Throwable throwable) {
@@ -51,9 +60,11 @@ public class ContractUtil {
     public static ContractRequest toContractRequest(Bundle bundle) {
         String mode = bundle.getString(DtoKey.MODE);
         String group = bundle.getString(DtoKey.GROUP);
-        Bundle[] bundleActions = (Bundle[]) bundle.get(DtoKey.ACTIONS);
+        Parcelable[] parcelableArray = bundle.getParcelableArray(DtoKey.ACTIONS);
+
         ArrayList<ContractRequest.Action<?>> actions = new ArrayList<>();
-        for (Bundle ele : bundleActions) {
+        for (Parcelable parcelable : parcelableArray) {
+            Bundle ele = (Bundle) parcelable.getClass().cast(parcelable);
             String function = ele.getString(DtoKey.FUNCTION);
             String key = ele.getString(DtoKey.KEY);
             Object value = ele.get(DtoKey.VALUE);
@@ -62,7 +73,7 @@ public class ContractUtil {
         return new ContractRequest(mode, group, group, actions);
     }
 
-    public static Bundle toBundleRequest(ContractRequest request) {
+    public static Bundle toRequestBundle(ContractRequest request) {
         Bundle bundle = new Bundle();
         bundle.putString(DtoKey.MODE, request.mode);
         bundle.putString(DtoKey.GROUP, request.group);
@@ -70,7 +81,7 @@ public class ContractUtil {
         return bundle;
     }
 
-    public static Bundle toBundleResponse(ContractResponse<?> response) {
+    public static Bundle toResponseBundle(ContractResponse<?> response) {
         Bundle bundle = new Bundle();
         bundle.putSerializable(DtoKey.THROW, response.exception);
         if (response.data instanceof Serializable) {
@@ -80,7 +91,7 @@ public class ContractUtil {
         } else {
             try {
                 throw new InvalidClassException(response.data.getClass() + " is not support !!!");
-            } catch (InvalidClassException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 bundle.putSerializable(DtoKey.THROW, response.exception);
             }

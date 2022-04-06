@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 
+import com.lu.code.magic.util.config.ConfigUtil;
+
 /**
  * @Author: Lu
  * Date: 2022/02/21

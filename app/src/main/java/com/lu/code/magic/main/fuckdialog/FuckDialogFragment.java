@@ -14,7 +14,8 @@ import com.lu.code.magic.magic.databinding.FragmentFuckDialogBinding;
 import com.lu.code.magic.main.AppListModel;
 import com.lu.code.magic.main.MagicConfigViewModel;
 import com.lu.code.magic.ui.BindingFragment;
-import com.lu.code.magic.util.ConfigUtil;
+
+import com.lu.code.magic.util.config.ConfigUtil;
 import com.lu.code.magic.util.log.LogUtil;
 
 /**
@@ -29,23 +30,38 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
     @Override
     public FragmentFuckDialogBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         @NonNull FragmentFuckDialogBinding binding = FragmentFuckDialogBinding.inflate(inflater, container, false);
-        return binding;
-    }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
         magicViewModel = new ViewModelProvider(getActivity()).get(MagicConfigViewModel.class);
         LogUtil.d(magicViewModel.getAppListModel());
+
         AppListModel model = magicViewModel.getAppListModel();
         String packageName = model.getPackageName();
 
         config = ConfigUtil.getFuckDialogConfig(packageName);
 
         if (config == null) {
-            config = new FuckDialogConfig(false, "", new FuckDialogConfig.NormalModeDTO(), new FuckDialogConfig.RegexModeDTO());
+            config = new FuckDialogConfig();
             config.setMode("normal");
         }
+        binding.etSearchKeyWord.setText(config.getKeyword());
+        switch (config.getMode()) {
+            case "normal":
+                binding.rbNormalMode.setChecked(true);
+                break;
+            case "regex":
+                binding.rbRegexMode.setChecked(true);
+            default:
+                break;
+        }
+        binding.cbDotLineOption.setChecked(config.getRegexMode().isDotLine());
+        return binding;
+    }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
         getBinding().btnConfirm.setOnClickListener(v -> {
             String kw = getBinding().etSearchKeyWord.getText() + "";
             config.setKeyword(kw);
@@ -59,7 +75,7 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
             } else {
                 config.getRegexMode().setDotLine(false);
             }
-            ConfigUtil.setFuckDialogConfig(model.getPackageName(), config);
+            ConfigUtil.setFuckDialogConfig(magicViewModel.getAppListModel().getPackageName(), config);
         });
 
     }

@@ -20,6 +20,7 @@ import com.lu.code.magic.ui.recycler.MultiAdapter
 import com.lu.code.magic.ui.recycler.MultiItemType
 import com.lu.code.magic.ui.recycler.MultiViewHolder
 import com.lu.code.magic.util.PackageUtil
+import com.lu.code.magic.util.config.SheetName
 import com.lu.code.magic.util.log.LogUtil
 
 class StoreFragment : BaseFragment() {
@@ -48,8 +49,7 @@ class StoreFragment : BaseFragment() {
                 ItemModel("测试", PageModel()),
                 ItemModel("安全截图", PageModel()),
                 TitleModel("对话框"),
-                ItemModel("禁止显示", PageModel("对话框-禁止显示", FuckDialogFragment::class.java))
-
+                ItemModel("禁止显示", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG))
             )
             .addItemType(object : MultiItemType<ItemModel> {
                 override fun getItemViewType(
@@ -112,11 +112,8 @@ class StoreFragment : BaseFragment() {
                             itemView.setOnClickListener {
                                 var item = adapter.getItem(layoutPosition)
                                 if (item != null) {
-                                    if (item.page.pageCls != null) {
-                                        MagicConfigActivity.start(itemView.context, item)
-                                    }
+                                    MagicConfigActivity.start(itemView.context, item)
                                 }
-
                             }
                         }
 

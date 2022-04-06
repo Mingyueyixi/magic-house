@@ -1,28 +1,21 @@
 package com.lu.code.magic.bean;
 
-public class FuckDialogConfig {
-    private boolean enable;
+public class FuckDialogConfig extends BaseConfig {
     private String keyword;
     private String mode;
     private NormalModeDTO normalMode;
     private RegexModeDTO regexMode;
 
     public FuckDialogConfig() {
+        this(false, "", new NormalModeDTO(), new RegexModeDTO());
     }
 
     public FuckDialogConfig(boolean enable, String keyword, NormalModeDTO normalMode, RegexModeDTO regexMode) {
-        this.enable = enable;
+        super(enable);
+        this.mode = "normal";
         this.keyword = keyword;
         this.normalMode = normalMode;
         this.regexMode = regexMode;
-    }
-
-    public boolean isEnable() {
-        return enable;
-    }
-
-    public void setEnable(boolean enable) {
-        this.enable = enable;
     }
 
     public String getKeyword() {

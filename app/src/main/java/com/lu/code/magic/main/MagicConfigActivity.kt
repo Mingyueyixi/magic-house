@@ -3,30 +3,30 @@ package com.lu.code.magic.main;
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.Window
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.ActivityPluginConfigBinding
+import com.lu.code.magic.main.fuckdialog.FuckDialogFragment
 import com.lu.code.magic.main.store.ItemModel
+import com.lu.code.magic.main.store.PageModel
 import com.lu.code.magic.ui.BaseActivity
 import com.lu.code.magic.ui.FragmentNavigation
+import com.lu.code.magic.util.config.SheetName
 import com.lu.code.magic.util.log.LogUtil
-import java.util.*
 
 class MagicConfigActivity : BaseActivity() {
     private lateinit var fragmentNavigation: FragmentNavigation
     private lateinit var viewModel: MagicConfigViewModel
     private lateinit var binding: ActivityPluginConfigBinding
-    private lateinit var routeItem: ItemModel
+    lateinit var routeItem: ItemModel
 
 
     companion object {
         private const val KEY_ROUTE_ITEM = "KEY_ROUTE_ITEM"
 
         fun start(context: Context, item: ItemModel) {
-            if (item.page.pageCls == null) {
+            if (item.page.sheet.isEmpty()) {
                 return
             }
             val intent = Intent(context, MagicConfigActivity::class.java)
@@ -34,6 +34,7 @@ class MagicConfigActivity : BaseActivity() {
             context.startActivity(intent)
         }
     }
+
 
     public override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,14 +48,15 @@ class MagicConfigActivity : BaseActivity() {
             return
         }
         routeItem = route
-        if (routeItem.page.pageCls == null) {
+        if (routeItem.page.sheet.isEmpty()) {
             return
         }
         fragmentNavigation = FragmentNavigation(this, binding.fragmentContainer)
-
         viewModel = ViewModelProvider(this).get(MagicConfigViewModel::class.java)
+
+
         initToolBar()
-        initAttachPage()
+        initAppListPage()
     }
 
     override fun onBackPressed() {
@@ -78,14 +80,20 @@ class MagicConfigActivity : BaseActivity() {
 
     }
 
-    private fun initAttachPage() {
+    private fun initAppListPage() {
         var fragment: Fragment = SelectAppFragment()
         fragmentNavigation.navigate(fragment)
     }
 
     fun showConfigPage(itemData: AppListModel) {
         viewModel.appListModel = itemData
-        var fragment: Fragment = (routeItem.page.pageCls as Class<Fragment>).newInstance()
+        var fragment: Fragment = when (routeItem.page.sheet) {
+            SheetName.FUCK_DIALOG -> FuckDialogFragment::class.java.newInstance()
+            else -> {
+                Fragment::class.java.newInstance()
+            }
+        }
+
         LogUtil.d(">>>show $fragment")
         fragmentNavigation.navigate(fragment)
 //        fragmentNavigation.navigate(routeItem.page.pageCls!!)

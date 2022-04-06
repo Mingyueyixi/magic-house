@@ -1,7 +1,6 @@
 package com.lu.code.magic.main.store;
 
 
-import androidx.fragment.app.Fragment
 import java.io.Serializable
 
 open class ItemModel(
@@ -13,7 +12,7 @@ open class ItemModel(
 
 class PageModel(
     var title: String,
-    var pageCls: Class<out Fragment>?,
+    var sheet: String,
 ) : Serializable {
-    constructor() : this("", null)
+    constructor() : this("", "")
 }

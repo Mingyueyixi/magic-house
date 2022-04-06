@@ -42,14 +42,16 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
             return;
         }
         if (AppUtil.hasInit()) {
-            LogUtil.d("不是空的", lpparam.packageName, lpparam.processName);
+            LogUtil.d("已经初始化", lpparam.packageName, lpparam.processName);
             dispatchHookPlugins(lpparam);
         } else {
+            LogUtil.d("准备初始化，获取context", lpparam.packageName, lpparam.processName);
             Application app = AppUtil.getApplicationByReflect();
             if (app != null) {
                 AppUtil.doInit(app);
                 return;
             }
+            LogUtil.d("通过Application获取Context", lpparam.packageName, lpparam.processName);
             XposedHelpers.findAndHookMethod(Application.class,
                     "onCreate",
                     new XC_MethodHook() {

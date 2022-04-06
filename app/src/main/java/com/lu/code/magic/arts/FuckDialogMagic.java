@@ -2,15 +2,21 @@ package com.lu.code.magic.arts;
 
 import android.app.Dialog;
 import android.os.IBinder;
-import android.util.Log;
+import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.widget.PopupWindow;
 
+import androidx.core.os.HandlerCompat;
+
+import com.lu.code.magic.bean.FuckDialogConfig;
+import com.lu.code.magic.util.config.ConfigUtil;
 import com.lu.code.magic.util.view.ViewUtil;
 import com.lu.code.magic.util.log.LogUtil;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
+import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -38,7 +44,33 @@ public class FuckDialogMagic extends BaseMagic {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        alwaysHideDialog(lpparam);
+        //方便debug
+        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(() -> {
+            FuckDialogConfig config = findConfig(lpparam);
+            LogUtil.d(lpparam.packageName, lpparam.processName, "配置:", config);
+            if (config == null || !config.isEnable()) {
+                return;
+            }
+            alwaysHideDialog(lpparam);
+
+        }, 5000);
+
+    }
+
+    private FuckDialogConfig findConfig(XC_LoadPackage.LoadPackageParam lpparam) {
+        Map<String, FuckDialogConfig> configMap = ConfigUtil.getFuckDialogConfigAll();
+        FuckDialogConfig config = configMap.get(lpparam.packageName);
+        if (config == null) {
+            config = configMap.get(lpparam.processName);
+        }
+        if (config == null) {
+            int index = lpparam.processName.indexOf(":");
+            if (index > -1) {
+                String packageName = lpparam.processName.substring(0, index);
+                configMap.get(packageName);
+            }
+        }
+        return config;
     }
 
     /**
