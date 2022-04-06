@@ -16,7 +16,6 @@ import com.lu.code.magic.provider.annotation.FunctionValue;
 import com.lu.code.magic.provider.annotation.GroupValue;
 import com.lu.code.magic.provider.annotation.ModeValue;
 
-import java.io.InvalidClassException;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -52,9 +51,6 @@ public class DataShareProvider extends ContentProvider {
         sMatcher.addURI(AUTOHORITY, "sp/*", PATH_SP_CODE);
         sMatcher.addURI(AUTOHORITY, "mmkv/*", PATH_MMKV_CODE);
     }
-
-    public static final String KEY_RESULT = "result";
-    public static final String KEY_THROW = "throw";
 
     @Override
     public boolean onCreate() {
@@ -111,12 +107,11 @@ public class DataShareProvider extends ContentProvider {
                 resultV = containsKeySp(function, table, key);
                 break;
         }
-        return new ContractResponse<Serializable>(resultV, null);
+        return new ContractResponse<>(resultV, null);
     }
 
     private boolean containsKeySp(String function, String table, String key) {
-        SharedPreferences sp = getSharePreferences(table);
-        return sp.contains(key);
+        return getSharePreferences(table).contains(key);
     }
 
     private Serializable getValueSp(String function, String table, String key, Object defValue) {
