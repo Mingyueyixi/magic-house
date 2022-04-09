@@ -21,11 +21,9 @@ import androidx.annotation.Nullable;
 import androidx.collection.LruCache;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.JsonObject;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lu.code.magic.bean.BaseConfig;
 import com.lu.code.magic.magic.R;
@@ -199,8 +197,16 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
     private void sortApp(List<AppListModel> appListModels) {
         int sortId = sortActionId;
         Collections.sort(appListModels, (o1, o2) -> {
+            //打开开关的在前，所以index小
+            if (o1.getEnable() && !o2.getEnable()) {
+                return -1;
+            }
+            if (o2.getEnable() && !o1.getEnable()) {
+                return 1;
+            }
             switch (sortId) {
                 case R.id.sort_app_name_A_Z:
+                    //都是enable或都不是
                     return o1.getName().compareTo(o2.getName());
                 case R.id.sort_app_name_Z_A:
                     return o2.getName().compareTo(o1.getName());
@@ -213,6 +219,7 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             }
             return 0;
         });
+
     }
 
 
