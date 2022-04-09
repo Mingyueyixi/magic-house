@@ -2,21 +2,18 @@ package com.lu.code.magic.arts;
 
 import android.app.Dialog;
 import android.os.IBinder;
-import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.widget.PopupWindow;
 
-import androidx.core.os.HandlerCompat;
-
 import com.lu.code.magic.bean.FuckDialogConfig;
+import com.lu.code.magic.util.GsonUtil;
 import com.lu.code.magic.util.config.ConfigUtil;
-import com.lu.code.magic.util.view.ViewUtil;
 import com.lu.code.magic.util.log.LogUtil;
+import com.lu.code.magic.util.view.ViewUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
-import java.util.Set;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -31,33 +28,22 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  */
 public class FuckDialogMagic extends BaseMagic {
 
-    public static class Config {
-        public String matchText;
-        public boolean regexMode;
-
-        public Config(String matchText, boolean regexMode) {
-            this.matchText = matchText;
-            this.regexMode = regexMode;
-        }
-
-    }
+    private FuckDialogConfig mFuckDialogConfig;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        //方便debug
-        HandlerCompat.createAsync(Looper.getMainLooper()).postDelayed(() -> {
-            FuckDialogConfig config = findConfig(lpparam);
-            LogUtil.d(lpparam.packageName, lpparam.processName, "配置:", config);
-            if (config == null || !config.isEnable()) {
-                return;
-            }
-            alwaysHideDialog(lpparam);
-
-        }, 5000);
-
+        if (mFuckDialogConfig == null) {
+            handleLoadConfig(lpparam);
+        }
+        LogUtil.d(lpparam.packageName, lpparam.processName, "FuckDialog配置:", GsonUtil.toJson(mFuckDialogConfig));
+        if (mFuckDialogConfig == null || !mFuckDialogConfig.isEnable()) {
+            return;
+        }
+        hideDialog(lpparam);
+        hidePopupWindow(lpparam);
     }
 
-    private FuckDialogConfig findConfig(XC_LoadPackage.LoadPackageParam lpparam) {
+    private void handleLoadConfig(XC_LoadPackage.LoadPackageParam lpparam) {
         Map<String, FuckDialogConfig> configMap = ConfigUtil.getFuckDialogConfigAll();
         FuckDialogConfig config = configMap.get(lpparam.packageName);
         if (config == null) {
@@ -70,7 +56,7 @@ public class FuckDialogMagic extends BaseMagic {
                 configMap.get(packageName);
             }
         }
-        return config;
+        mFuckDialogConfig = config;
     }
 
     /**
@@ -78,32 +64,22 @@ public class FuckDialogMagic extends BaseMagic {
      *
      * @param lpparam
      */
-    private void alwaysHideDialog(XC_LoadPackage.LoadPackageParam lpparam) {
+    private void hideDialog(XC_LoadPackage.LoadPackageParam lpparam) {
         XposedHelpers.findAndHookMethod("android.app.Dialog",
                 lpparam.classLoader,
                 "show",
                 new XC_MethodReplacement() {
                     @Override
                     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                        Dialog dialog = (Dialog) param.thisObject;
-                        Window window = dialog.getWindow();
-                        View rootView = window.getDecorView();
-                        boolean needReplace = false;
-                        LogUtil.d(">>>", lpparam.processName, "will show a dialog");
-                        if (ViewUtil.textCheck().findText(rootView, "更新|升级|安全警告|root|继续使用QQ")) {
-                            needReplace = true;
-                        }
-                        if (needReplace) {
-                            LogUtil.d(">>>find", needReplace);
-                            //啥都不执行
-                            return null;
-                        }
-                        return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
+                        return replaceDialogShowMethod(lpparam, param);
                     }
 
                 }
         );
 
+    }
+
+    private void hidePopupWindow(XC_LoadPackage.LoadPackageParam lpparam) {
         XposedHelpers.findAndHookMethod(PopupWindow.class,
                 "showAtLocation",
                 IBinder.class,
@@ -113,7 +89,7 @@ public class FuckDialogMagic extends BaseMagic {
                 new XC_MethodReplacement() {
                     @Override
                     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                        return replacePopupWindow(lpparam, param);
+                        return replacePopupWindowShowMethod(lpparam, param);
                     }
 
                 }
@@ -129,26 +105,55 @@ public class FuckDialogMagic extends BaseMagic {
                 new XC_MethodReplacement() {
                     @Override
                     protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                        return replacePopupWindow(lpparam, param);
+                        return replacePopupWindowShowMethod(lpparam, param);
                     }
                 }
         );
 
+
     }
 
-    private Object replacePopupWindow(XC_LoadPackage.LoadPackageParam lpparam, XC_MethodHook.MethodHookParam param) throws InvocationTargetException, IllegalAccessException {
+    private Object replacePopupWindowShowMethod(XC_LoadPackage.LoadPackageParam lpparam, XC_MethodHook.MethodHookParam param) throws InvocationTargetException, IllegalAccessException {
         PopupWindow popupWindow = (PopupWindow) param.thisObject;
         View rootView = (View) XposedHelpers.getObjectField(popupWindow, "mDecorView");
         boolean needReplace = false;
         LogUtil.d(">>>", lpparam.processName, "will show a PopupWindow");
-        if (ViewUtil.textCheck().findText(rootView, "更新|升级|安全警告|root|继续使用QQ")) {
-            needReplace = true;
+
+        if ("regex".equals(mFuckDialogConfig.getMode())) {
+            needReplace = ViewUtil.textCheck().findText(rootView, mFuckDialogConfig.getKeyword());
+        } else {
+            needReplace = ViewUtil.textCheck().haveText(rootView, mFuckDialogConfig.getKeyword());
         }
         if (needReplace) {
+            LogUtil.d(">>>find", needReplace);
+            popupWindow.setOnDismissListener(null);
+            //啥都不执行
+            return null;
+        }
+        return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
+    }
+
+    private Object replaceDialogShowMethod(XC_LoadPackage.LoadPackageParam lpparam, XC_MethodHook.MethodHookParam param) throws InvocationTargetException, IllegalAccessException {
+        Dialog dialog = (Dialog) param.thisObject;
+        Window window = dialog.getWindow();
+        View rootView = window.getDecorView();
+        boolean needReplace = false;
+        LogUtil.d(lpparam.processName, "will show a dialog");
+        if ("regex".equals(mFuckDialogConfig.getMode())) {
+            needReplace = ViewUtil.textCheck().findText(rootView, mFuckDialogConfig.getKeyword());
+        } else {
+            needReplace = ViewUtil.textCheck().haveText(rootView, mFuckDialogConfig.getKeyword());
+        }
+        if (needReplace) {
+            //清除对话框消失监听，防止某些app强制退出对话框
+            dialog.setOnCancelListener(null);
+            dialog.setOnDismissListener(null);
             LogUtil.d(">>>find", needReplace);
             //啥都不执行
             return null;
         }
         return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
     }
+
+
 }
