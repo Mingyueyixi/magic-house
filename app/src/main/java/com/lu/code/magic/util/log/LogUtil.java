@@ -32,10 +32,10 @@ public class LogUtil {
 
     private static class LogDog {
 
-        private final String flower;
+        private String TAG;
 
-        public LogDog(String flow) {
-            this.flower = flow;
+        public LogDog(String tag) {
+            this.TAG = tag;
         }
 
         public String process(Object... objects) {
@@ -54,25 +54,25 @@ public class LogUtil {
 
         public void d(Object... obj) {
             String text = logger.process(obj);
-            Log.d(logger.flower, text);
+            Log.d(logger.TAG, text);
             xposedLog(text);
         }
 
         public void i(Object... obj) {
             String text = logger.process(obj);
-            Log.i(logger.flower, text);
+            Log.i(logger.TAG, text);
             xposedLog(text);
         }
 
         public void w(Object... obj) {
             String text = logger.process(obj);
-            Log.w(logger.flower, text);
+            Log.w(logger.TAG, text);
             xposedLog(text);
         }
 
         public void e(Object... obj) {
             String text = logger.process(obj);
-            Log.e(logger.flower, text);
+            Log.e(logger.TAG, text);
             xposedLog(text);
         }
 
@@ -81,7 +81,7 @@ public class LogUtil {
                 return;
             }
             try {
-                XposedBridge.log(logger.flower + "  " + text);
+                XposedBridge.log(logger.TAG + "  " + text);
             } catch (Throwable e) {
                 e.printStackTrace();
             }
