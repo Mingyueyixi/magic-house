@@ -31,7 +31,7 @@ public class ContractUtil {
             e.printStackTrace();
         }
         ContractResponse<T> response = ContractUtil.toContractResponse(bundleResponse, dataCls);
-        LogUtil.e(">>>>>哈哈", GsonUtil.toJson(response));
+        LogUtil.d(GsonUtil.toJson(response));
         try {
             checkResultThrow(response);
         } catch (Throwable throwable) {
@@ -58,7 +58,9 @@ public class ContractUtil {
     }
 
     public static ContractRequest toContractRequest(Bundle bundle) {
+        String providerId = bundle.getString(DtoKey.PROVIDER_ID);
         String mode = bundle.getString(DtoKey.MODE);
+        String table = bundle.getString(DtoKey.TABLE);
         String group = bundle.getString(DtoKey.GROUP);
         Parcelable[] parcelableArray = bundle.getParcelableArray(DtoKey.ACTIONS);
 
@@ -70,12 +72,14 @@ public class ContractUtil {
             Object value = ele.get(DtoKey.VALUE);
             actions.add(new ContractRequest.Action<>(function, key, value));
         }
-        return new ContractRequest(mode, group, group, actions);
+        return new ContractRequest(providerId, mode, table, group, actions);
     }
 
     public static Bundle toRequestBundle(ContractRequest request) {
         Bundle bundle = new Bundle();
+        bundle.putString(DtoKey.PROVIDER_ID, request.providerId);
         bundle.putString(DtoKey.MODE, request.mode);
+        bundle.putString(DtoKey.TABLE, request.table);
         bundle.putString(DtoKey.GROUP, request.group);
         bundle.putParcelableArray(DtoKey.ACTIONS, toBundleArrayAction(request.actions));
         return bundle;

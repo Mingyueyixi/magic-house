@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import com.lu.code.magic.provider.annotation.FunctionValue;
 import com.lu.code.magic.provider.annotation.GroupValue;
 import com.lu.code.magic.provider.annotation.ModeValue;
+import com.lu.code.magic.provider.annotation.ProviderIdValue;
+import com.tencent.mmkv.MMKV;
 
 import java.io.Serializable;
 import java.lang.reflect.Type;
@@ -29,6 +31,8 @@ import java.util.Set;
 public class DataShareProvider extends BaseCallProvider {
     public static final String AUTOHORITY = "com.lu.code.magic";
     public static final String baseUri = "content://com.lu.code.magic";
+    public static final String KEY_PROVIDER_MMKV = "MMKV";
+    public static final String KEY_PROVIDER_PREFS = "sharePreferences";
 
     @Nullable
     @Override
@@ -47,19 +51,19 @@ public class DataShareProvider extends BaseCallProvider {
     }
 
 
-    private ContractResponse<?> dispatchCallMethod(String mode, String table, Bundle extras) {
+    private ContractResponse<?> dispatchCallMethod(String mode, @ProviderIdValue String table, Bundle extras) {
         ContractRequest request = ContractUtil.toContractRequest(extras);
-        ContractResponse<Serializable> response = null;
+        ContractResponse<Object> response = null;
+
+        if (request.actions == null || request.actions.size() == 0) {
+            return null;
+        }
         switch (request.mode) {
             case ModeValue.READ:
-                if (request.actions != null && request.actions.size() > 0) {
-                    response = readValue(request.group, table, request.actions.get(0));
-                }
+                response = readValue(request);
                 break;
             case ModeValue.WRITE:
-                if (request.actions != null && request.actions.size() > 0) {
-                    response = writeValue(request.group, table, request.actions);
-                }
+                response = writeValue(request);
                 break;
             default:
                 break;
@@ -68,32 +72,46 @@ public class DataShareProvider extends BaseCallProvider {
     }
 
 
-    private SharedPreferences getSharePreferences(String name) {
-        return getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
-    }
-
-    public ContractResponse<Serializable> readValue(@GroupValue String group, String table, ContractRequest.Action<?> bundleAction) {
+    public ContractResponse<Object> readValue(ContractRequest request) {
+        //偏好设置读取时，只有一次操作
+        ContractRequest.Action<?> bundleAction = request.actions.get(0);
+        String group = request.group;
         String function = bundleAction.function;
         String key = bundleAction.key;
-        Object defValue = bundleAction.value;
-        Serializable resultV = null;
+        Object resultV = bundleAction.value;
         switch (group) {
             case GroupValue.GET:
-                resultV = getValueSp(function, table, key, defValue);
+                resultV = getValue(request);
                 break;
             case GroupValue.CONTAINS:
-                resultV = containsKeySp(function, table, key);
+                resultV = containsKey(function, request.table, key);
                 break;
         }
         return new ContractResponse<>(resultV, null);
     }
 
-    private boolean containsKeySp(@FunctionValue String function, String table, String key) {
-        return getSharePreferences(table).contains(key);
+    private boolean containsKey(@ProviderIdValue String providerId, String table, String key) {
+        if (ProviderIdValue.MMKV.equals(providerId)) {
+            return mmkvTable(table).contains(key);
+        }
+        return prefsTable(table).contains(key);
     }
 
-    private Serializable getValueSp(@FunctionValue String function, String table, String key, Object defValue) {
-        SharedPreferences sp = getSharePreferences(table);
+
+    private Serializable getValue(ContractRequest request) {
+        String table = request.table;
+        ContractRequest.Action<?> action = request.actions.get(0);
+        String function = action.function;
+        String key = action.key;
+        Object defValue = action.value;
+
+        SharedPreferences sp;
+        if (ProviderIdValue.MMKV.equals(request.providerId)) {
+            sp = mmkvTable(table);
+        } else {
+            sp = prefsTable(table);
+        }
+
         Serializable resultV = null;
         switch (function) {
             case FunctionValue.GET_STRING:
@@ -133,28 +151,28 @@ public class DataShareProvider extends BaseCallProvider {
     }
 
 
-    private ContractResponse writeValue(@GroupValue String group, String table, List<ContractRequest.Action<?>> bundleActions) {
-        switch (group) {
+    private ContractResponse writeValue(ContractRequest request) {
+        switch (request.group) {
             case GroupValue.COMMIT:
-                return commitValue(table, bundleActions);
+                return commitValue(request);
             case GroupValue.APPLY:
-                return applyValue(table, bundleActions);
+                return applyValue(request);
             default:
                 break;
         }
         return new ContractResponse<Void>(null, null);
     }
 
-    private ContractResponse<Boolean> commitValue(String table, List<ContractRequest.Action<?>> bundleActions) {
-        SharedPreferences.Editor editor = getSharePreferences(table).edit();
-        putValue(editor, bundleActions);
+    private ContractResponse<Boolean> commitValue(ContractRequest request) {
+        SharedPreferences.Editor editor = openEditor(request.providerId, request.table);
+        putValue(editor, request.actions);
         boolean result = editor.commit();
         return new ContractResponse<>(result, null);
     }
 
-    private ContractResponse<Void> applyValue(String table, List<ContractRequest.Action<?>> bundleActions) {
-        SharedPreferences.Editor editor = getSharePreferences(table).edit();
-        putValue(editor, bundleActions);
+    private ContractResponse<Void> applyValue(ContractRequest request) {
+        SharedPreferences.Editor editor = openEditor(request.providerId, request.table);
+        putValue(editor, request.actions);
         editor.apply();
         return new ContractResponse<>(null, null);
     }
@@ -192,5 +210,19 @@ public class DataShareProvider extends BaseCallProvider {
         }
     }
 
+    private MMKV mmkvTable(String table) {
+        return MMKV.mmkvWithID(table);
+    }
 
+    private SharedPreferences prefsTable(String name) {
+        return getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
+    }
+
+    private SharedPreferences.Editor openEditor(@ProviderIdValue String providerId, String table) {
+        if (ProviderIdValue.MMKV.equals(providerId)) {
+            return mmkvTable(table);
+        }
+        return prefsTable(table).edit();
+
+    }
 }

@@ -6,6 +6,7 @@ package com.lu.code.magic.provider;
  * Description:
  */
 public interface DtoKey {
+    String PROVIDER_ID = "providerId";
     String MODE = "mode";
     String GROUP = "group";
     String DATA = "data";

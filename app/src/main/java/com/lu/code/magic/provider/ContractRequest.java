@@ -1,19 +1,17 @@
 package com.lu.code.magic.provider;
 
-import android.os.Bundle;
-
-import androidx.core.app.BundleCompat;
-
 import com.lu.code.magic.provider.annotation.FunctionValue;
 import com.lu.code.magic.provider.annotation.GroupValue;
+import com.lu.code.magic.provider.annotation.ProviderIdValue;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
  * ContentProvider约定的数据结构
  */
 public class ContractRequest {
+    @ProviderIdValue
+    protected String providerId;
     protected String mode;
     protected String table;
     @GroupValue
@@ -23,7 +21,8 @@ public class ContractRequest {
     public ContractRequest() {
     }
 
-    public ContractRequest(String mode, String table, String group, List<Action<?>> actions) {
+    public ContractRequest(String providerId, String mode, String table, String group, List<Action<?>> actions) {
+        this.providerId = providerId;
         this.mode = mode;
         this.table = table;
         this.group = group;

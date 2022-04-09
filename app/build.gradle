@@ -68,7 +68,7 @@ dependencies {
 //    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.0'
 
 //  mmkv
-    implementation 'com.tencent:mmkv-static:1.2.12'
+    compileOnly 'com.tencent:mmkv-static:1.2.12'
 //  内存泄露
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
 

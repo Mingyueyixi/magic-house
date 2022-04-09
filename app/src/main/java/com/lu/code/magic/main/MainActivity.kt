@@ -67,7 +67,7 @@ class MainActivity : BaseActivity() {
 //                var f = FuckDialogConfig()
 //                f.isEnable = true;
 //                f.keyword = "wangwang"
-//                ConfigUtil.setFuckDialogConfig(packageName, f)
+//                LogUtil.d(">>>", ConfigUtil.getFuckDialogConfigAll())
 //                LogUtil.d(">>>", f)
             }
 

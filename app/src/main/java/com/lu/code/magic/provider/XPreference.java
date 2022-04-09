@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import com.lu.code.magic.provider.annotation.FunctionValue;
 import com.lu.code.magic.provider.annotation.GroupValue;
 import com.lu.code.magic.provider.annotation.ModeValue;
+import com.lu.code.magic.provider.annotation.ProviderIdValue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -26,11 +27,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class XPreference implements SharedPreferences {
     private final String tableName;
     private final ContentResolver contentResolver;
-    private String baseUri = DataShareProvider.baseUri + "/sp";
+    private final String baseUri = DataShareProvider.baseUri;
+    @ProviderIdValue
+    private final String providerId;
 
-    public XPreference(Context context, String name) {
-        this.tableName = name;
+    public XPreference(Context context, String tableName) {
+        this(context, tableName, ProviderIdValue.SP);
+    }
+
+    public XPreference(Context context, String tableName, String providerId) {
+        this.tableName = tableName;
         this.contentResolver = context.getContentResolver();
+        this.providerId = providerId;
     }
 
     public Uri buildUri(String path) {
@@ -126,7 +134,7 @@ public class XPreference implements SharedPreferences {
     public boolean contains(String key) {
         Uri uri = buildUri("contains");
         ContractRequest.Action<Object> action = new ContractRequest.Action<>(FunctionValue.CONTAINS, key, null);
-        ContractRequest request = new ContractRequest(ModeValue.READ, tableName, GroupValue.CONTAINS, Collections.singletonList(action));
+        ContractRequest request = new ContractRequest(providerId, ModeValue.READ, tableName, GroupValue.CONTAINS, Collections.singletonList(action));
         ContractResponse<Boolean> response = ContractUtil.request(contentResolver, uri, request, Boolean.class);
         return response.data;
     }
@@ -148,7 +156,7 @@ public class XPreference implements SharedPreferences {
 
     private <T> T getValue(Uri uri, String function, String key, T defValue, Class<T> rClass) {
         ContractRequest.Action<T> action = new ContractRequest.Action<>(function, key, defValue);
-        ContractRequest request = new ContractRequest(ModeValue.READ, tableName, GroupValue.GET, Arrays.asList(action));
+        ContractRequest request = new ContractRequest(providerId, ModeValue.READ, tableName, GroupValue.GET, Arrays.asList(action));
         ContractResponse<T> response = ContractUtil.request(contentResolver, uri, request, rClass);
         return response.data == null ? defValue : response.data;
     }
@@ -214,7 +222,7 @@ public class XPreference implements SharedPreferences {
         @Override
         public boolean commit() {
             Uri uri = buildUri("write");
-            ContractRequest request = new ContractRequest(ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
+            ContractRequest request = new ContractRequest(providerId, ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
             ContractResponse<Boolean> response = ContractUtil.request(contentResolver, uri, request, Boolean.class);
             return response.data != null && response.data;
         }
@@ -222,7 +230,7 @@ public class XPreference implements SharedPreferences {
         @Override
         public void apply() {
             Uri uri = buildUri("write");
-            ContractRequest request = new ContractRequest(ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
+            ContractRequest request = new ContractRequest(providerId, ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
             ContractUtil.request(contentResolver, uri, request, Object.class);
         }
 
