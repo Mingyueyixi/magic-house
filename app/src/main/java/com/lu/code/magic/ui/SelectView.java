@@ -6,10 +6,15 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Typeface;
+import android.text.Layout;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,19 +23,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 
 import com.lu.code.magic.magic.R;
+import com.lu.code.magic.util.log.LogUtil;
 
 /**
  * @Author: Lu
  * Date: 2022/03/18
  * Description: 带有list菜单的view
  */
-public class SelectView extends LinearLayout {
+public class SelectView extends FrameLayout {
     private Paint mPaint;
     private Path mPath;
     private int tipSize;
     private int tipSpace;
     private int tipColor;
-    private MenuInflater menuInflater;
     private PopSelectMenu mPopMenu;
     private int mMenuResId;
     private TextView textView;
@@ -61,7 +66,7 @@ public class SelectView extends LinearLayout {
         int textSize = a.getDimensionPixelSize(R.styleable.SelectView_android_textSize, sp2px(14));
         int textStyle = a.getInt(R.styleable.SelectView_android_textStyle, 0);
         int textColor = a.getColor(R.styleable.SelectView_android_textColor, 0xFF757575);
-        tipSpace = a.getColor(R.styleable.SelectView_tipSpace, (int) dp2px(36));
+        tipSpace = a.getColor(R.styleable.SelectView_tipSpace, dp2px(36));
         tipColor = a.getColor(R.styleable.SelectView_tipColor, 0xFF757575);
         int menuRes = a.getResourceId(R.styleable.SelectView_menuSrc, -1);
 
@@ -69,22 +74,32 @@ public class SelectView extends LinearLayout {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPath = new Path();
 
-        tipSize = (int) dp2px(12);
+        tipSize = dp2px(12);
         mPaint.setTextSize(textSize);
         textView.setText(text);
         textView.setTypeface(Typeface.defaultFromStyle(textStyle));
         textView.setTextColor(textColor);
 
-        addView(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+        addView(textView, lp);
+        //高撑满，文字垂直居中
+        textView.setGravity(Gravity.CENTER_VERTICAL);
+
         setWillNotDraw(false);
 
         mPopMenu = new PopSelectMenu(context, this);
         setMenuRes(menuRes);
         setClickable(true);
         setFocusable(true);
-        setOnClickListener(v -> {
-            mPopMenu.show();
+        setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                showMenu();
+                performClick();
+                return true;
+            }
+            return false;
         });
+
     }
 
     public void setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener listener) {

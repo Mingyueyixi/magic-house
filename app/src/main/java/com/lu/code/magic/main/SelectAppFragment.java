@@ -75,22 +75,22 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
     }
 
     private void initViewForSearch() {
-        View editFrame = getBinding().searchView.findViewById(androidx.appcompat.R.id.search_edit_frame);
-
-        getBinding().searchView.setOnSearchClickListener(v -> {
+        FragmentSelectAppBinding binding = getBinding();
+        View editFrame = binding.searchView.findViewById(androidx.appcompat.R.id.search_edit_frame);
+        binding.searchView.setOnSearchClickListener(v -> {
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) getBinding().searchView.getLayoutParams();
-            lp.startToEnd = getBinding().searchSelectView.getId();
+            lp.startToEnd = getBinding().svAppListFilter.getId();
             getBinding().searchView.setLayoutParams(lp);
         });
 
-        getBinding().searchView.setOnCloseListener(() -> {
+        binding.searchView.setOnCloseListener(() -> {
             ConstraintLayout.LayoutParams lp = (ConstraintLayout.LayoutParams) getBinding().searchView.getLayoutParams();
             lp.startToEnd = ConstraintLayout.LayoutParams.UNSET;
             getBinding().searchView.setLayoutParams(lp);
             return false;
         });
 
-        getBinding().searchSelectView.setOnMenuShowListener(popupMenu -> {
+        binding.svAppListFilter.setOnMenuShowListener(popupMenu -> {
             MenuItem filterMenuItem = popupMenu.getMenu().findItem(filterActionId);
             if (filterMenuItem != null) {
                 filterMenuItem.setChecked(true);
@@ -101,7 +101,7 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             }
         });
 
-        getBinding().searchSelectView.setOnMenuItemClickListener(item -> {
+        binding.svAppListFilter.setOnMenuItemClickListener(item -> {
             item.setChecked(true);
             switch (item.getGroupId()) {
                 case R.id.group_sort:
