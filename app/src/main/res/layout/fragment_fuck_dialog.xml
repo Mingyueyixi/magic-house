@@ -10,7 +10,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="24dp"
         android:orientation="vertical"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,7 +26,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/etSearchKeyWord"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
+            android:layout_height="48dp"
             android:layout_marginTop="18dp"
             android:hint="请输入" />
 
@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="24dp"
             android:text="查找模式"
             android:textSize="16sp"
             android:textStyle="bold" />
@@ -75,16 +75,77 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            app:flexDirection="row"
+            app:flexWrap="wrap"
+            app:justifyContent="space_between">
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexStrongMode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:flexDirection="row"
+                app:flexWrap="nowrap"
+                app:justifyContent="space_between">
+
+                <TextView
+                    android:id="@+id/tvStrongMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开启强力Fuck模式"
+                    android:textStyle="bold"
+                    app:layout_alignSelf="center" />
+
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/sbStrongMode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_alignSelf="center" />
+
+            </com.google.android.flexbox.FlexboxLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexOpenTip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:flexDirection="row"
+                app:flexWrap="nowrap"
+                app:justifyContent="space_between">
+
+                <TextView
+                    android:id="@+id/tvOpenTip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Fuck对话框后提示"
+                    android:textStyle="bold"
+                    app:layout_alignSelf="center" />
+
+                <com.kyleduo.switchbutton.SwitchButton
+                    android:id="@+id/sbOpenTip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_alignSelf="center" />
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+
+        <Button
+            android:id="@+id/btnConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="36dp"
+            android:text="确定" />
+
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-
-    <Button
-        android:id="@+id/btnConfirm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="36dp"
-        android:text="确定" />
-
 </androidx.appcompat.widget.LinearLayoutCompat>
-

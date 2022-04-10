@@ -5,6 +5,9 @@ import android.widget.TextView;
 
 import com.lu.code.magic.util.TextUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @Author: Lu
  * Date: 2022/03/03
@@ -12,14 +15,14 @@ import com.lu.code.magic.util.TextUtil;
  */
 public class TextCheck {
 
-    public static String getAllText(View rootView) {
-        StringBuffer sb = new StringBuffer();
+    public List<String> getAllText(View rootView) {
+        List<String> stringList = new ArrayList<>();
         new SelfDeepCheck().each(rootView, view -> {
             if (view instanceof TextView) {
-                sb.append(((TextView) view).getText() + "");
+                stringList.add(((TextView) view).getText() + "");
             }
         });
-        return sb.toString();
+        return stringList;
     }
 
     public boolean matchesText(View rootView, String regex) {

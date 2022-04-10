@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -53,7 +54,17 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
             default:
                 break;
         }
+
         binding.cbDotLineOption.setChecked(config.getRegexMode().isDotLine());
+        binding.sbOpenTip.setChecked(config.isPromptTip());
+        binding.sbStrongMode.setChecked(config.isStrongHide());
+
+        binding.sbStrongMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            config.setStrongHide(isChecked);
+        });
+        binding.sbOpenTip.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            config.setPromptTip(isChecked);
+        });
         return binding;
     }
 

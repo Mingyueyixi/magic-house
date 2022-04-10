@@ -18,6 +18,10 @@ public class AppUtil {
 
     }
 
+    public static Context getContext() {
+        return sContext;
+    }
+
     public static boolean hasInit() {
         return sContext != null;
     }

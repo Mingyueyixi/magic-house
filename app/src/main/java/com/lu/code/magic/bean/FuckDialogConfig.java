@@ -1,9 +1,29 @@
 package com.lu.code.magic.bean;
 
 public class FuckDialogConfig extends BaseConfig {
+    /**
+     * 搜索关键字
+     */
     private String keyword;
+    /**
+     * 匹配模式
+     */
     private String mode;
+    /**
+     * 强制隐藏
+     */
+    private boolean strongHide;
+    /**
+     * 弹出提示
+     */
+    private boolean promptTip;
+    /**
+     * 普通模式配置
+     */
     private NormalModeDTO normalMode;
+    /**
+     * 正则模式配置
+     */
     private RegexModeDTO regexMode;
 
     public FuckDialogConfig() {
@@ -16,6 +36,22 @@ public class FuckDialogConfig extends BaseConfig {
         this.keyword = keyword;
         this.normalMode = normalMode;
         this.regexMode = regexMode;
+    }
+
+    public boolean isStrongHide() {
+        return strongHide;
+    }
+
+    public boolean isPromptTip() {
+        return promptTip;
+    }
+
+    public void setPromptTip(boolean promptTip) {
+        this.promptTip = promptTip;
+    }
+
+    public void setStrongHide(boolean strongHide) {
+        this.strongHide = strongHide;
     }
 
     public String getKeyword() {

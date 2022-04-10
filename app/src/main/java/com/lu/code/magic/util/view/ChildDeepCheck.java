@@ -7,6 +7,7 @@ import androidx.core.util.Consumer;
 import androidx.core.util.Predicate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Author: Lu
@@ -37,6 +38,20 @@ public class ChildDeepCheck {
                 }
             }
         }
+    }
+
+    public <T extends View> List<T> filter(View rootView, Class<T> tClass, Predicate<View> function) {
+        List<T> viewList = new ArrayList<>();
+        each(rootView, view -> {
+            if (function.test(view)) {
+                viewList.add(tClass.cast(view));
+            }
+        });
+        return viewList;
+    }
+
+    public List<View> filter(View rootView, Predicate<View> function) {
+        return filter(rootView, View.class, function);
     }
 
     public boolean eachCheck(View rootView, Predicate<View> function) {
