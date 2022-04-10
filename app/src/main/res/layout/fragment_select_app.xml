@@ -19,7 +19,7 @@
             android:id="@+id/svAppListFilter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="选择应用"
+            android:text="筛选应用"
             android:textSize="16sp"
             android:textStyle="bold"
             app:menuSrc="@menu/select_app"

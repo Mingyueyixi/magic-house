@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.collection.LruCache;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentActivity;
@@ -25,6 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lu.code.magic.App;
 import com.lu.code.magic.bean.BaseConfig;
 import com.lu.code.magic.magic.R;
 import com.lu.code.magic.magic.databinding.FragmentSelectAppBinding;
@@ -45,6 +47,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -88,6 +91,20 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
             lp.startToEnd = ConstraintLayout.LayoutParams.UNSET;
             getBinding().searchView.setLayoutParams(lp);
             return false;
+        });
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                queryAndShowAppListView(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                queryAndShowAppListView(newText);
+                return false;
+            }
+
         });
 
         binding.svAppListFilter.setOnMenuShowListener(popupMenu -> {
@@ -160,15 +177,34 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
 
     }
 
-    private List<AppListModel> filterApp(Map<String, AppListModel> pkgInfoMap) {
-        Set<Map.Entry<String, AppListModel>> entrySet = pkgInfoMap.entrySet();
+    private void queryAndShowAppListView(String keyWord) {
+        List<AppListModel> filterApp = filterApp(installAppModelMap, keyWord);
+        sortApp(filterApp);
+        appListAdapter.updateData(filterApp);
+    }
+
+    private List<AppListModel> filterApp(Map<String, AppListModel> appInfoMap) {
+        return filterApp(appInfoMap, "");
+    }
+
+    private List<AppListModel> filterApp(Map<String, AppListModel> appInfoMap, String keyWord) {
+        Set<Map.Entry<String, AppListModel>> entrySet = appInfoMap.entrySet();
         int filterId = filterActionId;
         List<AppListModel> appListModels = new ArrayList<>();
         Iterator<Map.Entry<String, AppListModel>> it = entrySet.iterator();
+        String upKeyWord = keyWord.toUpperCase();
         while (it.hasNext()) {
             Map.Entry<String, AppListModel> item = it.next();
             AppListModel model = item.getValue();
             PackageInfo pkgInfo = model.getPackageInfo();
+
+            //去掉不包含关键字的包,忽略大小写
+            if (!TextUtils.isEmpty(upKeyWord)
+                    && !model.getName().toUpperCase().contains(upKeyWord)
+                    && !model.getPackageName().toUpperCase().contains(upKeyWord)) {
+                continue;
+            }
+
             switch (filterId) {
                 case R.id.filter_only_show_system_app:
                     if (PackageUtil.Companion.isSystemApp(pkgInfo)) {
