@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.lu.code.magic.bean.FuckDialogConfig;
@@ -33,6 +34,13 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
         @NonNull FragmentFuckDialogBinding binding = FragmentFuckDialogBinding.inflate(inflater, container, false);
 
         magicViewModel = new ViewModelProvider(getActivity()).get(MagicConfigViewModel.class);
+        new ViewModelProvider(this, new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
+                return null;
+            }
+        });
         LogUtil.d(magicViewModel.getAppListModel());
 
         AppListModel model = magicViewModel.getAppListModel();

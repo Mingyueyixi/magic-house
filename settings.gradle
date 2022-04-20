@@ -3,6 +3,7 @@ pluginManagement {
         maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://maven.aliyun.com/repository/google" }
+        maven { url 'https://jitpack.io' }
 
 //        gradlePluginPortal()
 //        google()
@@ -15,6 +16,7 @@ dependencyResolutionManagement {
         maven { url "https://maven.aliyun.com/repository/public" }
         maven { url "https://maven.aliyun.com/repository/google" }
         maven { url "https://maven.aliyun.com/repository/gradle-plugin" }
+        maven { url 'https://jitpack.io' }
 //        google()
 //        mavenCentral()
     }

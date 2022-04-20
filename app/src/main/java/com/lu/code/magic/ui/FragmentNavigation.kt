@@ -27,6 +27,7 @@ class FragmentNavigation : DefaultLifecycleObserver {
     private fun doInit(activity: FragmentActivity, fragmentContainer: ViewGroup) {
         this.supportFragmentManager = activity.supportFragmentManager
         this.fragmentContainer = fragmentContainer
+        activity.lifecycle.addObserver(this)
     }
 
     /**

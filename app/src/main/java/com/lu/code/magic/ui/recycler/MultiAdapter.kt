@@ -4,7 +4,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 
-open class MultiAdapter<E>() : RecyclerView.Adapter<MultiViewHolder<E>>() {
+open class MultiAdapter<E> : RecyclerView.Adapter<MultiViewHolder<E>>() {
     private val data: MutableList<E>
     private val itemTypeList: MutableList<MultiItemType<E>>
     private var customDataObserver: AdapterDataObserver
@@ -83,10 +83,6 @@ open class MultiAdapter<E>() : RecyclerView.Adapter<MultiViewHolder<E>>() {
 
     open fun getData(): List<E> {
         return data
-    }
-
-    open fun getListeners(): List<MultiItemType<E>> {
-        return itemTypeList
     }
 
     open fun getItem(position: Int): E? {

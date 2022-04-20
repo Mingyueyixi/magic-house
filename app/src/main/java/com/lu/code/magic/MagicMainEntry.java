@@ -6,6 +6,7 @@ import android.content.Context;
 import com.lu.code.magic.arts.BaseMagic;
 import com.lu.code.magic.arts.DisableFlagSecureMagic;
 import com.lu.code.magic.arts.FuckDialogMagic;
+import com.lu.code.magic.arts.LocationMagic;
 import com.lu.code.magic.arts.MagicRepository;
 import com.lu.code.magic.arts.TestMagic;
 import com.lu.code.magic.magic.BuildConfig;
@@ -33,10 +34,12 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         repository.add(new DisableFlagSecureMagic());
         repository.add(new TestMagic());
         repository.add(new FuckDialogMagic());
+        repository.add(new LocationMagic());
     }
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+
         if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
             dispatchSelfHookPlugins(lpparam);
             return;

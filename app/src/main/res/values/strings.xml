@@ -17,4 +17,5 @@
     <string name="only_show_system_application">Only System App</string>
     <string name="hide_system_application">Hide System App</string>
     <string name="only_show_debug_application">Only Debug App</string>
+    <string name="action_search" >Search</string>
 </resources>

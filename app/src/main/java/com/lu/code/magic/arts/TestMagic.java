@@ -36,7 +36,7 @@ public class TestMagic extends BaseMagic {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         super.afterHookedMethod(param);
-                        XposedBridge.log( "尼瑪");
+                        XposedBridge.log("尼瑪");
                         Log.e(">>>", "尼玛。。。");
                         Object toast = XposedHelpers.callStaticMethod(
                                 lpparam.classLoader.loadClass("android.widget.Toast"),
@@ -48,4 +48,5 @@ public class TestMagic extends BaseMagic {
                     }
                 });
     }
+
 }

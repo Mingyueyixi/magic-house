@@ -16,16 +16,27 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        sky {
+            storeFile file("${rootDir}/keyStore/app-test.jks")
+            storePassword "123456"
+            keyAlias "app"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
         debug {
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sky
         }
         release {
             shrinkResources false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sky
         }
     }
     compileOptions {
@@ -46,6 +57,16 @@ android {
 
 
 dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+    //3D地图so及jar
+    //compile 'com.amap.api:3dmap:latest.integration'
+    //2D地图
+    implementation 'com.amap.api:map2d:latest.integration'
+    //定位功能
+    implementation 'com.amap.api:location:latest.integration'
+    //搜索功能
+    implementation 'com.amap.api:search:latest.integration'
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
 

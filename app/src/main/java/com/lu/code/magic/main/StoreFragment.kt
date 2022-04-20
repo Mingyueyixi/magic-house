@@ -10,7 +10,6 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.FragmentStoreBinding
-import com.lu.code.magic.main.fuckdialog.FuckDialogFragment
 import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.main.store.PageModel
 import com.lu.code.magic.main.store.TitleModel
@@ -49,7 +48,9 @@ class StoreFragment : BaseFragment() {
                 ItemModel("测试", PageModel()),
                 ItemModel("安全截图", PageModel()),
                 TitleModel("对话框"),
-                ItemModel("禁止显示", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG))
+                ItemModel("禁止显示", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
+                TitleModel("位置"),
+                ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION))
             )
             .addItemType(object : MultiItemType<ItemModel> {
                 override fun getItemViewType(
@@ -112,7 +113,7 @@ class StoreFragment : BaseFragment() {
                             itemView.setOnClickListener {
                                 var item = adapter.getItem(layoutPosition)
                                 if (item != null) {
-                                    MagicConfigActivity.start(itemView.context, item)
+                                    SelectAppConfigActivity.start(itemView.context, item)
                                 }
                             }
                         }

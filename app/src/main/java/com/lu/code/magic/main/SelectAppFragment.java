@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kyleduo.switchbutton.SwitchButton;
-import com.lu.code.magic.App;
 import com.lu.code.magic.bean.BaseConfig;
 import com.lu.code.magic.magic.R;
 import com.lu.code.magic.magic.databinding.FragmentSelectAppBinding;
@@ -47,7 +46,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -260,7 +258,7 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
 
 
     private void loadInstallInfoList() {
-        MagicConfigActivity activity = (MagicConfigActivity) getActivity();
+        SelectAppConfigActivity activity = (SelectAppConfigActivity) getActivity();
         if (activity == null) {
             return;
         }
@@ -346,8 +344,8 @@ public class SelectAppFragment extends BindingFragment<FragmentSelectAppBinding>
                 int clickPosition = getLayoutPosition();
                 AppListModel itemData = appListAdapter.getItem(clickPosition);
                 FragmentActivity activity = getActivity();
-                if (activity instanceof MagicConfigActivity) {
-                    ((MagicConfigActivity) activity).showConfigPage(itemData);
+                if (activity instanceof SelectAppConfigActivity) {
+                    ((SelectAppConfigActivity) activity).showConfigPage(itemData);
                 }
             });
 

@@ -18,4 +18,5 @@
     <string name="only_show_system_application">只显示系统应用</string>
     <string name="hide_system_application">隐藏系统应用</string>
     <string name="only_show_debug_application">只显示Debug应用</string>
+    <string name="action_search" >Search</string>
 </resources>

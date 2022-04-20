@@ -13,7 +13,8 @@ import java.lang.annotation.RetentionPolicy;
  * Description:
  */
 @Retention(RetentionPolicy.SOURCE)
-@StringDef(value = {FUCK_DIALOG})
+@StringDef(value = {FUCK_DIALOG, AMAP_LOCATION})
 public @interface SheetName {
     String FUCK_DIALOG = "FuckDialog";
+    String AMAP_LOCATION = "AMapLocation";
 }

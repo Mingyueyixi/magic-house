@@ -3,6 +3,7 @@ package com.lu.code.magic.util.config;
 import android.content.Context;
 
 import com.google.gson.JsonObject;
+import com.lu.code.magic.bean.AMapConfig;
 import com.lu.code.magic.bean.FuckDialogConfig;
 import com.lu.code.magic.provider.XPreference;
 import com.lu.code.magic.util.GsonUtil;
@@ -63,11 +64,23 @@ public class ConfigUtil {
         return getConfigCell(SheetName.FUCK_DIALOG, processName, FuckDialogConfig.class);
     }
 
+    public static void setFuckDialogConfig(String processName, FuckDialogConfig fuckDialogConfig) {
+        setConfigCell(SheetName.FUCK_DIALOG, processName, fuckDialogConfig);
+    }
+
     public static Map<String, FuckDialogConfig> getFuckDialogConfigAll() {
         return getConfigSheet(SheetName.FUCK_DIALOG, FuckDialogConfig.class);
     }
 
-    public static void setFuckDialogConfig(String processName, FuckDialogConfig fuckDialogConfig) {
-        setConfigCell(SheetName.FUCK_DIALOG, processName, fuckDialogConfig);
+    public static Map<String, AMapConfig> getAllAMapConfig() {
+        return getConfigSheet(SheetName.AMAP_LOCATION, AMapConfig.class);
+    }
+
+    public static AMapConfig getAMapConfig(String processName) {
+        return getConfigCell(SheetName.AMAP_LOCATION, processName, AMapConfig.class);
+    }
+
+    public static void setAMapConfig(String processName, AMapConfig config) {
+        setConfigCell(SheetName.AMAP_LOCATION, processName, config);
     }
 }

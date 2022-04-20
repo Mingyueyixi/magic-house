@@ -3,8 +3,14 @@ package com.lu.code.magic.util;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 
 import com.lu.code.magic.util.config.ConfigUtil;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Locale;
 
 /**
  * @Author: Lu
@@ -45,6 +51,36 @@ public class AppUtil {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getSHA1(Context context) {
+        try {
+            PackageManager pm = context.getPackageManager();
+            PackageInfo info = pm.getPackageInfo(context.getPackageName(), PackageManager.GET_SIGNATURES);
+            byte[] cert = info.signatures[0].toByteArray();
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            byte[] publicKey = md.digest(cert);
+            StringBuffer hexString = new StringBuffer();
+            for (int i = 0; i < publicKey.length; i++) {
+                String appendString = Integer.toHexString(0xFF & publicKey[i]).toUpperCase(Locale.US);
+                if (appendString.length() == 1) {
+                    hexString.append("0");
+                }
+                if (i >= publicKey.length - 1) {
+                    hexString.append(appendString);
+                }else {
+                    hexString.append(appendString+":");
+                }
+            }
+            return hexString.toString();
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }

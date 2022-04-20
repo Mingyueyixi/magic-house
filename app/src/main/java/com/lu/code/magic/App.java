@@ -1,7 +1,11 @@
 package com.lu.code.magic;
 
 import android.app.Application;
+import android.content.ComponentCallbacks;
 import android.content.Context;
+import android.content.res.Configuration;
+
+import androidx.annotation.NonNull;
 
 import com.lu.code.magic.util.AppUtil;
 

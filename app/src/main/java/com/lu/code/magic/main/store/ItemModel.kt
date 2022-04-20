@@ -13,6 +13,9 @@ open class ItemModel(
 class PageModel(
     var title: String,
     var sheet: String,
+    var land: Boolean
 ) : Serializable {
-    constructor() : this("", "")
+    constructor() : this("", "", false)
+    constructor(title: String, sheet: String) : this(title, sheet, false)
+
 }
