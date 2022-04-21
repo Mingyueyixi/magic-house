@@ -1,6 +1,7 @@
 package com.lu.code.magic.main
 
 import android.os.Bundle
+import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,17 +41,18 @@ class StoreFragment : BaseFragment() {
         }
 
         binding = FragmentStoreBinding.inflate(inflater, container, false)
-
         binding.mStoreRecyclerView.layoutManager = flexboxLayoutManager
         binding.mStoreRecyclerView.adapter = MultiAdapter<ItemModel>()
             .addData(
                 TitleModel("测试"),
                 ItemModel("测试", PageModel()),
                 ItemModel("安全截图", PageModel()),
-                TitleModel("对话框"),
-                ItemModel("禁止显示", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
+                TitleModel("禁止"),
+                ItemModel("对话框", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
+                ItemModel("震动器", PageModel("禁止震动", SheetName.FUCK_VIBRATOR)),
                 TitleModel("位置"),
                 ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION))
+
             )
             .addItemType(object : MultiItemType<ItemModel> {
                 override fun getItemViewType(

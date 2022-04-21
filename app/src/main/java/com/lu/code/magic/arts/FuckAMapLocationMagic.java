@@ -1,11 +1,7 @@
 package com.lu.code.magic.arts;
 
-import android.location.Location;
 import android.location.LocationManager;
-import android.util.Log;
 
-import com.amap.api.location.AMapLocation;
-import com.amap.api.location.AMapLocationListener;
 import com.lu.code.magic.bean.AMapConfig;
 import com.lu.code.magic.util.config.ConfigUtil;
 import com.lu.code.magic.util.log.LogUtil;
@@ -13,7 +9,6 @@ import com.lu.code.magic.util.log.LogUtil;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Arrays;
 import java.util.Random;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -21,7 +16,7 @@ import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
-public class FuckAMapLocation extends BaseMagic {
+public class FuckAMapLocationMagic extends BaseMagic {
     private AMapConfig config;
     private Random mRandom = new Random();
 
@@ -30,7 +25,8 @@ public class FuckAMapLocation extends BaseMagic {
         if (config == null) {
             config = ConfigUtil.getAMapConfig(lpparam.packageName);
         }
-        if (config != null && !config.isEnable()) {
+
+        if (config == null || !config.isEnable()) {
             return;
         }
 

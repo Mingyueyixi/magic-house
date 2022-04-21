@@ -5,8 +5,9 @@ import android.content.Context;
 
 import com.lu.code.magic.arts.BaseMagic;
 import com.lu.code.magic.arts.DisableFlagSecureMagic;
-import com.lu.code.magic.arts.FuckAMapLocation;
+import com.lu.code.magic.arts.FuckAMapLocationMagic;
 import com.lu.code.magic.arts.FuckDialogMagic;
+import com.lu.code.magic.arts.FuckVibratorMagic;
 import com.lu.code.magic.arts.LocationMagic;
 import com.lu.code.magic.arts.MagicRepository;
 import com.lu.code.magic.arts.TestMagic;
@@ -36,7 +37,8 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         repository.add(new TestMagic());
         repository.add(new FuckDialogMagic());
         repository.add(new LocationMagic());
-        repository.add(new FuckAMapLocation());
+        repository.add(new FuckAMapLocationMagic());
+        repository.add(new FuckVibratorMagic());
     }
 
     @Override

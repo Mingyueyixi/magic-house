@@ -54,6 +54,9 @@ class DetailConfigActivity : BaseActivity() {
             SheetName.FUCK_DIALOG -> {
                 fragmentNavigation.navigate(FuckDialogFragment())
             }
+            SheetName.FUCK_VIBRATOR -> {
+                //暂时没有其他配置。例如禁止长时间震动，修改震动时长，意义不大。
+            }
             else -> {
                 fragmentNavigation.navigate(Fragment())
             }
