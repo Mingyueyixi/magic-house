@@ -15,8 +15,11 @@ import com.lu.code.magic.bean.FuckDialogConfig;
 import com.lu.code.magic.magic.databinding.FragmentFuckDialogBinding;
 import com.lu.code.magic.main.AppListModel;
 import com.lu.code.magic.main.MagicConfigViewModel;
+import com.lu.code.magic.main.store.ItemModel;
+import com.lu.code.magic.main.store.TitleModel;
 import com.lu.code.magic.ui.BindingFragment;
 
+import com.lu.code.magic.util.SingleStoreUtil;
 import com.lu.code.magic.util.config.ConfigUtil;
 import com.lu.code.magic.util.log.LogUtil;
 
@@ -25,27 +28,18 @@ import com.lu.code.magic.util.log.LogUtil;
  */
 public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBinding> {
 
-    private MagicConfigViewModel magicViewModel;
     private FuckDialogConfig config;
+    private AppListModel appListModel;
+    private ItemModel routeItem;
 
     @Nullable
     @Override
     public FragmentFuckDialogBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         @NonNull FragmentFuckDialogBinding binding = FragmentFuckDialogBinding.inflate(inflater, container, false);
+        appListModel = SingleStoreUtil.get(AppListModel.class);
+        routeItem = SingleStoreUtil.get(TitleModel.class);
 
-        magicViewModel = new ViewModelProvider(getActivity()).get(MagicConfigViewModel.class);
-        new ViewModelProvider(this, new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                return null;
-            }
-        });
-        LogUtil.d(magicViewModel.getAppListModel());
-
-        AppListModel model = magicViewModel.getAppListModel();
-        String packageName = model.getPackageName();
-
+        String packageName = appListModel.getPackageName();
         config = ConfigUtil.getFuckDialogConfig(packageName);
 
         if (config == null) {
@@ -94,7 +88,7 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
             } else {
                 config.getRegexMode().setDotLine(false);
             }
-            ConfigUtil.setFuckDialogConfig(magicViewModel.getAppListModel().getPackageName(), config);
+            ConfigUtil.setFuckDialogConfig(appListModel.getPackageName(), config);
         });
 
     }

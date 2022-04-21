@@ -5,8 +5,9 @@ package com.lu.code.magic.bean;
  * Date: 2022/04/06
  * Description:
  */
-public class BaseConfig {
+public class BaseConfig<T> {
     private boolean enable;
+    private T data;
 
     public BaseConfig() {
     }

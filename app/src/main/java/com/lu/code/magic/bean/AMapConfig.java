@@ -10,6 +10,7 @@ public class AMapConfig extends BaseConfig {
     }
 
     public AMapConfig(double lan, double lng) {
+        super(false);
         this.lat = lan;
         this.lng = lng;
     }

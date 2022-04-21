@@ -5,6 +5,8 @@ import android.widget.Toast;
 
 import com.lu.code.magic.App;
 
+import leakcanary.ToastEventListener;
+
 public class ToastUtil {
     public static void show(Context context, int textId) {
         if (context == null) {

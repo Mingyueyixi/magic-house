@@ -113,7 +113,7 @@ class StoreFragment : BaseFragment() {
                             itemView.setOnClickListener {
                                 var item = adapter.getItem(layoutPosition)
                                 if (item != null) {
-                                    SelectAppConfigActivity.start(itemView.context, item)
+                                    SelectAppActivity.start(itemView.context, item)
                                 }
                             }
                         }

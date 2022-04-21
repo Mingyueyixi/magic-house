@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.google.gson.JsonObject;
 import com.lu.code.magic.bean.AMapConfig;
+import com.lu.code.magic.bean.BaseConfig;
 import com.lu.code.magic.bean.FuckDialogConfig;
 import com.lu.code.magic.provider.XPreference;
 import com.lu.code.magic.util.GsonUtil;
@@ -53,11 +54,14 @@ public class ConfigUtil {
     public static void enableConfigCell(String sheet, String key, boolean enable) {
         JsonObject config = getConfigCell(sheet, key, JsonObject.class);
         if (config == null) {
-            config = new JsonObject();
+            BaseConfig baseConfig = new BaseConfig();
+            baseConfig.setEnable(true);
+            config = (JsonObject) GsonUtil.toJsonTree(baseConfig);
+        } else {
+            //必须与BaseConfig字段名保持一致
+            config.addProperty("enable", enable);
         }
-        config.addProperty("enable", enable);
-
-        setConfigCell(SheetName.FUCK_DIALOG, key, config);
+        setConfigCell(sheet, key, config);
     }
 
     public static FuckDialogConfig getFuckDialogConfig(String processName) {

@@ -24,6 +24,7 @@ public class AMapUtil {
         return newLatLng(location.getLatitude(), location.getLongitude());
     }
 
+
     public static LatLng newLatLng(LatLonPoint location) {
 
         if (location == null) return null;

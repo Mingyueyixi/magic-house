@@ -65,7 +65,7 @@ import com.lu.code.magic.util.view.ViewUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FuckAMapLocationFragment extends BaseFragment implements LocationSource {
+public class FuckAMapFragment extends BaseFragment implements LocationSource {
 
     private MapView mMapView;
     private RecyclerView mListView;
@@ -118,7 +118,7 @@ public class FuckAMapLocationFragment extends BaseFragment implements LocationSo
             @NonNull
             @Override
             public MultiViewHolder<PoiItem> createViewHolder(@NonNull MultiAdapter<PoiItem> adapter, @NonNull ViewGroup parent, int viewType) {
-                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_result, parent, false);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_search_poi, parent, false);
                 return new MultiViewHolder<PoiItem>(itemView) {
                     private TextView tvTitle;
                     private TextView tvSubTitle;
@@ -241,6 +241,7 @@ public class FuckAMapLocationFragment extends BaseFragment implements LocationSo
         if (activity == null) {
             return;
         }
+
         activity.getToolBar().setNavigationOnClickListener(v -> {
             onBackPressed();
         });
@@ -249,13 +250,16 @@ public class FuckAMapLocationFragment extends BaseFragment implements LocationSo
     @Override
     public boolean onBackPressed() {
         LatLng lanLng = mAMap.getCameraPosition().target;
-        AMapConfig aMapConfig = new AMapConfig(lanLng.latitude, lanLng.longitude);
-        AMapConfig currMapConfig = ConfigUtil.getAMapConfig(appListModel.getPackageName());
-        if (currMapConfig != null && aMapConfig.getLng() == lanLng.longitude && aMapConfig.getLat() == currMapConfig.getLat()) {
+        AMapConfig aMapConfig = ConfigUtil.getAMapConfig(appListModel.getPackageName());
+        if (aMapConfig != null && aMapConfig.getLng() == lanLng.longitude && aMapConfig.getLat() == aMapConfig.getLat()) {
             //没有变更
             ToastUtil.show("位置没有变更");
             requireActivity().finish();
         } else {
+            //合并数据，保持保持开关状态
+            aMapConfig.setLat(lanLng.latitude);
+            aMapConfig.setLng(lanLng.longitude);
+
             DialogUtil.buildEditDialog(getContext())
                     .setTitle("已选择新位置，是否保存？")
                     .setContent((lanLng.latitude + "," + lanLng.longitude))
