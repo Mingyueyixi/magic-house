@@ -332,18 +332,15 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
         String actClass = actItem.getActClass();
         List<OrientationDTO.ActItem> dataList = templateAdapter.getData();
 
-        builder.getEditText().setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus && TextUtil.isEmpty(builder.getEditText().getText())) {
-                    builder.getEditText().setText("android.content.Activity");
-                }
+        builder.getEditText().setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus && TextUtil.isEmpty(builder.getEditText().getText())) {
+                builder.getEditText().setText("android.app.Activity");
             }
         });
 
         builder.setTitle("设置Activity的class")
                 .setContent(actClass)
-                .setContentHint("例如：android.content.Activity")
+                .setContentHint("例如：android.app.Activity")
                 .setPositiveButton("确定", (dialog, which) -> {
                     String text = builder.getEditText().getText().toString();
                     if (TextUtil.isEmpty(text)) {
