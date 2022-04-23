@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.lu.code.magic.ui.view.ItemMoveLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    app:flyMarginLeft="72dp"
+    app:flyMarginRight="72dp"
+    app:moveMode="fly">
+
+    <RelativeLayout
+        android:id="@+id/vItemBottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFF2222"
+        android:gravity="right">
+
+        <TextView
+            android:layout_width="72dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="#FFFFFFFF"
+            android:textSize="18sp" />
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layoutItemFace"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFEFEFE"
+        tools:visibility="gone">
+
+        <ImageView
+            android:id="@+id/ivHeadIcon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toRightOf="@+id/ivHeadIcon"
+            app:layout_constraintRight_toLeftOf="@+id/sbEnableItem">
+
+            <TextView
+                android:id="@+id/tvBodyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Android"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tvBodySubTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="android"
+                android:textSize="12sp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <com.kyleduo.switchbutton.SwitchButton
+            android:id="@+id/sbEnableItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.lu.code.magic.ui.view.ItemMoveLayout>

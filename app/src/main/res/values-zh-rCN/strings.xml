@@ -18,5 +18,21 @@
     <string name="only_show_system_application">只显示系统应用</string>
     <string name="hide_system_application">隐藏系统应用</string>
     <string name="only_show_debug_application">只显示Debug应用</string>
-    <string name="action_search" >Search</string>
+    <string name="action_search">Search</string>
+
+    <!--    Activity旋转配置-->
+    <string name="screen_orientation_landscape">锁定横屏</string>
+    <string name="screen_orientation_portrait">锁定竖屏</string>
+    <string name="screen_orientation_reverse_landscape">锁定横屏，与正常方向相反</string>
+    <string name="screen_orientation_reverse_portrait">锁定竖屏，与正常方向相反</string>
+    <string name="screen_orientation_sensor_portrait">竖屏，基于物理传感器</string>
+    <string name="screen_orientation_sensor_landscape">横屏，基于物理传感器</string>
+    <string name="screen_orientation_sensor">基于物理传感器</string>
+    <string name="screen_orientation_full_sensor">完全基于物理传感器</string>
+    <string name="screen_orientation_nosensor">不基于物理传感器</string>
+    <string name="screen_orientation_user">基于用户设置</string>
+    <string name="screen_orientation_full_user">完全基于用户设置</string>
+    <string name="screen_orientation_user_portrait">竖屏，基于用户设置</string>
+    <string name="screen_orientation_user_landscape">横屏，基于用户设置</string>
+    <string name="screen_orientation_unspecified">未指定方向，系统默认值</string>
 </resources>

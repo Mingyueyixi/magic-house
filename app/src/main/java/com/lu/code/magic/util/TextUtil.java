@@ -83,4 +83,10 @@ public class TextUtil {
         return input.contains(text);
     }
 
+    public static CharSequence ofNotNull(CharSequence charSequence) {
+        if (charSequence == null) {
+            return "";
+        }
+        return charSequence;
+    }
 }

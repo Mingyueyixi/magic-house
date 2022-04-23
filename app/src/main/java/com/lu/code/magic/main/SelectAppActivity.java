@@ -9,10 +9,8 @@ import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,12 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.collection.LruCache;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,7 +39,6 @@ import com.lu.code.magic.ui.recycler.SimpleItemType;
 import com.lu.code.magic.util.PackageUtil;
 import com.lu.code.magic.util.SingleStoreUtil;
 import com.lu.code.magic.util.config.ConfigUtil;
-import com.lu.code.magic.util.config.SheetName;
 import com.lu.code.magic.util.load.LoaderCacheUtil;
 import com.lu.code.magic.util.log.LogUtil;
 import com.lu.code.magic.util.thread.WorkerUtil;
@@ -200,7 +195,7 @@ public class SelectAppActivity extends BaseActivity {
             @NonNull
             @Override
             public MultiViewHolder<AppListModel> createViewHolder(@NonNull MultiAdapter<AppListModel> adapter, @NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(getContext()).inflate(R.layout.item_app_list, parent, false);
+                View v = LayoutInflater.from(getContext()).inflate(R.layout.item_enable_list, parent, false);
                 return new ItemViewHolder(v);
             }
         });
@@ -309,7 +304,7 @@ public class SelectAppActivity extends BaseActivity {
     private void loadInstallInfoList() {
         WorkerUtil.loadSingle(() -> {
             HashMap<String, AppListModel> appModelMap = new HashMap<>();
-            Map<String, BaseConfig> enableMap = ConfigUtil.getConfigSheet(routeItem.getPage().getSheet(), BaseConfig.class);
+            Map<String, BaseConfig> enableMap = ConfigUtil.getSheet(routeItem.getPage().getSheet(), BaseConfig.class);
 
             List<PackageInfo> installInfoList = PackageUtil.Companion.getInstallPackageInfoList(getContext());
             for (PackageInfo packageInfo : installInfoList) {
@@ -371,9 +366,9 @@ public class SelectAppActivity extends BaseActivity {
             super(itemView);
             appListModelLoader = LoaderCacheUtil.createObjectLoader(new LruCache<String, AppListModel>(100));
 
-            ivAppIcon = itemView.findViewById(R.id.ivAppIcon);
-            tvAppName = itemView.findViewById(R.id.tvAppName);
-            tvPackageName = itemView.findViewById(R.id.tvPackageName);
+            ivAppIcon = itemView.findViewById(R.id.ivHeadIcon);
+            tvAppName = itemView.findViewById(R.id.tvBodyTitle);
+            tvPackageName = itemView.findViewById(R.id.tvBodySubTitle);
             sbEnableItem = itemView.findViewById(R.id.sbEnableItem);
 
             itemView.setOnClickListener(v -> {
@@ -390,7 +385,7 @@ public class SelectAppActivity extends BaseActivity {
                 itemData.setEnable(check);
                 String packageName = itemData.getPackageName();
                 //打开指定表的配置
-                ConfigUtil.enableConfigCell(routeItem.getPage().getSheet(), packageName, check);
+                ConfigUtil.enableCell(routeItem.getPage().getSheet(), packageName, check);
             });
         }
 

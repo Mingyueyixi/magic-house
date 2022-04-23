@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MenuInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,6 +40,7 @@ public class SelectView extends FrameLayout {
     private PopSelectMenu mPopMenu;
     private int mMenuResId;
     private TextView textView;
+    private ViewGroup.LayoutParams sourceLayoutParams;
 
     public SelectView(Context context) {
         this(context, null);
@@ -102,6 +104,15 @@ public class SelectView extends FrameLayout {
 
     }
 
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        super.setLayoutParams(params);
+        if (sourceLayoutParams == null) {
+            sourceLayoutParams = new LayoutParams(params);
+        }
+    }
+
+
     public void setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener listener) {
         mPopMenu.setOnMenuItemClickListener(listener);
     }
@@ -160,7 +171,11 @@ public class SelectView extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(getMeasuredWidth() + tipSpace + tipSize, getMeasuredHeight());
+        int preWidth = getMeasuredWidth() + tipSpace + tipSize;
+        if (sourceLayoutParams != null
+                && sourceLayoutParams.width != ViewGroup.LayoutParams.MATCH_PARENT) {
+            setMeasuredDimension(preWidth, getMeasuredHeight());
+        }
     }
 
 

@@ -23,4 +23,12 @@ public class BaseConfig<T> {
     public void setEnable(boolean enable) {
         this.enable = enable;
     }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
 }

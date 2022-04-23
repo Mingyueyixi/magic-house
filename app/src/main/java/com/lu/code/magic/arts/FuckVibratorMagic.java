@@ -18,7 +18,7 @@ public class FuckVibratorMagic extends BaseMagic {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (config == null) {
-            config = ConfigUtil.getConfigCell(SheetName.FUCK_VIBRATOR, lpparam.processName, BaseConfig.class);
+            config = ConfigUtil.getCell(SheetName.FUCK_VIBRATOR, lpparam.processName, BaseConfig.class);
         }
         if (config == null) {
             return;

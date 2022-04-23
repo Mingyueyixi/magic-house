@@ -47,9 +47,10 @@ open class MultiAdapter<E> : RecyclerView.Adapter<MultiViewHolder<E>>() {
         return this
     }
 
-    open fun setData(data: List<E>) {
+    open fun setData(data: List<E>): MultiAdapter<E> {
         this.data.clear()
         this.data.addAll(data)
+        return this
     }
 
     open fun updateData(data: List<E>) {

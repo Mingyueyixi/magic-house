@@ -18,4 +18,20 @@
     <string name="hide_system_application">Hide System App</string>
     <string name="only_show_debug_application">Only Debug App</string>
     <string name="action_search" >Search</string>
+
+<!--    Activity旋转配置-->
+    <string name="screen_orientation_landscape">screen orientation landscape</string>
+    <string name="screen_orientation_portrait">screen orientation portrait</string>
+    <string name="screen_orientation_reverse_landscape">screen orientation reverse landscape</string>
+    <string name="screen_orientation_reverse_portrait">screen orientation reverse portrait</string>
+    <string name="screen_orientation_sensor_portrait">screen orientation sensor portrait</string>
+    <string name="screen_orientation_sensor_landscape">screen orientation sensor landscape</string>
+    <string name="screen_orientation_sensor">screen orientation sensor</string>
+    <string name="screen_orientation_full_sensor">screen orientation full sensor</string>
+    <string name="screen_orientation_nosensor">screen orientation nosensor</string>
+    <string name="screen_orientation_user">screen orientation user</string>
+    <string name="screen_orientation_full_user">screen orientation full user</string>
+    <string name="screen_orientation_user_portrait">screen orientation user portrait</string>
+    <string name="screen_orientation_user_landscape">screen orientation user landscape</string>
+    <string name="screen_orientation_unspecified">screen orientation unspecified</string>
 </resources>

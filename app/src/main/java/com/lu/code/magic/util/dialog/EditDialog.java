@@ -1,9 +1,9 @@
 package com.lu.code.magic.util.dialog;
 
 import android.content.Context;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 
@@ -37,9 +37,14 @@ public class EditDialog {
     public static class Builder extends AlertDialog.Builder {
         private CharSequence content;
         private CharSequence contentHint;
+        private EditText editText;
+        private OnBuilderBeforeListener beforeCreateListener;
+        private OnBuilderAfterListener afterCreateListener;
+        private TextWatcher onTextChangeListener;
 
         public Builder(@NonNull Context context) {
             super(context);
+            this.editText = new EditText(context);
         }
 
         public Builder setContent(CharSequence content) {
@@ -64,6 +69,7 @@ public class EditDialog {
             return this;
         }
 
+
         @Override
         public Builder setMessage(int messageId) {
             super.setMessage(messageId);
@@ -76,16 +82,43 @@ public class EditDialog {
             return this;
         }
 
+        public EditText getEditText() {
+            return editText;
+        }
+
+        public Builder setOnTextChangeListener(TextWatcher listener) {
+            this.onTextChangeListener = listener;
+            return this;
+        }
         @NonNull
         @Override
         public AlertDialog create() {
-            Context context = getContext();
-            EditText editText = new EditText(context);
+            if (beforeCreateListener != null) {
+                beforeCreateListener.before(this);
+            }
+            if (this.onTextChangeListener != null) {
+                editText.addTextChangedListener(this.onTextChangeListener);
+            }
             editText.setText(content);
             editText.setHint(contentHint);
             View viewGroup = wrapEditView(editText);
             setView(viewGroup);
-            return super.create();
+
+            AlertDialog dialog = super.create();
+
+            if (afterCreateListener != null) {
+                afterCreateListener.after(this);
+            }
+            return dialog;
         }
+
+    }
+
+    public interface OnBuilderBeforeListener {
+        void before(Builder builder);
+    }
+
+    public interface OnBuilderAfterListener {
+        void after(Builder builder);
     }
 }

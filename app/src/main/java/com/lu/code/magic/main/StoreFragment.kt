@@ -1,7 +1,6 @@
 package com.lu.code.magic.main
 
 import android.os.Bundle
-import android.os.Vibrator
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +50,9 @@ class StoreFragment : BaseFragment() {
                 ItemModel("对话框", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
                 ItemModel("震动器", PageModel("禁止震动", SheetName.FUCK_VIBRATOR)),
                 TitleModel("位置"),
-                ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION))
+                ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION)),
+                TitleModel("其他"),
+                ItemModel("屏幕旋转", PageModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION)),
 
             )
             .addItemType(object : MultiItemType<ItemModel> {

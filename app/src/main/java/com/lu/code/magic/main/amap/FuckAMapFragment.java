@@ -58,6 +58,7 @@ import com.lu.code.magic.util.SingleStoreUtil;
 import com.lu.code.magic.util.ToastUtil;
 import com.lu.code.magic.util.config.ConfigUtil;
 import com.lu.code.magic.util.dialog.DialogUtil;
+import com.lu.code.magic.util.dialog.EditDialog;
 import com.lu.code.magic.util.log.LogUtil;
 import com.lu.code.magic.util.permission.PermissionUtil;
 import com.lu.code.magic.util.view.ViewUtil;
@@ -257,23 +258,32 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
             requireActivity().finish();
         } else {
             //合并数据，保持保持开关状态
-            aMapConfig.setLat(lanLng.latitude);
             aMapConfig.setLng(lanLng.longitude);
+            aMapConfig.setLat(lanLng.latitude);
 
-            DialogUtil.buildEditDialog(getContext())
-                    .setTitle("已选择新位置，是否保存？")
-                    .setContent((lanLng.latitude + "," + lanLng.longitude))
+            EditDialog.Builder builder = DialogUtil.buildEditDialog(getContext());
+            builder.setTitle("已选择新位置，是否保存？")
+                    .setContent((lanLng.longitude + "," + lanLng.latitude))
                     .setContentHint("输入经纬度，以英文逗号,隔开")
                     .setNegativeButton("取消", (dialog, which) -> {
                         dialog.dismiss();
                         requireActivity().finish();
                     })
                     .setPositiveButton("确定", (dialog, which) -> {
+                        String text = builder.getEditText().getText() + "";
+                        double[] lngLat = LocationUtil.parseLngLat(text);
+                        if (lngLat == null) {
+                            ToastUtil.show("格式错误");
+                            return;
+                        }
+                        aMapConfig.setLng(lngLat[0]);
+                        aMapConfig.setLat(lngLat[1]);
                         ConfigUtil.setAMapConfig(appListModel.getPackageName(), aMapConfig);
                         dialog.dismiss();
                         requireActivity().finish();
                     })
                     .show();
+
         }
         return true;
     }
@@ -465,7 +475,7 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
         Point screenPosition = mAMap.getProjection().toScreenLocation(latLng);
         mLocationMarker.setPositionByPixels(screenPosition.x, screenPosition.y);
 
-        mTvCurrLatLng.setText(latLng.latitude + "," + latLng.longitude);
+        mTvCurrLatLng.setText(LocationUtil.composeLngLat(latLng.longitude, latLng.latitude));
     }
 
     /**

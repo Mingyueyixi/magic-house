@@ -7,6 +7,7 @@ import com.lu.code.magic.arts.BaseMagic;
 import com.lu.code.magic.arts.DisableFlagSecureMagic;
 import com.lu.code.magic.arts.FuckAMapLocationMagic;
 import com.lu.code.magic.arts.FuckDialogMagic;
+import com.lu.code.magic.arts.FuckScreenMagic;
 import com.lu.code.magic.arts.FuckVibratorMagic;
 import com.lu.code.magic.arts.LocationMagic;
 import com.lu.code.magic.arts.MagicRepository;
@@ -39,11 +40,11 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         repository.add(new LocationMagic());
         repository.add(new FuckAMapLocationMagic());
         repository.add(new FuckVibratorMagic());
+        repository.add(new FuckScreenMagic());
     }
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-
         if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
             dispatchSelfHookPlugins(lpparam);
             return;

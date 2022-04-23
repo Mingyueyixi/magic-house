@@ -9,4 +9,18 @@
         <attr name="tipSpace" format="dimension" />
         <attr name="menuSrc" format="reference" />
     </declare-styleable>
+
+    <declare-styleable name="ItemMoveLayout">
+        <attr name="flyMarginLeft" format="dimension" />
+        <attr name="flyMarginRight" format="dimension" />
+        <attr name="moveMode" format="integer">
+            <enum name="fly" value="0"/>
+            <enum name="dock" value="1"/>
+        </attr>
+        <attr name="dockOnMarginLeft" format="dimension" />
+        <attr name="dockOnMarginRight" format="dimension" />
+        <attr name="leftStartDock" format="dimension" />
+        <attr name="rightStartDock" format="dimension" />
+
+    </declare-styleable>
 </resources>
