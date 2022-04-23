@@ -157,8 +157,11 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
                                     OrientationDTO.ActItem actItem = dataList.get(position);
                                     actItem.setEnable(sbCheckView.isChecked());
                                 });
+                                //https://blog.csdn.net/fjnu_se/article/details/121896299
+                                //RecyclerView可以使用ItemTouchHelper实现侧滑删除效果
                                 ItemMoveLayout menuLayout = (ItemMoveLayout) itemView;
                                 menuLayout.setMoveView(vItemFace);
+                                //侧滑删除，自定义Item View实现
                                 menuLayout.setOnFlyListener(new ItemMoveLayout.OnFlyListener() {
                                     private int position;
 
@@ -174,6 +177,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
 
                                     @Override
                                     public void onComplete(View view) {
+                                        //侧滑删除
                                         adapter.getData().remove(position);
                                         adapter.notifyItemRemoved(position);
                                     }
