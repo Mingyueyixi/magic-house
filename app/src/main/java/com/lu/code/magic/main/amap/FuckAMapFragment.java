@@ -256,14 +256,23 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     public boolean onBackPressed() {
         LatLng lanLng = mAMap.getCameraPosition().target;
         AMapConfig aMapConfig = ConfigUtil.getAMapConfig(appListModel.getPackageName());
-        if (aMapConfig != null && aMapConfig.getLng() == lanLng.longitude && aMapConfig.getLat() == aMapConfig.getLat()) {
+        boolean hasLocalConfig = true;
+        if (aMapConfig == null) {
+            hasLocalConfig = false;
+            aMapConfig = new AMapConfig();
+        }
+
+        final AMapConfig finalAMapConfig = aMapConfig;
+        if (hasLocalConfig
+                && finalAMapConfig.getLng() == lanLng.longitude
+                && finalAMapConfig.getLat() == lanLng.latitude) {
             //没有变更
             ToastUtil.show("位置没有变更");
             requireActivity().finish();
         } else {
             //合并数据，保持保持开关状态
-            aMapConfig.setLng(lanLng.longitude);
-            aMapConfig.setLat(lanLng.latitude);
+            finalAMapConfig.setLng(lanLng.longitude);
+            finalAMapConfig.setLat(lanLng.latitude);
 
             EditDialog.Builder builder = DialogUtil.buildEditDialog(getContext());
             builder.setTitle("已选择新位置，是否保存？")
@@ -280,9 +289,9 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
                             ToastUtil.show("格式错误");
                             return;
                         }
-                        aMapConfig.setLng(location.getLongitude());
-                        aMapConfig.setLat(location.getLatitude());
-                        ConfigUtil.setAMapConfig(appListModel.getPackageName(), aMapConfig);
+                        finalAMapConfig.setLng(location.getLongitude());
+                        finalAMapConfig.setLat(location.getLatitude());
+                        ConfigUtil.setAMapConfig(appListModel.getPackageName(), finalAMapConfig);
                         dialog.dismiss();
                         requireActivity().finish();
                     })
