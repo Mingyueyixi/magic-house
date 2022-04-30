@@ -45,6 +45,10 @@ public class CollectionUtil {
         return false;
     }
 
+    public static boolean isNotEmpty(Collection collection) {
+        return !isEmpty(collection);
+    }
+
     public static boolean isEmpty(Map map) {
         if (map == null || map.size() == 0) {
             return true;
@@ -52,10 +56,18 @@ public class CollectionUtil {
         return false;
     }
 
+    public static boolean isNotEmpty(Map map) {
+        return !isEmpty(map);
+    }
+
     public static boolean isEmptyArray(Object[] objects) {
         if (objects == null || objects.length == 0) {
             return true;
         }
         return false;
+    }
+
+    public static boolean isNotEmptyArray(Object[] objects) {
+        return !isEmptyArray(objects);
     }
 }

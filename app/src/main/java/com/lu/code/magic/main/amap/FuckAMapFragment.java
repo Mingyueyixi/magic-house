@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -82,17 +83,22 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     private PoiSearch mPoiSearch;
 
     private Marker mCurMarker;
-    private LatLonPoint mSearchLatLonPoint;
     private Marker mLocationMarker;
     private boolean isItemClickAction;
     private SearchPoiAdapter mSearchPoiAdapter;
     private AMapLocationListener mMapLocationListener;
     private TextView mTvCurrLatLng;
     private AppListModel appListModel;
+    private AMapConfig mAMapConfig;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        appListModel = SingleStoreUtil.get(AppListModel.class);
+        mAMapConfig = ConfigUtil.getAMapConfig(appListModel.getPackageName());
+        if (mAMapConfig == null) {
+            mAMapConfig = new AMapConfig();
+        }
         setHasOptionsMenu(true);
     }
 
@@ -106,8 +112,6 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        appListModel = SingleStoreUtil.get(AppListModel.class);
-
         mMapView = view.findViewById(R.id.map_view);
         mTvPrompt = view.findViewById(R.id.tv_prompt);
         mListView = view.findViewById(R.id.list_view_poi);
@@ -271,13 +275,13 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
                     })
                     .setPositiveButton("确定", (dialog, which) -> {
                         String text = builder.getEditText().getText() + "";
-                        double[] lngLat = LocationUtil.parseLngLat(text);
-                        if (lngLat == null) {
+                        Location location = LocationUtil.parseLngLat(text);
+                        if (location == null) {
                             ToastUtil.show("格式错误");
                             return;
                         }
-                        aMapConfig.setLng(lngLat[0]);
-                        aMapConfig.setLat(lngLat[1]);
+                        aMapConfig.setLng(location.getLongitude());
+                        aMapConfig.setLat(location.getLatitude());
                         ConfigUtil.setAMapConfig(appListModel.getPackageName(), aMapConfig);
                         dialog.dismiss();
                         requireActivity().finish();
@@ -451,11 +455,16 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
         mLocationMarker.setZIndex(1);
     }
 
-    private void geocodeAddress() {
-        if (mSearchLatLonPoint == null) {
+    /**
+     * 根据经纬度查询附近地址列表
+     *
+     * @param latLonpoint
+     */
+    private void searchGeocodeAddress(LatLonPoint latLonpoint) {
+        if (latLonpoint == null) {
             return;
         }
-        RegeocodeQuery query = new RegeocodeQuery(mSearchLatLonPoint, 2000, GeocodeSearch.AMAP);
+        RegeocodeQuery query = new RegeocodeQuery(latLonpoint, 2000, GeocodeSearch.AMAP);
         //扩展字段 base表示只返回基础数据，all表示所有数据 ，默认 base，新版geo返回的poi没数据
         // https://blog.csdn.net/qq_37184731/article/details/122366895
         query.setExtensions("all");
@@ -506,7 +515,6 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
 
         @Override
         public void onLocationChanged(AMapLocation aMapLocation) {
-
             if (mOnLocationChangedListener == null || mLocationClient == null
                     || aMapLocation == null || aMapLocation.getErrorCode() != 0) {
                 // 定位失败了
@@ -553,12 +561,13 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
 
         @Override
         public void onCameraChangeFinish(CameraPosition cameraPosition) {
-            mSearchLatLonPoint = AMapUtil.newLatLonPoint(cameraPosition.target);
-
+            //移动地图的镜头完成
             if (!isItemClickAction) {
-                moveLocationMarker();
-                geocodeAddress();
+                //当不是点击列表触发时，才需要进行搜索，避免频繁请求
+                LatLonPoint latLonpoint = AMapUtil.newLatLonPoint(cameraPosition.target);
+                searchGeocodeAddress(latLonpoint);
             }
+            moveLocationMarker();
             isItemClickAction = false;
         }
     }
@@ -593,9 +602,13 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
             }
 
             RegeocodeAddress regeocodeAddress = result.getRegeocodeAddress();
-
             List<PoiItem> poiItemList = new ArrayList<>();
-            poiItemList.addAll(regeocodeAddress.getPois());
+            LatLng cameraLatLng = mAMap.getCameraPosition().target;
+            LatLonPoint latLonPoint = new LatLonPoint(cameraLatLng.latitude, cameraLatLng.longitude);
+            List<PoiItem> pois = regeocodeAddress.getPois();
+
+            poiItemList.add(new PoiItem(Const.ID_POI_CURR, latLonPoint, "当前标记的位置", ""));
+            poiItemList.addAll(pois);
 
             ViewUtil.setVisibility(View.GONE, mTvPrompt);
             mSearchPoiAdapter.setBeginAddress(regeocodeAddress.getProvince() + regeocodeAddress.getCity() + regeocodeAddress.getDistrict());

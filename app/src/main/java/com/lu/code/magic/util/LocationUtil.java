@@ -2,14 +2,13 @@ package com.lu.code.magic.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
-import com.amap.api.maps2d.model.LatLng;
 import com.lu.code.magic.util.log.LogUtil;
 
 public class LocationUtil {
@@ -26,7 +25,7 @@ public class LocationUtil {
         context.startActivity(intent);
     }
 
-    public static double[] parseLngLat(String latLng) {
+    public static Location parseLngLat(String latLng) {
         if (latLng.contains(",")) {
             String[] latLngArray = latLng.split(",");
             if (latLngArray.length != 2) {
@@ -41,7 +40,11 @@ public class LocationUtil {
                 LogUtil.e(e);
                 return null;
             }
-            return new double[]{lat, lng};
+
+            Location location = new Location(LocationManager.GPS_PROVIDER);
+            location.setLongitude(lng);
+            location.setLatitude(lat);
+            return location;
         }
         return null;
     }
