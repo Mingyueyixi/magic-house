@@ -1,8 +1,14 @@
 package com.lu.code.magic.arts;
 
+import android.content.Context;
 import android.location.LocationManager;
+import android.location.LocationRequest;
+import android.provider.CallLog;
+
+import androidx.core.location.LocationRequestCompat;
 
 import com.lu.code.magic.bean.AMapConfig;
+import com.lu.code.magic.util.AppUtil;
 import com.lu.code.magic.util.config.ConfigUtil;
 import com.lu.code.magic.util.log.LogUtil;
 
@@ -26,6 +32,7 @@ public class FuckAMapLocationMagic extends BaseMagic {
             config = ConfigUtil.getAMapConfig(lpparam.packageName);
         }
 
+        
         if (config == null || !config.isEnable()) {
             return;
         }
@@ -65,7 +72,6 @@ public class FuckAMapLocationMagic extends BaseMagic {
                     }
                 }
         );
-
         //hook amap setLocationListener
         XposedHelpers.findAndHookMethod(
                 "com.amap.api.location.AMapLocationClient",

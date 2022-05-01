@@ -90,6 +90,10 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     private TextView mTvCurrLatLng;
     private AppListModel appListModel;
     private AMapConfig mAMapConfig;
+    /**
+     * 关键字搜索poi监听
+     */
+    private PoiSearch.OnPoiSearchListener mOnPoiSearchListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -310,6 +314,7 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
             mAMap.setLocationSource(null);
         }
         if (mPoiSearch != null) {
+            mOnPoiSearchListener = null;
             mPoiSearch.setOnPoiSearchListener(null);
         }
         if (mCurMarker != null) {
@@ -323,6 +328,7 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
             mLocationClient.setLocationListener(null);
             mLocationClient.onDestroy();
         }
+
         mOnLocationChangedListener = null;
         mMapLocationListener = null;
         mMapView.onDestroy();
@@ -412,42 +418,10 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     }
 
     /**
-     * 返回选择的结果
+     * 添加水印到地图上，定位杆子、当前位置图片
+     *
+     * @param locationLatLng
      */
-    private void returnChooseResult() {
-//        // 返回的结果
-//        PoiItem poiItem = mSearchResultAdapter
-//                .getItem(mSearchResultAdapter.getSelectedPosition());
-//
-//        Intent data = new Intent();
-//        data.putExtra("address", mSearchResultAdapter.poiItemToString(poiItem));
-//        data.putExtra("latitude", poiItem.getLatLonPoint().getLatitude());
-//        data.putExtra("longitude", poiItem.getLatLonPoint().getLongitude());
-//
-//        setResult(Activity.RESULT_OK, data);
-//        onBackPressed();
-    }
-
-    /**
-     * 显示搜索提示框
-     */
-    private void showSearchDiLogUtil() {
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-//
-//        DiLogUtilUtil.showSearchDiLogUtil(this, preferences.getString("amap_key_word", ""), (keyWord) -> {
-//
-//            if (TextUtils.isEmpty(keyWord)) {
-//                ToastUtil.show("搜索的关键字不能为空!");
-//                return;
-//            }
-//
-//            // 开始搜索
-//            doSearchQuery(keyWord);
-//            // 保存最后搜索记录
-//            preferences.edit().putString("key_word", keyWord).apply();
-//        });
-    }
-
     private void addMarkerInScreenCenter(LatLng locationLatLng) {
         LatLng latLng = mAMap.getCameraPosition().target;
         Point screenPosition = mAMap.getProjection().toScreenLocation(latLng);
@@ -509,7 +483,10 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
 
         try {
             mPoiSearch = new PoiSearch(getContext(), mQuery);
-            mPoiSearch.setOnPoiSearchListener(new MyOnPoiSearchListener());
+            if (mOnPoiSearchListener == null) {
+                mOnPoiSearchListener = new MyOnPoiSearchListener();
+            }
+            mPoiSearch.setOnPoiSearchListener(mOnPoiSearchListener);
             mPoiSearch.searchPOIAsyn();
         } catch (AMapException e) {
             e.printStackTrace();
@@ -592,6 +569,9 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
         }
     }
 
+    /**
+     * 地理搜索监听，经纬搜索
+     */
     private class MyOnGeocodeSearchListener implements GeocodeSearch.OnGeocodeSearchListener {
 
         @Override

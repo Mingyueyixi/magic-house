@@ -138,7 +138,7 @@ class StoreFragment : BaseFragment() {
         super.onResume()
 //        Log.d(">>>", ClassUtil.getClassList(context, "com.lu.code.foolish.egg.hook").toString())
         PackageUtil.getInstallPackageNameListByShell().onEach {
-            LogUtil.d(it)
+//            LogUtil.d(it)
         }
 
     }

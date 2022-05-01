@@ -418,7 +418,7 @@ public class SelectAppActivity extends BaseActivity {
                     //忽略掉，防止错位、闪现
                     return;
                 }
-                LogUtil.d(">>>position", position);
+//                LogUtil.d(">>>position", position);
                 tvAppName.setText(appListModel.getName());
                 ivAppIcon.setImageDrawable(appListModel.getIcon());
                 tvPackageName.setText(appListModel.getPackageName());

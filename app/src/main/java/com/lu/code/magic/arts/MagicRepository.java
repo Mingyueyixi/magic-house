@@ -2,16 +2,10 @@ package com.lu.code.magic.arts;
 
 import com.lu.code.magic.util.CollectionUtil;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.LinkedHashMap;
 
 public class MagicRepository {
-    private HashMap<String, List<BaseMagic>> mPluginRepoMap = new HashMap<>();
-    private List<BaseMagic> mNoPackageRepoList = new ArrayList<>();
+    private LinkedHashMap<String, BaseMagic> mMagicRepoMap = new LinkedHashMap<>();
 
     private static final class Single {
         private final static MagicRepository sInstance = new MagicRepository();
@@ -26,19 +20,7 @@ public class MagicRepository {
             return;
         }
         for (BaseMagic plugin : plugins) {
-            List<String> packageNameList = plugin.getBindPackageNameList();
-            if (packageNameList == null || packageNameList.size() == 0) {
-                mNoPackageRepoList.add(plugin);
-                continue;
-            }
-            for (String s : packageNameList) {
-                List<BaseMagic> packagePluginList = mPluginRepoMap.get(s);
-                if (packagePluginList == null) {
-                    packagePluginList = new ArrayList<>();
-                    mPluginRepoMap.put(s, packagePluginList);
-                }
-                packagePluginList.add(plugin);
-            }
+            mMagicRepoMap.put(plugin.getMagicId(), plugin);
         }
     }
 
@@ -46,40 +28,34 @@ public class MagicRepository {
         if (CollectionUtil.isEmptyArray(plugins)) {
             return;
         }
-        Set<Map.Entry<String, List<BaseMagic>>> entrySet = mPluginRepoMap.entrySet();
-        Iterator<Map.Entry<String, List<BaseMagic>>> it = entrySet.iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, List<BaseMagic>> eleMap = it.next();
-            List<BaseMagic> pluginList = eleMap.getValue();
-            if (pluginList == null || pluginList.size() == 0) {
-                continue;
-            }
-            for (BaseMagic plugin : plugins) {
-                //移除掉
-                CollectionUtil.removeByIterator(pluginList, plugin);
-            }
+        for (BaseMagic plugin : plugins) {
+            mMagicRepoMap.remove(plugin.getMagicId());
         }
     }
 
-    public void remove(String packageName) {
-        mPluginRepoMap.remove(packageName);
+    public void remove(String magicId) {
+        mMagicRepoMap.remove(magicId);
     }
 
-    public List<BaseMagic> get(String packageName) {
-        return mPluginRepoMap.get(packageName);
+    public void remove(Class<BaseMagic> tClass) {
+        String key = BaseMagic.getMagicId(tClass);
+        remove(key);
     }
 
-    public HashMap<String, List<BaseMagic>> getPluginRepoMap() {
-        return mPluginRepoMap;
+    public BaseMagic get(String magicId) {
+        return mMagicRepoMap.get(magicId);
     }
 
-    public List<BaseMagic> getNoPackageRepoList() {
-        return mNoPackageRepoList;
+    public BaseMagic get(Class<BaseMagic> tClass) {
+        String key = BaseMagic.getMagicId(tClass);
+        return get(key);
     }
 
     public void clear() {
-        mNoPackageRepoList.clear();
-        mPluginRepoMap.clear();
+        mMagicRepoMap.clear();
     }
 
+    public LinkedHashMap<String, BaseMagic> getMagicRepoMap() {
+        return mMagicRepoMap;
+    }
 }

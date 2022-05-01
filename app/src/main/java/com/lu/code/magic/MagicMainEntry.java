@@ -14,10 +14,9 @@ import com.lu.code.magic.arts.MagicRepository;
 import com.lu.code.magic.arts.TestMagic;
 import com.lu.code.magic.magic.BuildConfig;
 import com.lu.code.magic.util.AppUtil;
-import com.lu.code.magic.util.CollectionUtil;
 import com.lu.code.magic.util.log.LogUtil;
 
-import java.util.List;
+import java.util.Map;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -46,12 +45,12 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
-            dispatchSelfHookPlugins(lpparam);
+//            dispatchMagics(lpparam);
             return;
         }
         if (AppUtil.hasInit()) {
-            LogUtil.d("已经初始化", lpparam.packageName, lpparam.processName);
-            dispatchHookPlugins(lpparam);
+            LogUtil.d("已经初始化", lpparam.packageName, lpparam.processName, lpparam.isFirstApplication, lpparam.appInfo.uid);
+            dispatchMagics(lpparam);
         } else {
             LogUtil.d("准备初始化，获取context", lpparam.packageName, lpparam.processName);
             Application app = AppUtil.getApplicationByReflect();
@@ -67,37 +66,18 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                             Context context = (Context) param.thisObject;
                             AppUtil.doInit(context.getApplicationContext());
-                            dispatchHookPlugins(lpparam);
+                            dispatchMagics(lpparam);
                         }
                     });
         }
     }
 
-    private void dispatchSelfHookPlugins(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        List<BaseMagic> plugins = repository.get(lpparam.packageName);
-        if (!CollectionUtil.isEmpty(plugins)) {
-            for (BaseMagic plugin : plugins) {
-                plugin.handleLoadPackage(lpparam);
-            }
-        }
-    }
-
-    private void dispatchHookPlugins(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        List<BaseMagic> noPackagePlugins = repository.getNoPackageRepoList();
-        if (!CollectionUtil.isEmpty(noPackagePlugins)) {
-            for (BaseMagic noPackagePlugin : noPackagePlugins) {
-                LogUtil.d("handle plugin:", noPackagePlugin.getClass(), lpparam.processName);
-                noPackagePlugin.handleLoadPackage(lpparam);
-            }
-        }
-
-
-        List<BaseMagic> registerPlugins = repository.get(lpparam.packageName);
-        if (!CollectionUtil.isEmpty(registerPlugins)) {
-            for (BaseMagic plugin : registerPlugins) {
-                LogUtil.d("handle plugin:", plugin.getClass(), lpparam.processName);
-                plugin.handleLoadPackage(lpparam);
-            }
+    private void dispatchMagics(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        LogUtil.d("----", "apply magics for", lpparam.processName, "-----");
+        for (Map.Entry<String, BaseMagic> entity : repository.getMagicRepoMap().entrySet()) {
+            BaseMagic magic = entity.getValue();
+            LogUtil.d("handle magic:", magic.getClass().getSimpleName());
+            magic.handleLoadPackage(lpparam);
         }
     }
 
