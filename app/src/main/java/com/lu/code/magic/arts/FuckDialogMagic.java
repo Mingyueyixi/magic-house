@@ -133,8 +133,8 @@ public class FuckDialogMagic extends BaseMagic {
     private Object replacePopupWindowShow(XC_LoadPackage.LoadPackageParam lpparam, XC_MethodHook.MethodHookParam param) throws InvocationTargetException, IllegalAccessException {
         PopupWindow popupWindow = (PopupWindow) param.thisObject;
 //        除了流氓app，不会有popupWindow在DecorView自行加入东西。取ContentView判断即可
-//        ViewGroup rootView = (ViewGroup) XposedHelpers.getObjectField(popupWindow, "mDecorView");
-        ViewGroup contentView = (ViewGroup) popupWindow.getContentView();
+//        不一定是ViewGroup，QQ就有是EditView的
+        View contentView = popupWindow.getContentView();
         if (checkNeedHide(contentView)) {
             popupWindow.setOnDismissListener(null);
             //啥都不执行

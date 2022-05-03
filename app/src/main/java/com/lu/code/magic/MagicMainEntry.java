@@ -44,6 +44,15 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        try {
+            handleMain(lpparam);
+        } catch (Throwable throwable) {
+            //避免崩溃
+            LogUtil.e(throwable);
+        }
+    }
+
+    private void handleMain(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
 //            dispatchMagics(lpparam);
             return;
@@ -71,6 +80,7 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
                     });
         }
     }
+
 
     private void dispatchMagics(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         LogUtil.d("----", "apply magics for", lpparam.processName, "-----");
