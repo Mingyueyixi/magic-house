@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class XPreference implements SharedPreferences {
     private final String tableName;
     private final ContentResolver contentResolver;
-    private final String baseUri = DataShareProvider.baseUri;
     @ProviderIdValue
     private final String providerId;
 
@@ -42,6 +41,7 @@ public class XPreference implements SharedPreferences {
     }
 
     public Uri buildUri(String path) {
+        String baseUri = DataShareProvider.getProviderConfig().getBaseUri();
         return ContractUtil.buildUri(baseUri, tableName, path);
     }
 

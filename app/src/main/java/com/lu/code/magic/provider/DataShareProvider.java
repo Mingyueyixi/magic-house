@@ -29,10 +29,18 @@ import java.util.Set;
  * @author Lu
  */
 public class DataShareProvider extends BaseCallProvider {
-    public static final String AUTOHORITY = "com.lu.code.magic";
-    public static final String baseUri = "content://com.lu.code.magic";
-    public static final String KEY_PROVIDER_MMKV = "MMKV";
-    public static final String KEY_PROVIDER_PREFS = "sharePreferences";
+    private static ProviderConfig providerConfig = new ProviderConfig("com.lu.code.magic");
+
+    public static void initConfig(ProviderConfig config) {
+        if (providerConfig == null) {
+            return;
+        }
+        providerConfig = config;
+    }
+
+    public static ProviderConfig getProviderConfig() {
+        return providerConfig;
+    }
 
     @Nullable
     @Override
@@ -214,15 +222,20 @@ public class DataShareProvider extends BaseCallProvider {
         return MMKV.mmkvWithID(table);
     }
 
+
     private SharedPreferences prefsTable(String name) {
+        /**
+         * 偏好设置实现类源码(SharedPreferencesImpl)已经做了内存优化，commit/apply，刷新内存缓存mMap,
+         * 只要sp实例不变，就不需要再实现内存缓存
+         */
         return getContext().getSharedPreferences(name, Context.MODE_PRIVATE);
     }
+
 
     private SharedPreferences.Editor openEditor(@ProviderIdValue String providerId, String table) {
         if (ProviderIdValue.MMKV.equals(providerId)) {
             return mmkvTable(table);
         }
         return prefsTable(table).edit();
-
     }
 }
