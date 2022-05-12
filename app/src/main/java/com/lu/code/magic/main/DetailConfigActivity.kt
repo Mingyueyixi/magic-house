@@ -9,6 +9,7 @@ import com.lu.code.magic.main.amap.FuckAMapFragment
 import com.lu.code.magic.main.fuckdialog.FuckDialogFragment
 import com.lu.code.magic.main.screen.ScreenOrientationFragment
 import com.lu.code.magic.main.store.ItemModel
+import com.lu.code.magic.main.viewcatch.ViewCatchFragment
 import com.lu.code.magic.ui.BaseActivity
 import com.lu.code.magic.ui.FragmentNavigation
 import com.lu.code.magic.util.SingleStoreUtil
@@ -61,6 +62,9 @@ class DetailConfigActivity : BaseActivity() {
             SheetName.FUCK_SCREEN_ORIENTATION -> {
                 //根据重力、固定等，待添加
                 fragmentNavigation.navigate(ScreenOrientationFragment())
+            }
+            SheetName.VIEW_CATCH -> {
+                fragmentNavigation.navigate(ViewCatchFragment())
             }
             else -> {
                 fragmentNavigation.navigate(Fragment())

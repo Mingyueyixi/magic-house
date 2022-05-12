@@ -1,9 +1,6 @@
 package com.lu.code.magic.util.config;
 
-import static com.lu.code.magic.util.config.SheetName.AMAP_LOCATION;
-import static com.lu.code.magic.util.config.SheetName.FUCK_DIALOG;
-import static com.lu.code.magic.util.config.SheetName.FUCK_SCREEN_ORIENTATION;
-import static com.lu.code.magic.util.config.SheetName.FUCK_VIBRATOR;
+import static com.lu.code.magic.util.config.SheetName.*;
 
 import androidx.annotation.StringDef;
 
@@ -16,10 +13,17 @@ import java.lang.annotation.RetentionPolicy;
  * Description:
  */
 @Retention(RetentionPolicy.SOURCE)
-@StringDef(value = {FUCK_DIALOG, AMAP_LOCATION, FUCK_VIBRATOR, FUCK_SCREEN_ORIENTATION})
+@StringDef(value = {
+        FUCK_DIALOG,
+        AMAP_LOCATION,
+        FUCK_VIBRATOR,
+        FUCK_SCREEN_ORIENTATION,
+        VIEW_CATCH
+})
 public @interface SheetName {
     String FUCK_DIALOG = "FuckDialog";
     String AMAP_LOCATION = "AMapLocation";
     String FUCK_VIBRATOR = "FuckVibrator";
     String FUCK_SCREEN_ORIENTATION = "fuckScreenRotate";
+    String VIEW_CATCH = "ViewCatch";
 }

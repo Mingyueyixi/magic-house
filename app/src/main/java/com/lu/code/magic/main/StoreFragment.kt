@@ -9,7 +9,7 @@ import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.lu.code.magic.magic.R
-import com.lu.code.magic.magic.databinding.FragmentStoreBinding
+import com.lu.code.magic.magic.databinding.LayoutListBinding
 import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.main.store.PageModel
 import com.lu.code.magic.main.store.TitleModel
@@ -20,10 +20,9 @@ import com.lu.code.magic.ui.recycler.MultiItemType
 import com.lu.code.magic.ui.recycler.MultiViewHolder
 import com.lu.code.magic.util.PackageUtil
 import com.lu.code.magic.util.config.SheetName
-import com.lu.code.magic.util.log.LogUtil
 
 class StoreFragment : BaseFragment() {
-    private var binding: FragmentStoreBinding by LifecycleAutoViewBinding()
+    private var binding: LayoutListBinding by LifecycleAutoViewBinding()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,9 +38,9 @@ class StoreFragment : BaseFragment() {
             }
         }
 
-        binding = FragmentStoreBinding.inflate(inflater, container, false)
-        binding.mStoreRecyclerView.layoutManager = flexboxLayoutManager
-        binding.mStoreRecyclerView.adapter = MultiAdapter<ItemModel>()
+        binding = LayoutListBinding.inflate(inflater, container, false)
+        binding.mRecyclerView.layoutManager = flexboxLayoutManager
+        binding.mRecyclerView.adapter = MultiAdapter<ItemModel>()
             .addData(
                 TitleModel("测试"),
                 ItemModel("测试", PageModel()),
@@ -53,6 +52,8 @@ class StoreFragment : BaseFragment() {
                 ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION)),
                 TitleModel("其他"),
                 ItemModel("屏幕旋转", PageModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION)),
+                TitleModel("开发工具"),
+                ItemModel("视图捕获", PageModel("视图捕获", SheetName.VIEW_CATCH))
 
             )
             .addItemType(object : MultiItemType<ItemModel> {
