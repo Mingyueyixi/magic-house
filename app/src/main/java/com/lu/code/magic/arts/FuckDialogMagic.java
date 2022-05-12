@@ -17,6 +17,7 @@ import com.lu.code.magic.util.view.ViewUtil;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -212,7 +213,11 @@ public class FuckDialogMagic extends BaseMagic {
             return false;
         }
         if ("regex".equals(mFuckDialogConfig.getMode())) {
-            needHide = ViewUtil.textCheck().findText(view, mFuckDialogConfig.getKeyword());
+            int flag = Pattern.CASE_INSENSITIVE;
+            if (mFuckDialogConfig.getRegexMode().isDotLine()) {
+                flag = Pattern.CASE_INSENSITIVE | Pattern.DOTALL;
+            }
+            needHide = ViewUtil.textCheck().findText(view, mFuckDialogConfig.getKeyword(), flag);
         } else {
             needHide = ViewUtil.textCheck().haveText(view, mFuckDialogConfig.getKeyword());
         }

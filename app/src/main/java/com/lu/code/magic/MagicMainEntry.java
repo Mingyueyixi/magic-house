@@ -13,6 +13,7 @@ import com.lu.code.magic.arts.LocationMagic;
 import com.lu.code.magic.arts.MagicRepository;
 import com.lu.code.magic.arts.TestMagic;
 import com.lu.code.magic.arts.ViewCatchMagic;
+import com.lu.code.magic.arts.ViewLockMagic;
 import com.lu.code.magic.magic.BuildConfig;
 import com.lu.code.magic.util.AppUtil;
 import com.lu.code.magic.util.log.LogUtil;
@@ -37,11 +38,12 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         repository.add(new DisableFlagSecureMagic());
         repository.add(new TestMagic());
         repository.add(new FuckDialogMagic());
-        repository.add(new LocationMagic());
+//        repository.add(new LocationMagic());
         repository.add(new FuckAMapLocationMagic());
         repository.add(new FuckVibratorMagic());
         repository.add(new FuckScreenMagic());
         repository.add(new ViewCatchMagic());
+        repository.add(new ViewLockMagic());
     }
 
     @Override

@@ -10,6 +10,7 @@ import com.lu.code.magic.main.fuckdialog.FuckDialogFragment
 import com.lu.code.magic.main.screen.ScreenOrientationFragment
 import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.main.viewcatch.ViewCatchFragment
+import com.lu.code.magic.main.viewlock.ViewLockFragment
 import com.lu.code.magic.ui.BaseActivity
 import com.lu.code.magic.ui.FragmentNavigation
 import com.lu.code.magic.util.SingleStoreUtil
@@ -65,6 +66,9 @@ class DetailConfigActivity : BaseActivity() {
             }
             SheetName.VIEW_CATCH -> {
                 fragmentNavigation.navigate(ViewCatchFragment())
+            }
+            SheetName.VIEW_LOCK ->{
+                fragmentNavigation.navigate(ViewLockFragment())
             }
             else -> {
                 fragmentNavigation.navigate(Fragment())

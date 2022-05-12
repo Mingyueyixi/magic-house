@@ -18,7 +18,8 @@ import java.lang.annotation.RetentionPolicy;
         AMAP_LOCATION,
         FUCK_VIBRATOR,
         FUCK_SCREEN_ORIENTATION,
-        VIEW_CATCH
+        VIEW_CATCH,
+        VIEW_LOCK
 })
 public @interface SheetName {
     String FUCK_DIALOG = "FuckDialog";
@@ -26,4 +27,5 @@ public @interface SheetName {
     String FUCK_VIBRATOR = "FuckVibrator";
     String FUCK_SCREEN_ORIENTATION = "fuckScreenRotate";
     String VIEW_CATCH = "ViewCatch";
+    String VIEW_LOCK = "ViewLock";
 }

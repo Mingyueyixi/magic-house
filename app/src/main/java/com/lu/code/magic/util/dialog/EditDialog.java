@@ -1,5 +1,6 @@
 package com.lu.code.magic.util.dialog;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.text.TextWatcher;
 import android.view.View;
@@ -9,7 +10,6 @@ import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 
 import com.lu.code.magic.util.SizeUtil;
 

@@ -46,6 +46,16 @@ public class TextCheck {
         });
     }
 
+    public boolean findText(View rootView, String regex,int flag) {
+        return new SelfDeepCheck().eachCheck(rootView, view -> {
+            if (view instanceof TextView) {
+                String input = ((TextView) view).getText() + "";
+                return TextUtil.find(regex, input,flag);
+            }
+            return false;
+        });
+    }
+
     public boolean haveText(View rootView, String text) {
 
         return new SelfDeepCheck().eachCheck(rootView, view -> {

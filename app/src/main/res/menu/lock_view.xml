@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:enabled="false"
+        android:title="选择锁定方式" />
+
+    <group
+        android:id="@+id/group_lock"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/lock_view_all"
+            android:title="全面锁定" />
+        <item
+            android:id="@+id/lock_view_kw"
+            android:checked="true"
+            android:title="关键字锁定" />
+    </group>
+
+
+</menu>

@@ -50,10 +50,11 @@ class StoreFragment : BaseFragment() {
                 ItemModel("震动器", PageModel("禁止震动", SheetName.FUCK_VIBRATOR)),
                 TitleModel("位置"),
                 ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION)),
+                TitleModel("开发工具"),
+                ItemModel("视图捕获", PageModel("视图捕获", SheetName.VIEW_CATCH)),
                 TitleModel("其他"),
                 ItemModel("屏幕旋转", PageModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION)),
-                TitleModel("开发工具"),
-                ItemModel("视图捕获", PageModel("视图捕获", SheetName.VIEW_CATCH))
+                ItemModel("锁定视图", PageModel("锁定视图", SheetName.VIEW_LOCK))
 
             )
             .addItemType(object : MultiItemType<ItemModel> {
