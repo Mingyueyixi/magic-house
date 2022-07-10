@@ -7,6 +7,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
 /**
  * @Author Lu
@@ -51,12 +52,16 @@ public class ReflectUtil {
         return localField.get(obj);
     }
 
-    public static Method getMatchingMethod(Class<?> aClass, String name, Class<?>... params) throws NoSuchMethodException {
-        Method method;
+    public static Method getMatchingMethod(Class<?> aClass, String name, Class<?>... params) {
+        Method method = null;
         try {
             method = aClass.getMethod(name, params);
         } catch (NoSuchMethodException e) {
-            method = aClass.getDeclaredMethod(name, params);
+            try {
+                method = aClass.getDeclaredMethod(name, params);
+            } catch (NoSuchMethodException noSuchMethodException) {
+                noSuchMethodException.printStackTrace();
+            }
         }
         return method;
     }
@@ -67,6 +72,23 @@ public class ReflectUtil {
             conor.setAccessible(true);
         }
         return conor.newInstance(args);
+    }
+
+    public static Object invokeMethod(Object instance, String methodName, Object... args) {
+        ArrayList<Class<?>> paramTypes = new ArrayList<>();
+        for (Object arg : args) {
+            paramTypes.add(arg.getClass());
+        }
+        Class<?>[] array = paramTypes.toArray(new Class[paramTypes.size()]);
+        Method method = getMatchingMethod(instance.getClass(), methodName, array);
+        try {
+            return method.invoke(instance, args);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Constructor<?> getConstructor(Class<?> aClass, Object... args) throws NoSuchMethodException {
