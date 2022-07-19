@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kyleduo.switchbutton.SwitchButton
 import com.lu.code.magic.bean.ViewCatchConfig
-import com.lu.code.magic.magic.R
-import com.lu.code.magic.magic.databinding.LayoutListBinding
+import com.lu.code.magic.R
+import com.lu.code.magic.databinding.LayoutListBinding
 import com.lu.code.magic.main.AppListModel
 import com.lu.code.magic.store.TitleModel
 import com.lu.code.magic.ui.BindingFragment

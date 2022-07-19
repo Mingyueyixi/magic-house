@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.lu.code.magic.bean.FuckDialogConfig;
-import com.lu.code.magic.magic.databinding.FragmentFuckDialogBinding;
+import com.lu.code.magic.databinding.FragmentFuckDialogBinding;
 import com.lu.code.magic.main.AppListModel;
 import com.lu.code.magic.store.ItemModel;
 import com.lu.code.magic.store.TitleModel;

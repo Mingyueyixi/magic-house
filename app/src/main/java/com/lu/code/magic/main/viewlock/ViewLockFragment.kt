@@ -5,8 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.lu.code.magic.bean.ViewLockConfig
-import com.lu.code.magic.magic.R
-import com.lu.code.magic.magic.databinding.FragmentLockViewBinding
+import com.lu.code.magic.R
+import com.lu.code.magic.databinding.FragmentLockViewBinding
 import com.lu.code.magic.main.AppListModel
 import com.lu.code.magic.ui.BindingFragment
 import com.lu.code.magic.util.SingleStoreUtil

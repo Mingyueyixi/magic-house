@@ -27,8 +27,8 @@
 //
 //import com.kyleduo.switchbutton.SwitchButton;
 //import com.lu.code.magic.bean.BaseConfig;
-//import com.lu.code.magic.magic.R;
-//import com.lu.code.magic.magic.databinding.FragmentSelectAppBinding;
+//import com.lu.code.magic.R;
+//import com.lu.code.magic.databinding.FragmentSelectAppBinding;
 //import com.lu.code.magic.main.store.ItemModel;
 //import com.lu.code.magic.ui.BindingFragment;
 //import com.lu.code.magic.ui.recycler.MultiAdapter;

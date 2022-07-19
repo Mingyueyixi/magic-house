@@ -29,8 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lu.code.magic.bean.BaseConfig;
-import com.lu.code.magic.magic.R;
-import com.lu.code.magic.magic.databinding.LayoutSelectAppBinding;
+import com.lu.code.magic.R;
+import com.lu.code.magic.databinding.LayoutSelectAppBinding;
 import com.lu.code.magic.store.ItemModel;
 import com.lu.code.magic.ui.BaseActivity;
 import com.lu.code.magic.ui.recycler.MultiAdapter;

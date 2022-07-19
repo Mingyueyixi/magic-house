@@ -3,7 +3,7 @@ package com.lu.code.magic.main.screen;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 
-import com.lu.code.magic.magic.R;
+import com.lu.code.magic.R;
 import com.lu.code.magic.util.log.LogUtil;
 
 public class ScreenOrientationUtil {

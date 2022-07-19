@@ -7,8 +7,8 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lu.code.magic.bean.FuckDialogConfig
-import com.lu.code.magic.magic.R
-import com.lu.code.magic.magic.databinding.ActivityMainBinding
+import com.lu.code.magic.R
+import com.lu.code.magic.databinding.ActivityMainBinding
 import com.lu.code.magic.provider.XPreference
 import com.lu.code.magic.ui.BaseActivity
 import com.lu.code.magic.util.FragmentUtil

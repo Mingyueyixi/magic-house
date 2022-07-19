@@ -54,7 +54,7 @@ dependencies {
 //    implementation 'de.robv.android.xposed:api:82'
 
     api(project(':amagic'))
-    implementation(project(':base'))
+    api(project(':base'))
 
 //  内存泄露
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'

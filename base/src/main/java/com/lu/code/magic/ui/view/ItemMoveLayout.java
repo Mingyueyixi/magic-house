@@ -16,7 +16,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.lu.code.magic.base.R;
+import com.lu.code.magic.R;
 
 
 public class ItemMoveLayout extends FrameLayout {

@@ -8,8 +8,8 @@ import android.widget.TextView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.lu.code.magic.magic.R
-import com.lu.code.magic.magic.databinding.LayoutListBinding
+import com.lu.code.magic.R
+import com.lu.code.magic.databinding.LayoutListBinding
 import com.lu.code.magic.store.ItemModel
 import com.lu.code.magic.store.PageModel
 import com.lu.code.magic.store.TitleModel

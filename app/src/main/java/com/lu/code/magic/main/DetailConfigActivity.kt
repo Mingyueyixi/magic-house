@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.lu.code.magic.amap.FuckAMapFragment
-import com.lu.code.magic.base.databinding.LayoutContainerBinding
+import com.lu.code.magic.databinding.LayoutContainerBinding
 import com.lu.code.magic.main.fuckdialog.FuckDialogFragment
 import com.lu.code.magic.main.screen.ScreenOrientationFragment
 import com.lu.code.magic.main.viewcatch.ViewCatchFragment
