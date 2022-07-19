@@ -4,20 +4,20 @@ import android.content.pm.ActivityInfo
 import android.os.Bundle
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.lu.code.magic.magic.databinding.LayoutContainerBinding
-import com.lu.code.magic.main.amap.FuckAMapFragment
+import com.lu.code.magic.amap.FuckAMapFragment
+import com.lu.code.magic.base.databinding.LayoutContainerBinding
 import com.lu.code.magic.main.fuckdialog.FuckDialogFragment
 import com.lu.code.magic.main.screen.ScreenOrientationFragment
-import com.lu.code.magic.main.store.ItemModel
 import com.lu.code.magic.main.viewcatch.ViewCatchFragment
 import com.lu.code.magic.main.viewlock.ViewLockFragment
-import com.lu.code.magic.ui.BaseActivity
+import com.lu.code.magic.store.ItemModel
+import com.lu.code.magic.ui.BaseToolBarActivity
 import com.lu.code.magic.ui.FragmentNavigation
 import com.lu.code.magic.util.SingleStoreUtil
 import com.lu.code.magic.util.config.SheetName
 import com.lu.code.magic.util.log.LogUtil
 
-class DetailConfigActivity : BaseActivity() {
+class DetailConfigActivity : BaseToolBarActivity() {
     private lateinit var binding: LayoutContainerBinding
     private lateinit var fragmentNavigation: FragmentNavigation
     private lateinit var routeModel: ItemModel
@@ -67,7 +67,7 @@ class DetailConfigActivity : BaseActivity() {
             SheetName.VIEW_CATCH -> {
                 fragmentNavigation.navigate(ViewCatchFragment())
             }
-            SheetName.VIEW_LOCK ->{
+            SheetName.VIEW_LOCK -> {
                 fragmentNavigation.navigate(ViewLockFragment())
             }
             else -> {
@@ -89,7 +89,7 @@ class DetailConfigActivity : BaseActivity() {
         }
     }
 
-    fun getToolBar(): Toolbar {
+    override fun getToolBar(): Toolbar {
         return binding.appBarLayout.toolbar
     }
 

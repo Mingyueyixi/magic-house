@@ -4,24 +4,19 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.lu.code.magic.bean.FuckDialogConfig;
 import com.lu.code.magic.magic.databinding.FragmentFuckDialogBinding;
 import com.lu.code.magic.main.AppListModel;
-import com.lu.code.magic.main.MagicConfigViewModel;
-import com.lu.code.magic.main.store.ItemModel;
-import com.lu.code.magic.main.store.TitleModel;
+import com.lu.code.magic.store.ItemModel;
+import com.lu.code.magic.store.TitleModel;
 import com.lu.code.magic.ui.BindingFragment;
 
 import com.lu.code.magic.util.SingleStoreUtil;
 import com.lu.code.magic.util.config.ConfigUtil;
-import com.lu.code.magic.util.log.LogUtil;
 
 /**
  * @author lu

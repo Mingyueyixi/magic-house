@@ -11,12 +11,11 @@ import com.lu.code.magic.bean.ViewCatchConfig
 import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.LayoutListBinding
 import com.lu.code.magic.main.AppListModel
-import com.lu.code.magic.main.store.TitleModel
+import com.lu.code.magic.store.TitleModel
 import com.lu.code.magic.ui.BindingFragment
 import com.lu.code.magic.ui.recycler.MultiAdapter
 import com.lu.code.magic.ui.recycler.MultiViewHolder
 import com.lu.code.magic.ui.recycler.SimpleItemType
-import com.lu.code.magic.util.GsonUtil
 import com.lu.code.magic.util.SingleStoreUtil
 import com.lu.code.magic.util.config.ConfigUtil
 import com.lu.code.magic.util.config.SheetName

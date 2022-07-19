@@ -28,7 +28,7 @@ import com.lu.code.magic.bean.BaseConfig;
 import com.lu.code.magic.magic.R;
 import com.lu.code.magic.magic.databinding.FragScreenOrientationBinding;
 import com.lu.code.magic.main.AppListModel;
-import com.lu.code.magic.main.store.ItemModel;
+import com.lu.code.magic.store.ItemModel;
 import com.lu.code.magic.ui.BindingFragment;
 import com.lu.code.magic.ui.recycler.MultiAdapter;
 import com.lu.code.magic.ui.recycler.MultiViewHolder;

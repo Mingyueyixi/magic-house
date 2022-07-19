@@ -10,9 +10,9 @@ import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.lu.code.magic.magic.R
 import com.lu.code.magic.magic.databinding.LayoutListBinding
-import com.lu.code.magic.main.store.ItemModel
-import com.lu.code.magic.main.store.PageModel
-import com.lu.code.magic.main.store.TitleModel
+import com.lu.code.magic.store.ItemModel
+import com.lu.code.magic.store.PageModel
+import com.lu.code.magic.store.TitleModel
 import com.lu.code.magic.ui.BaseFragment
 import com.lu.code.magic.ui.LifecycleAutoViewBinding
 import com.lu.code.magic.ui.recycler.MultiAdapter
