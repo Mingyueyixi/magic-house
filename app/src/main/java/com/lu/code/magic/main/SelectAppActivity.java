@@ -194,7 +194,7 @@ public class SelectAppActivity extends BaseActivity {
             @NonNull
             @Override
             public MultiViewHolder<AppListModel> createViewHolder(@NonNull MultiAdapter<AppListModel> adapter, @NonNull ViewGroup parent, int viewType) {
-                View v = LayoutInflater.from(getContext()).inflate(R.layout.item_enable_list, parent, false);
+                View v = LayoutInflater.from(getContext()).inflate(com.lu.code.magic.base.R.layout.item_enable_list, parent, false);
                 return new ItemViewHolder(v);
             }
         });
@@ -365,10 +365,10 @@ public class SelectAppActivity extends BaseActivity {
             super(itemView);
             appListModelLoader = LoaderCacheUtil.createObjectLoader(new LruCache<String, AppListModel>(100));
 
-            ivAppIcon = itemView.findViewById(R.id.ivHeadIcon);
-            tvAppName = itemView.findViewById(R.id.tvBodyTitle);
-            tvPackageName = itemView.findViewById(R.id.tvBodySubTitle);
-            sbEnableItem = itemView.findViewById(R.id.sbEnableItem);
+            ivAppIcon = itemView.findViewById(com.lu.code.magic.base.R.id.ivHeadIcon);
+            tvAppName = itemView.findViewById(com.lu.code.magic.base.R.id.tvBodyTitle);
+            tvPackageName = itemView.findViewById(com.lu.code.magic.base.R.id.tvBodySubTitle);
+            sbEnableItem = itemView.findViewById(com.lu.code.magic.base.R.id.sbEnableItem);
 
             itemView.setOnClickListener(v -> {
                 int clickPosition = getLayoutPosition();

@@ -9,12 +9,10 @@ import com.lu.code.magic.arts.FuckAMapLocationMagic;
 import com.lu.code.magic.arts.FuckDialogMagic;
 import com.lu.code.magic.arts.FuckScreenMagic;
 import com.lu.code.magic.arts.FuckVibratorMagic;
-import com.lu.code.magic.arts.LocationMagic;
 import com.lu.code.magic.arts.MagicRepository;
 import com.lu.code.magic.arts.TestMagic;
 import com.lu.code.magic.arts.ViewCatchMagic;
 import com.lu.code.magic.arts.ViewLockMagic;
-import com.lu.code.magic.BuildConfig;
 import com.lu.code.magic.util.AppUtil;
 import com.lu.code.magic.util.log.LogUtil;
 

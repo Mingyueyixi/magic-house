@@ -22,6 +22,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "MagicHouse"
-include ':app'
-include ':amagic'
 include ':base'
+include ':magic:amap'
+include ':magic:screen'
+include ':app'

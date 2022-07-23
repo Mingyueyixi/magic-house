@@ -1,4 +1,4 @@
-package com.lu.code.magic.main.screen;
+package com.lu.code.magic.screen;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -25,9 +25,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kyleduo.switchbutton.SwitchButton;
 import com.lu.code.magic.bean.BaseConfig;
-import com.lu.code.magic.R;
-import com.lu.code.magic.databinding.FragScreenOrientationBinding;
+
 import com.lu.code.magic.main.AppListModel;
+import com.lu.code.magic.screen.databinding.FragScreenOrientationBinding;
 import com.lu.code.magic.store.ItemModel;
 import com.lu.code.magic.ui.BindingFragment;
 import com.lu.code.magic.ui.recycler.MultiAdapter;
@@ -123,7 +123,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
                     @NonNull
                     @Override
                     public MultiViewHolder<OrientationDTO.ActItem> createViewHolder(@NonNull MultiAdapter<OrientationDTO.ActItem> adapter, @NonNull ViewGroup parent, int viewType) {
-                        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_enable_list, parent, false);
+                        View view = LayoutInflater.from(parent.getContext()).inflate(com.lu.code.magic.base.R.layout.item_enable_list, parent, false);
 
                         return new MultiViewHolder<OrientationDTO.ActItem>(view) {
                             private RelativeLayout vBottomLayout;
@@ -135,13 +135,13 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
 
                             @Override
                             public void onInit() {
-                                tvTitle = itemView.findViewById(R.id.tvBodyTitle);
-                                tvSubTitle = itemView.findViewById(R.id.tvBodySubTitle);
-                                ivHeadView = itemView.findViewById(R.id.ivHeadIcon);
+                                tvTitle = itemView.findViewById(com.lu.code.magic.base.R.id.tvBodyTitle);
+                                tvSubTitle = itemView.findViewById(com.lu.code.magic.base.R.id.tvBodySubTitle);
+                                ivHeadView = itemView.findViewById(com.lu.code.magic.base.R.id.ivHeadIcon);
                                 ivHeadView.setVisibility(View.GONE);
-                                sbCheckView = itemView.findViewById(R.id.sbEnableItem);
-                                vItemFace = itemView.findViewById(R.id.layoutItemFace);
-                                vBottomLayout = itemView.findViewById(R.id.vItemBottom);
+                                sbCheckView = itemView.findViewById(com.lu.code.magic.base.R.id.sbEnableItem);
+                                vItemFace = itemView.findViewById(com.lu.code.magic.base.R.id.layoutItemFace);
+                                vBottomLayout = itemView.findViewById(com.lu.code.magic.base.R.id.vItemBottom);
                                 vBottomLayout.setVisibility(View.VISIBLE);
 
                                 itemView.setOnClickListener(v -> {

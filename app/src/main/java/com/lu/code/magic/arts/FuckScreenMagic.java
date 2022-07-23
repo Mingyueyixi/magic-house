@@ -1,15 +1,11 @@
 package com.lu.code.magic.arts;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.lu.code.magic.bean.BaseConfig;
-import com.lu.code.magic.main.screen.OrientationDTO;
-import com.lu.code.magic.main.screen.ScreenOrientationUtil;
-import com.lu.code.magic.provider.XPreference;
+import com.lu.code.magic.screen.OrientationDTO;
+import com.lu.code.magic.screen.ScreenOrientationUtil;
 import com.lu.code.magic.util.GsonUtil;
 import com.lu.code.magic.util.config.ConfigUtil;
 import com.lu.code.magic.util.config.SheetName;

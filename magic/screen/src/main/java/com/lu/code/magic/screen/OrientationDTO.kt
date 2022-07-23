@@ -1,4 +1,4 @@
-package com.lu.code.magic.main.screen
+package com.lu.code.magic.screen
 
 /**
  * Activity屏幕方向模板

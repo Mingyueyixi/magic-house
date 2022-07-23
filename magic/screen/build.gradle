@@ -1,0 +1,7 @@
+apply from: rootProject.file('module.gradle')
+android {
+
+}
+dependencies {
+     api project(":base")
+}

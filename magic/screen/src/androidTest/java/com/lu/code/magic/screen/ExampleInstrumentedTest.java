@@ -1,4 +1,4 @@
-package com.lu.code.amagic;
+package com.lu.code.magic.screen;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.lu.code.amagic.test", appContext.getPackageName());
+        assertEquals("com.lu.code.magic.screen.test", appContext.getPackageName());
     }
 }

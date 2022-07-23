@@ -73,15 +73,15 @@ class ViewCatchFragment : BindingFragment<LayoutListBinding>() {
                     parent: ViewGroup,
                     viewType: Int
                 ): MultiViewHolder<Model> {
-                    var view = layoutInflater.inflate(R.layout.item_enable_list, parent, false)
+                    var view = layoutInflater.inflate(com.lu.code.magic.base.R.layout.item_enable_list, parent, false)
                     return object : MultiViewHolder<Model>(view) {
                         private var sbSwitch: SwitchButton
                         private var tvBodyTitle: TextView
 
                         init {
-                            tvBodyTitle = itemView.findViewById<TextView>(R.id.tvBodyTitle)
-                            sbSwitch = itemView.findViewById<SwitchButton>(R.id.sbEnableItem)
-                            itemView.findViewById<TextView>(R.id.tvBodySubTitle)
+                            tvBodyTitle = itemView.findViewById<TextView>(com.lu.code.magic.base.R.id.tvBodyTitle)
+                            sbSwitch = itemView.findViewById<SwitchButton>(com.lu.code.magic.base.R.id.sbEnableItem)
+                            itemView.findViewById<TextView>(com.lu.code.magic.base.R.id.tvBodySubTitle)
                                 .visibility = View.GONE
 
                             sbSwitch.setOnClickListener {

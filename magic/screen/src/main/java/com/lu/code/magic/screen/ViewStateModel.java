@@ -1,4 +1,4 @@
-package com.lu.code.magic.main.screen;
+package com.lu.code.magic.screen;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

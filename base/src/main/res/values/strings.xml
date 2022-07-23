@@ -1,12 +1,4 @@
 <resources>
-    <string name="app_name">MagicHouse</string>
-    <string name="log">Log</string>
-    <string name="home">Home</string>
-    <string name="about">About</string>
-    <string name="store">Store</string>
-    <string name="js">JS</string>
-    <string name="dev">Dev</string>
-    <string name="app_xposed_description">magic for house</string>
     <string name="sort">Sort</string>
     <string name="app_name_A_Z">App Name(A-Z)</string>
     <string name="app_name_Z_A">App Name(Z-A)</string>

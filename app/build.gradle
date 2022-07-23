@@ -53,8 +53,9 @@ dependencies {
     implementation 'com.kyleduo.switchbutton:library:2.1.0'
 //    implementation 'de.robv.android.xposed:api:82'
 
-    api(project(':amagic'))
-    api(project(':base'))
+    implementation project(':magic:amap')
+    implementation project(":magic:screen")
+    implementation project(':base')
 
 //  内存泄露
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.8.1'
