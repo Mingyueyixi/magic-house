@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lu.code.magic.main.SelectAppConfigActivity">
+    tools:context="com.lu.magic.main.SelectAppConfigActivity">
 
     <include
         android:id="@+id/appBarLayout"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.lu.code.magic.ui.SelectView
+            <com.lu.magic.ui.SelectView
                 android:id="@+id/svAppListFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
