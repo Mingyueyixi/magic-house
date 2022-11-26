@@ -20,6 +20,9 @@ public class MagicRepository {
             return;
         }
         for (BaseMagic plugin : plugins) {
+            if (plugin == null) {
+                continue;
+            }
             mMagicRepoMap.put(plugin.getMagicId(), plugin);
         }
     }

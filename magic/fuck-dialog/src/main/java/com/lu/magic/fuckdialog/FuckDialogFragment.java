@@ -1,4 +1,4 @@
-package com.lu.magic.main.fuckdialog;
+package com.lu.magic.fuckdialog;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,12 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.lu.magic.bean.FuckDialogConfig;
-import com.lu.magic.databinding.FragmentFuckDialogBinding;
+import com.lu.magic.fuckdialog.databinding.FragmentFuckDialogBinding;
 import com.lu.magic.main.AppListModel;
 import com.lu.magic.store.ItemModel;
 import com.lu.magic.store.TitleModel;
 import com.lu.magic.ui.BindingFragment;
-
 import com.lu.magic.util.SingleStoreUtil;
 import com.lu.magic.util.config.ConfigUtil;
 

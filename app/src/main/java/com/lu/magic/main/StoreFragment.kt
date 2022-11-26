@@ -8,7 +8,7 @@ import android.widget.TextView
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.lu.magic.R
+import com.lu.magic.*
 import com.lu.magic.databinding.LayoutListBinding
 import com.lu.magic.store.ItemModel
 import com.lu.magic.store.PageModel
@@ -47,16 +47,25 @@ class StoreFragment : BaseFragment() {
                 ItemModel("安全截图", PageModel()),
                 TitleModel("禁止"),
                 ItemModel("对话框", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
-                ItemModel("震动器", PageModel("禁止震动", SheetName.FUCK_VIBRATOR)),
+                ItemModel(
+                    "震动器",
+                    PageModel("禁止震动", SheetName.FUCK_VIBRATOR),
+                    ModuleFuckVibrator::class
+                ),
                 TitleModel("位置"),
-                ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION)),
+                ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION), ModuleAMap::class),
                 TitleModel("开发工具"),
                 ItemModel("视图捕获", PageModel("视图捕获", SheetName.VIEW_CATCH)),
                 TitleModel("其他"),
-                ItemModel("屏幕旋转", PageModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION)),
-                ItemModel("锁定视图", PageModel("锁定视图", SheetName.VIEW_LOCK))
+                ItemModel(
+                    "屏幕旋转",
+                    PageModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION),
+                    ModuleScreen::class
+                ),
+                ItemModel("锁定视图", PageModel("锁定视图", SheetName.VIEW_LOCK)),
 
-            )
+
+                )
             .addItemType(object : MultiItemType<ItemModel> {
                 override fun getItemViewType(
                     adapter: MultiAdapter<ItemModel>,
@@ -117,9 +126,11 @@ class StoreFragment : BaseFragment() {
                         init {
                             itemView.setOnClickListener {
                                 var item = adapter.getItem(layoutPosition)
-                                if (item != null) {
-                                    SelectAppActivity.start(itemView.context, item)
+                                item?.let {
+                                    ModuleProviders.get(item.moduleClassName)
+                                        ?.onEntry(itemView.context, item)
                                 }
+
                             }
                         }
 

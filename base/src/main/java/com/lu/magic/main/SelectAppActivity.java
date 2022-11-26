@@ -29,9 +29,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lu.magic.base.databinding.LayoutSelectAppBinding;
 import com.lu.magic.bean.BaseConfig;
-import com.lu.magic.R;
-import com.lu.magic.databinding.LayoutSelectAppBinding;
+import com.lu.magic.base.R;
+
 import com.lu.magic.store.ItemModel;
 import com.lu.magic.ui.BaseActivity;
 import com.lu.magic.ui.recycler.MultiAdapter;
@@ -165,13 +166,11 @@ public class SelectAppActivity extends BaseActivity {
 
         binding.svAppListFilter.setOnMenuItemClickListener(item -> {
             item.setChecked(true);
-            switch (item.getGroupId()) {
-                case R.id.group_sort:
-                    sortActionId = item.getItemId();
-                    break;
-                case R.id.group_filter:
-                    filterActionId = item.getItemId();
-                    break;
+            int groupId = item.getGroupId();
+            if (groupId == R.id.group_sort) {
+                sortActionId = item.getItemId();
+            } else if (groupId == R.id.group_filter) {
+                filterActionId = item.getItemId();
             }
             updateInstallInfoList();
             return false;
@@ -247,25 +246,20 @@ public class SelectAppActivity extends BaseActivity {
                 continue;
             }
 
-            switch (filterId) {
-                case R.id.filter_only_show_system_app:
-                    if (PackageUtil.Companion.isSystemApp(pkgInfo)) {
-                        appListModels.add(model);
-                    }
-                    break;
-                case R.id.filter_hide_system_app:
-                    if (!PackageUtil.Companion.isSystemApp(pkgInfo)) {
-                        appListModels.add(model);
-                    }
-                    break;
-                case R.id.filter_only_show_debug_app:
-                    if (PackageUtil.Companion.isDebugApp(pkgInfo)) {
-                        appListModels.add(model);
-                    }
-                    break;
-                default:
+            if (filterId == R.id.filter_only_show_system_app) {
+                if (PackageUtil.Companion.isSystemApp(pkgInfo)) {
                     appListModels.add(model);
-                    break;
+                }
+            } else if (filterId == R.id.filter_hide_system_app) {
+                if (!PackageUtil.Companion.isSystemApp(pkgInfo)) {
+                    appListModels.add(model);
+                }
+            } else if (filterId == R.id.filter_only_show_debug_app) {
+                if (PackageUtil.Companion.isDebugApp(pkgInfo)) {
+                    appListModels.add(model);
+                }
+            } else {
+                appListModels.add(model);
             }
         }
 
@@ -282,18 +276,14 @@ public class SelectAppActivity extends BaseActivity {
             if (o2.getEnable() && !o1.getEnable()) {
                 return 1;
             }
-            switch (sortId) {
-                case R.id.sort_app_name_A_Z:
-                    //都是enable或都不是
-                    return o1.getName().compareTo(o2.getName());
-                case R.id.sort_app_name_Z_A:
-                    return o2.getName().compareTo(o1.getName());
-                case R.id.sort_package_name_A_Z:
-                    return o1.getPackageName().compareTo(o2.getPackageName());
-                case R.id.sort_package_name_Z_A:
-                    return o2.getPackageName().compareTo(o1.getPackageName());
-                default:
-                    break;
+            if (sortId == R.id.sort_app_name_A_Z) {//都是enable或都不是
+                return o1.getName().compareTo(o2.getName());
+            } else if (sortId == R.id.sort_app_name_Z_A) {
+                return o2.getName().compareTo(o1.getName());
+            } else if (sortId == R.id.sort_package_name_A_Z) {
+                return o1.getPackageName().compareTo(o2.getPackageName());
+            } else if (sortId == R.id.sort_package_name_Z_A) {
+                return o2.getPackageName().compareTo(o1.getPackageName());
             }
             return 0;
         });

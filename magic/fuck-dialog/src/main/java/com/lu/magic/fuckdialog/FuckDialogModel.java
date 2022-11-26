@@ -1,4 +1,4 @@
-package com.lu.magic.main.fuckdialog;
+package com.lu.magic.fuckdialog;
 
 /**
  * @Author: Lu

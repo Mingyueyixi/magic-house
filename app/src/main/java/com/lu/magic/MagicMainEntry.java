@@ -8,7 +8,6 @@ import com.lu.magic.arts.DisableFlagSecureMagic;
 import com.lu.magic.arts.FuckAMapLocationMagic;
 import com.lu.magic.arts.FuckDialogMagic;
 import com.lu.magic.arts.FuckScreenMagic;
-import com.lu.magic.arts.FuckVibratorMagic;
 import com.lu.magic.arts.MagicRepository;
 import com.lu.magic.arts.TestMagic;
 import com.lu.magic.arts.ViewCatchMagic;
@@ -35,13 +34,15 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         repository.add(new MagicSelfEntry());
         repository.add(new DisableFlagSecureMagic());
         repository.add(new TestMagic());
-        repository.add(new FuckDialogMagic());
 //        repository.add(new LocationMagic());
-        repository.add(new FuckAMapLocationMagic());
-        repository.add(new FuckVibratorMagic());
-        repository.add(new FuckScreenMagic());
         repository.add(new ViewCatchMagic());
         repository.add(new ViewLockMagic());
+
+        ModuleRegistry.INSTANCE.register();
+        for (Map.Entry<String, IModuleFace> ele : ModuleProviders.moduleFaces.entrySet()) {
+            IModuleFace module = ele.getValue();
+            repository.add(module.loadMagic());
+        }
     }
 
     @Override
@@ -91,6 +92,7 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
             LogUtil.d("handle magic:", magic.getClass().getSimpleName());
             magic.handleLoadPackage(lpparam);
         }
+
     }
 
 }

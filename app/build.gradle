@@ -55,6 +55,7 @@ dependencies {
 
     implementation project(':magic:amap')
     implementation project(":magic:screen")
+    implementation project(":magic:fuck-vibrator")
     api project(':base')
 
 

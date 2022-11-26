@@ -10,7 +10,7 @@ public class AppInitProxy {
     private static Context context;
 
     public static boolean hasAttachContext() {
-        return context == null;
+        return context != null;
     }
 
     public static void callInit(Context ctx) {
@@ -18,4 +18,6 @@ public class AppInitProxy {
         ConfigUtil.init(ctx);
         AppUtil.attachContext(ctx);
     }
+
+
 }
