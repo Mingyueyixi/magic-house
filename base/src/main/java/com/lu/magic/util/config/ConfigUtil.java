@@ -6,7 +6,7 @@ import com.google.gson.JsonObject;
 import com.lu.magic.bean.AMapConfig;
 import com.lu.magic.bean.BaseConfig;
 import com.lu.magic.bean.FuckDialogConfig;
-import com.lu.magic.provider.XPreference;
+import com.lu.magic.frame.xp.XPreference;
 import com.lu.magic.util.GsonUtil;
 
 import java.lang.reflect.Type;

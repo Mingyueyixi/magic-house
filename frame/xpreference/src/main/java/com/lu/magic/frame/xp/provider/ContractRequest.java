@@ -1,8 +1,8 @@
-package com.lu.magic.provider;
+package com.lu.magic.frame.xp.provider;
 
-import com.lu.magic.provider.annotation.FunctionValue;
-import com.lu.magic.provider.annotation.GroupValue;
-import com.lu.magic.provider.annotation.ProviderIdValue;
+import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
+import com.lu.magic.frame.xp.provider.annotation.GroupValue;
+import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
 
 import java.util.List;
 
@@ -31,9 +31,9 @@ public class ContractRequest {
 
     public static class Action<T> {
         @FunctionValue
-        protected String function;
-        protected String key;
-        protected T value;
+        public String function;
+        public String key;
+        public T value;
 
         public Action() {
         }

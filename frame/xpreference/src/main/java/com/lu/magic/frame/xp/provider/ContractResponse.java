@@ -1,8 +1,8 @@
-package com.lu.magic.provider;
+package com.lu.magic.frame.xp.provider;
 
 public class ContractResponse<T> {
-    protected T data;
-    protected Throwable exception;
+    public T data;
+    public Throwable exception;
 
     public ContractResponse() {
     }

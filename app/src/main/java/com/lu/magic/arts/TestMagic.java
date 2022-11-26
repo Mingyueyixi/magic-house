@@ -2,15 +2,11 @@ package com.lu.magic.arts;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.ReflectUtil;
 import com.lu.magic.util.log.LogUtil;
-import com.lu.magic.util.view.ViewUtil;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;

@@ -17,6 +17,7 @@
     <!-- 读取缓存数据 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <!-- 用于读取手机当前的状态 -->
 <!--    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
 
@@ -55,7 +56,7 @@
             android:foregroundServiceType="location" />
 
         <provider
-            android:name="com.lu.magic.provider.DataShareProvider"
+            android:name="com.lu.magic.frame.xp.provider.DataShareProvider"
             android:authorities="com.lu.magic"
             android:exported="true" />
 

@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import com.lu.magic.util.config.ConfigUtil;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
@@ -24,17 +22,15 @@ public class AppUtil {
 
     }
 
+    public static void attachContext(Context ctx) {
+        sContext = ctx.getApplicationContext();
+    }
+
     public static Context getContext() {
+        if (sContext == null) {
+            sContext = getApplicationByReflect();
+        }
         return sContext;
-    }
-
-    public static boolean hasInit() {
-        return sContext != null;
-    }
-
-    public static void doInit(Context context) {
-        sContext = context.getApplicationContext();
-        ConfigUtil.init(context);
     }
 
     public static Application getApplicationByReflect() {
@@ -68,8 +64,8 @@ public class AppUtil {
                 }
                 if (i >= publicKey.length - 1) {
                     hexString.append(appendString);
-                }else {
-                    hexString.append(appendString+":");
+                } else {
+                    hexString.append(appendString + ":");
                 }
             }
             return hexString.toString();

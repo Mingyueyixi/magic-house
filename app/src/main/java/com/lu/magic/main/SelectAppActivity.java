@@ -12,6 +12,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -375,7 +376,6 @@ public class SelectAppActivity extends BaseActivity {
                 AppListModel itemData = appListAdapter.getItem(clickPosition);
                 showConfigPage(itemData);
             });
-
             sbEnableItem.setOnClickListener(v -> {
                 CompoundButton compoundButton = ((CompoundButton) v);
                 boolean check = compoundButton.isChecked();

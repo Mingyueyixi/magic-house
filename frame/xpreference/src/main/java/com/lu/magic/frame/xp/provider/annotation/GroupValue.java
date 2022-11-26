@@ -1,10 +1,7 @@
-package com.lu.magic.provider.annotation;
+package com.lu.magic.frame.xp.provider.annotation;
 
 
-import static com.lu.magic.provider.annotation.GroupValue.APPLY;
-import static com.lu.magic.provider.annotation.GroupValue.COMMIT;
-import static com.lu.magic.provider.annotation.GroupValue.CONTAINS;
-import static com.lu.magic.provider.annotation.GroupValue.GET;
+import static com.lu.magic.frame.xp.provider.annotation.GroupValue.*;
 
 import androidx.annotation.StringDef;
 

@@ -95,6 +95,6 @@ class DetailConfigActivity : BaseToolBarActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        LogUtil.d(">>>", "Detsory")
+        com.lu.magic.util.log.LogUtil.d(">>>", "Detsory")
     }
 }

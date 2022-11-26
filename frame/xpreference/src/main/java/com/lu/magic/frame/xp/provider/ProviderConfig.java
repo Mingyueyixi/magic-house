@@ -1,4 +1,4 @@
-package com.lu.magic.provider;
+package com.lu.magic.frame.xp.provider;
 
 public class ProviderConfig {
     /**

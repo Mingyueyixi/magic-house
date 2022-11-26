@@ -1,4 +1,4 @@
-package com.lu.magic.provider;
+package com.lu.magic.frame.xp;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,10 +8,14 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
-import com.lu.magic.provider.annotation.FunctionValue;
-import com.lu.magic.provider.annotation.GroupValue;
-import com.lu.magic.provider.annotation.ModeValue;
-import com.lu.magic.provider.annotation.ProviderIdValue;
+import com.lu.magic.frame.xp.provider.ContractRequest;
+import com.lu.magic.frame.xp.provider.ContractResponse;
+import com.lu.magic.frame.xp.provider.ContractUtil;
+import com.lu.magic.frame.xp.provider.DataShareProvider;
+import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
+import com.lu.magic.frame.xp.provider.annotation.GroupValue;
+import com.lu.magic.frame.xp.provider.annotation.ModeValue;
+import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
 
 import java.io.Serializable;
 import java.util.ArrayList;

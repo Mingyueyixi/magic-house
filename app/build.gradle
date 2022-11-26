@@ -55,7 +55,8 @@ dependencies {
 
     implementation project(':magic:amap')
     implementation project(":magic:screen")
-    implementation project(':base')
+    api project(':base')
+
 
 //  内存泄露
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'

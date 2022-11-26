@@ -1,13 +1,7 @@
 package com.lu.magic;
 
 import android.app.Application;
-import android.content.ComponentCallbacks;
 import android.content.Context;
-import android.content.res.Configuration;
-
-import androidx.annotation.NonNull;
-
-import com.lu.magic.util.AppUtil;
 
 /**
  * @Author: Lu
@@ -29,7 +23,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         initSec();
-        AppUtil.doInit(this);
+        AppInitProxy.callInit(this);
     }
 
     private void initSec() {

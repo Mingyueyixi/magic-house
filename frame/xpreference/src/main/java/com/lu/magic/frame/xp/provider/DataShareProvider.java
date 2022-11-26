@@ -1,4 +1,4 @@
-package com.lu.magic.provider;
+package com.lu.magic.frame.xp.provider;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -7,10 +7,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.lu.magic.provider.annotation.FunctionValue;
-import com.lu.magic.provider.annotation.GroupValue;
-import com.lu.magic.provider.annotation.ModeValue;
-import com.lu.magic.provider.annotation.ProviderIdValue;
+import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
+import com.lu.magic.frame.xp.provider.annotation.GroupValue;
+import com.lu.magic.frame.xp.provider.annotation.ModeValue;
+import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
 import com.tencent.mmkv.MMKV;
 
 import java.io.Serializable;

@@ -1,8 +1,7 @@
-package com.lu.magic.provider.annotation;
+package com.lu.magic.frame.xp.provider.annotation;
 
 
-import static com.lu.magic.provider.annotation.ProviderIdValue.MMKV;
-import static com.lu.magic.provider.annotation.ProviderIdValue.SP;
+import static com.lu.magic.frame.xp.provider.annotation.ProviderIdValue.*;
 
 import androidx.annotation.StringDef;
 

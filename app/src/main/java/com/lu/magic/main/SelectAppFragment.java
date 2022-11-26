@@ -34,7 +34,7 @@
 //import com.lu.magic.ui.recycler.MultiAdapter;
 //import com.lu.magic.ui.recycler.MultiViewHolder;
 //import com.lu.magic.ui.recycler.SimpleItemType;
-//import com.lu.magic.util.PackageUtil;
+//import PackageUtil;
 //import com.lu.magic.util.config.ConfigUtil;
 //import com.lu.magic.util.config.SheetName;
 //import com.lu.magic.util.load.LoaderCacheUtil;
