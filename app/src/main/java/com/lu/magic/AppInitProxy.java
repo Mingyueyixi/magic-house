@@ -5,6 +5,9 @@ import android.content.Context;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.config.ConfigUtil;
 
+/**
+ * 这个类将此app与被hook的app的配置的初始化任务，统一到一起
+ */
 public class AppInitProxy {
 
     private static Context context;

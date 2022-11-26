@@ -22,17 +22,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        initSec();
         AppInitProxy.callInit(this);
     }
 
-    private void initSec() {
-//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//                .detectNonSdkApiUsage()
-//                .detectLeakedSqlLiteObjects()
-//                .detectLeakedClosableObjects() //API等级11
-//                .penaltyLog()
-//                .penaltyDeath()
-//                .build());
-    }
 }
