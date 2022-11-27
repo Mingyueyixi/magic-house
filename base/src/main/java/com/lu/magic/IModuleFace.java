@@ -16,14 +16,18 @@ public interface IModuleFace {
         SelectAppActivity.start(context, itemModel);
     }
 
-    default Fragment getDetailFragment() {
+    default IFragmentFactory getDetailFragmentFactory() {
         return null;
     }
 
-    public static class ModuleEmpty implements IModuleFace {
+    class ModuleEmpty implements IModuleFace {
         @Override
         public BaseMagic loadMagic() {
             return null;
         }
+    }
+
+    interface IFragmentFactory {
+        Fragment create();
     }
 }

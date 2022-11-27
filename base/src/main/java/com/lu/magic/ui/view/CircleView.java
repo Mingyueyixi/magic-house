@@ -1,4 +1,4 @@
-package com.lu.magic.ui;
+package com.lu.magic.ui.view;
 
 import android.content.Context;
 import android.graphics.Canvas;

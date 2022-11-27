@@ -11,11 +11,14 @@ import com.lu.magic.ui.BaseToolBarActivity
 import com.lu.magic.ui.FragmentNavigation
 import com.lu.magic.util.SingleStoreUtil
 import com.lu.magic.util.config.SheetName
+import com.lu.magic.util.log.LogUtil
 
 class DetailConfigActivity : BaseToolBarActivity() {
+    private lateinit var pageFragment: Fragment
     private lateinit var binding: LayoutContainerBinding
     private lateinit var fragmentNavigation: FragmentNavigation
     private lateinit var routeModel: ItemModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,26 @@ class DetailConfigActivity : BaseToolBarActivity() {
     }
 
     private fun initView() {
+        ModuleProviders.get(routeModel.moduleClassName).let {
+            if (it != null) {
+                var fragmentFactory = it.detailFragmentFactory
+                if (fragmentFactory == null) {
+                    finish()
+                    return
+                }
+                fragmentFactory.create().let { frag ->
+                    if (frag == null) {
+                        finish()
+                        return
+                    }
+                    pageFragment = frag
+                }
+            } else {
+                finish()
+                return
+            }
+        }
+
         if (routeModel.page.land) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
@@ -48,11 +71,11 @@ class DetailConfigActivity : BaseToolBarActivity() {
             SheetName.AMAP_LOCATION -> {
                 binding.appBarLayout.toolbar.title = "选择位置"
             }
-            else -> {
-                fragmentNavigation.navigate(Fragment())
-            }
+//            else -> {
+//                fragmentNavigation.navigate(Fragment())
+//            }
         }
-        ModuleProviders.get(routeModel.moduleClassName)?.detailFragment?.let {
+        pageFragment?.let {
             fragmentNavigation.navigate(it)
         }
     }

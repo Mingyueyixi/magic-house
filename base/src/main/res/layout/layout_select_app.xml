@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
-            <com.lu.magic.ui.SelectView
+            <com.lu.magic.ui.view.SelectView
                 android:id="@+id/svAppListFilter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

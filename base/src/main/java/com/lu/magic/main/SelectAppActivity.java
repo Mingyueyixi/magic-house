@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -29,6 +28,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.lu.magic.IModuleFace;
+import com.lu.magic.ModuleProviders;
 import com.lu.magic.base.databinding.LayoutSelectAppBinding;
 import com.lu.magic.bean.BaseConfig;
 import com.lu.magic.base.R;
@@ -107,7 +108,7 @@ public class SelectAppActivity extends BaseActivity {
 
     }
 
-    public void showConfigPage(AppListModel itemData) {
+    private void routeDetailConfigPage(AppListModel itemData) {
         viewModel.setAppListModel(itemData);
         SingleStoreUtil.put(routeItem);
         SingleStoreUtil.put(itemData);
@@ -364,7 +365,11 @@ public class SelectAppActivity extends BaseActivity {
             itemView.setOnClickListener(v -> {
                 int clickPosition = getLayoutPosition();
                 AppListModel itemData = appListAdapter.getItem(clickPosition);
-                showConfigPage(itemData);
+                IModuleFace module = ModuleProviders.INSTANCE.get(routeItem.getModuleClassName());
+                if (module == null || module.getDetailFragmentFactory() == null) {
+                    return;
+                }
+                routeDetailConfigPage(itemData);
             });
             sbEnableItem.setOnClickListener(v -> {
                 CompoundButton compoundButton = ((CompoundButton) v);

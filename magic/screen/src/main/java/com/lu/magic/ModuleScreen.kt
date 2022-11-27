@@ -12,7 +12,9 @@ class ModuleScreen : IModuleFace {
         return FuckScreenMagic()
     }
 
-    override fun getDetailFragment(): Fragment {
-        return ScreenOrientationFragment()
+    override fun getDetailFragmentFactory(): IModuleFace.IFragmentFactory {
+        return IModuleFace.IFragmentFactory {
+            ScreenOrientationFragment()
+        }
     }
 }

@@ -11,5 +11,6 @@ object ModuleRegistry {
             ModuleAMap(),
             ModuleScreen()
         )
+
     }
 }
