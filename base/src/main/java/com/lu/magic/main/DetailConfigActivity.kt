@@ -11,7 +11,6 @@ import com.lu.magic.ui.BaseToolBarActivity
 import com.lu.magic.ui.FragmentNavigation
 import com.lu.magic.util.SingleStoreUtil
 import com.lu.magic.util.config.SheetName
-import com.lu.magic.util.log.LogUtil
 
 class DetailConfigActivity : BaseToolBarActivity() {
     private lateinit var pageFragment: Fragment
@@ -37,7 +36,7 @@ class DetailConfigActivity : BaseToolBarActivity() {
     }
 
     private fun initView() {
-        ModuleProviders.get(routeModel.moduleClassName).let {
+        ModuleProviders.get(routeModel.moduleKey).let {
             if (it != null) {
                 var fragmentFactory = it.detailFragmentFactory
                 if (fragmentFactory == null) {

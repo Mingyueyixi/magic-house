@@ -5,9 +5,6 @@ import android.content.Context;
 
 import com.lu.magic.arts.BaseMagic;
 import com.lu.magic.arts.DisableFlagSecureMagic;
-import com.lu.magic.arts.FuckAMapLocationMagic;
-import com.lu.magic.arts.FuckDialogMagic;
-import com.lu.magic.arts.FuckScreenMagic;
 import com.lu.magic.arts.MagicRepository;
 import com.lu.magic.arts.TestMagic;
 import com.lu.magic.arts.ViewCatchMagic;
@@ -38,7 +35,7 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         repository.add(new ViewCatchMagic());
         repository.add(new ViewLockMagic());
 
-        ModuleRegistry.INSTANCE.register();
+        ModuleRegistry.INSTANCE.apply();
         for (Map.Entry<String, IModuleFace> ele : ModuleProviders.moduleFaces.entrySet()) {
             IModuleFace module = ele.getValue();
             repository.add(module.loadMagic());

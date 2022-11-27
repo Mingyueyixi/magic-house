@@ -365,7 +365,7 @@ public class SelectAppActivity extends BaseActivity {
             itemView.setOnClickListener(v -> {
                 int clickPosition = getLayoutPosition();
                 AppListModel itemData = appListAdapter.getItem(clickPosition);
-                IModuleFace module = ModuleProviders.INSTANCE.get(routeItem.getModuleClassName());
+                IModuleFace module = ModuleProviders.INSTANCE.get(routeItem.getModuleKey());
                 if (module == null || module.getDetailFragmentFactory() == null) {
                     return;
                 }
