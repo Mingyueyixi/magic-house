@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
 import com.lu.magic.frame.xp.provider.annotation.GroupValue;
 import com.lu.magic.frame.xp.provider.annotation.ModeValue;
-import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
+import com.lu.magic.frame.xp.provider.annotation.PreferenceIdValue;
 import com.tencent.mmkv.MMKV;
 
 import java.io.Serializable;
@@ -22,25 +22,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <prefix>://<authority>/<data_type>/<id>
+ * content://<authority>/<data_type>/<id>
+ * Example：
  * content://com.lu.magic/mmkv/
  * content://com.lu.magic/sp/
  *
  * @author Lu
  */
 public class DataShareProvider extends BaseCallProvider {
-    private static ProviderConfig providerConfig = new ProviderConfig("com.lu.magic");
-
-    public static void initConfig(ProviderConfig config) {
-        if (providerConfig == null) {
-            return;
-        }
-        providerConfig = config;
-    }
-
-    public static ProviderConfig getProviderConfig() {
-        return providerConfig;
-    }
 
     @Nullable
     @Override
@@ -59,7 +48,7 @@ public class DataShareProvider extends BaseCallProvider {
     }
 
 
-    private ContractResponse<?> dispatchCallMethod(String mode, @ProviderIdValue String table, Bundle extras) {
+    private ContractResponse<?> dispatchCallMethod(String mode, @PreferenceIdValue String table, Bundle extras) {
         ContractRequest request = ContractUtil.toContractRequest(extras);
         ContractResponse<Object> response = null;
 
@@ -92,14 +81,15 @@ public class DataShareProvider extends BaseCallProvider {
                 resultV = getValue(request);
                 break;
             case GroupValue.CONTAINS:
+                //TODO fix bug
                 resultV = containsKey(function, request.table, key);
                 break;
         }
         return new ContractResponse<>(resultV, null);
     }
 
-    private boolean containsKey(@ProviderIdValue String providerId, String table, String key) {
-        if (ProviderIdValue.MMKV.equals(providerId)) {
+    private boolean containsKey(@PreferenceIdValue String preferenceId, String table, String key) {
+        if (PreferenceIdValue.MMKV.equals(preferenceId)) {
             return mmkvTable(table).contains(key);
         }
         return prefsTable(table).contains(key);
@@ -114,7 +104,7 @@ public class DataShareProvider extends BaseCallProvider {
         Object defValue = action.value;
 
         SharedPreferences sp;
-        if (ProviderIdValue.MMKV.equals(request.providerId)) {
+        if (PreferenceIdValue.MMKV.equals(request.preferenceId)) {
             sp = mmkvTable(table);
         } else {
             sp = prefsTable(table);
@@ -172,14 +162,14 @@ public class DataShareProvider extends BaseCallProvider {
     }
 
     private ContractResponse<Boolean> commitValue(ContractRequest request) {
-        SharedPreferences.Editor editor = openEditor(request.providerId, request.table);
+        SharedPreferences.Editor editor = openEditor(request.preferenceId, request.table);
         putValue(editor, request.actions);
         boolean result = editor.commit();
         return new ContractResponse<>(result, null);
     }
 
     private ContractResponse<Void> applyValue(ContractRequest request) {
-        SharedPreferences.Editor editor = openEditor(request.providerId, request.table);
+        SharedPreferences.Editor editor = openEditor(request.preferenceId, request.table);
         putValue(editor, request.actions);
         editor.apply();
         return new ContractResponse<>(null, null);
@@ -232,8 +222,8 @@ public class DataShareProvider extends BaseCallProvider {
     }
 
 
-    private SharedPreferences.Editor openEditor(@ProviderIdValue String providerId, String table) {
-        if (ProviderIdValue.MMKV.equals(providerId)) {
+    private SharedPreferences.Editor openEditor(@PreferenceIdValue String preferenceId, String table) {
+        if (PreferenceIdValue.MMKV.equals(preferenceId)) {
             return mmkvTable(table);
         }
         return prefsTable(table).edit();

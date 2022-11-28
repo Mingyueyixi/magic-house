@@ -11,13 +11,11 @@ import androidx.annotation.Nullable;
 import com.lu.magic.frame.xp.provider.ContractRequest;
 import com.lu.magic.frame.xp.provider.ContractResponse;
 import com.lu.magic.frame.xp.provider.ContractUtil;
-import com.lu.magic.frame.xp.provider.DataShareProvider;
 import com.lu.magic.frame.xp.provider.ProviderConfig;
 import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
 import com.lu.magic.frame.xp.provider.annotation.GroupValue;
 import com.lu.magic.frame.xp.provider.annotation.ModeValue;
-import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
-import com.lu.magic.frame.xp.util.log.DefaultLogger;
+import com.lu.magic.frame.xp.provider.annotation.PreferenceIdValue;
 import com.lu.magic.frame.xp.util.log.IXPLog;
 import com.lu.magic.frame.xp.util.log.XPLogUtil;
 
@@ -35,21 +33,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class XPreference implements SharedPreferences {
     private final String tableName;
     private final ContentResolver contentResolver;
-    @ProviderIdValue
-    private final String providerId;
+    private final String preferenceId;
+    private final ProviderConfig providerConfig;
 
-    public XPreference(Context context, String tableName) {
-        this(context, tableName, ProviderIdValue.SP);
-    }
 
-    public XPreference(Context context, String tableName, String providerId) {
+    public XPreference(Context context, String tableName, @PreferenceIdValue String preferenceId, String authority) {
         this.tableName = tableName;
         this.contentResolver = context.getContentResolver();
-        this.providerId = providerId;
+        this.preferenceId = preferenceId;
+        this.providerConfig = new ProviderConfig(authority);
     }
 
     public Uri buildUri(String path) {
-        String baseUri = DataShareProvider.getProviderConfig().getBaseUri();
+        String baseUri = providerConfig.getBaseUri();
         return ContractUtil.buildUri(baseUri, tableName, path);
     }
 
@@ -142,7 +138,7 @@ public class XPreference implements SharedPreferences {
     public boolean contains(String key) {
         Uri uri = buildUri("contains");
         ContractRequest.Action<Object> action = new ContractRequest.Action<>(FunctionValue.CONTAINS, key, null);
-        ContractRequest request = new ContractRequest(providerId, ModeValue.READ, tableName, GroupValue.CONTAINS, Collections.singletonList(action));
+        ContractRequest request = new ContractRequest(preferenceId, ModeValue.READ, tableName, GroupValue.CONTAINS, Collections.singletonList(action));
         ContractResponse<Boolean> response = ContractUtil.request(contentResolver, uri, request, Boolean.class);
         return response.data;
     }
@@ -164,7 +160,7 @@ public class XPreference implements SharedPreferences {
 
     private <T> T getValue(Uri uri, String function, String key, T defValue, Class<T> rClass) {
         ContractRequest.Action<T> action = new ContractRequest.Action<>(function, key, defValue);
-        ContractRequest request = new ContractRequest(providerId, ModeValue.READ, tableName, GroupValue.GET, Arrays.asList(action));
+        ContractRequest request = new ContractRequest(preferenceId, ModeValue.READ, tableName, GroupValue.GET, Arrays.asList(action));
         ContractResponse<T> response = ContractUtil.request(contentResolver, uri, request, rClass);
         return response.data == null ? defValue : response.data;
     }
@@ -230,7 +226,7 @@ public class XPreference implements SharedPreferences {
         @Override
         public boolean commit() {
             Uri uri = buildUri("write");
-            ContractRequest request = new ContractRequest(providerId, ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
+            ContractRequest request = new ContractRequest(preferenceId, ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
             ContractResponse<Boolean> response = ContractUtil.request(contentResolver, uri, request, Boolean.class);
             return response.data != null && response.data;
         }
@@ -238,7 +234,7 @@ public class XPreference implements SharedPreferences {
         @Override
         public void apply() {
             Uri uri = buildUri("write");
-            ContractRequest request = new ContractRequest(providerId, ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
+            ContractRequest request = new ContractRequest(preferenceId, ModeValue.WRITE, tableName, GroupValue.COMMIT, new ArrayList<>(mActionMap.values()));
             ContractUtil.request(contentResolver, uri, request, Object.class);
         }
 
@@ -248,11 +244,37 @@ public class XPreference implements SharedPreferences {
         return new ConfigApply();
     }
 
-    public static class ConfigApply {
-        public ConfigApply setProviderConfig(ProviderConfig providerConfig) {
-            DataShareProvider.initConfig(providerConfig);
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private String tableName;
+        private String authority;
+        //sp的保存方式
+        @PreferenceIdValue
+        private String preferenceId;
+
+        public Builder setTableName(String tableName) {
+            this.tableName = tableName;
             return this;
         }
+
+        public Builder setProviderAuthority(String authority) {
+            this.authority = authority;
+            return this;
+        }
+
+        public XPreference create(Context context) {
+            if (preferenceId == null) {
+                preferenceId = PreferenceIdValue.SP;
+            }
+            XPreference sp = new XPreference(context, tableName, preferenceId, authority);
+            return sp;
+        }
+    }
+
+    public static class ConfigApply {
 
         public ConfigApply setLogger(IXPLog ixpLog) {
             XPLogUtil.INSTANCE.setLogger(ixpLog);

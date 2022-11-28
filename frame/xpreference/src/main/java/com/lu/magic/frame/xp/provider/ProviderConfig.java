@@ -1,10 +1,6 @@
 package com.lu.magic.frame.xp.provider;
 
 public class ProviderConfig {
-    /**
-     * 读取缓存
-     */
-    private boolean enableReadCache;
     private String authority;
     private String baseUri;
 
@@ -25,12 +21,5 @@ public class ProviderConfig {
         this.baseUri = "content://" + authority;
     }
 
-    public boolean isEnableReadCache() {
-        return enableReadCache;
-    }
-
-    public void setEnableReadCache(boolean enableReadCache) {
-        this.enableReadCache = enableReadCache;
-    }
 
 }

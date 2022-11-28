@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
  * Date: 2022/04/06
  * Description: 默认实现ContentProvider。非数据库操作时，不需要增删改查方法，使用ContentResolver.call更自由
  */
-public class BaseCallProvider extends ContentProvider {
+class BaseCallProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {

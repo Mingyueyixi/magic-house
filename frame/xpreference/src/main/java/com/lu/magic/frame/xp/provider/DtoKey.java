@@ -6,7 +6,7 @@ package com.lu.magic.frame.xp.provider;
  * Description:
  */
 public interface DtoKey {
-    String PROVIDER_ID = "providerId";
+    String PREFERENCE_ID = "preferenceId";
     String MODE = "mode";
     String GROUP = "group";
     String DATA = "data";

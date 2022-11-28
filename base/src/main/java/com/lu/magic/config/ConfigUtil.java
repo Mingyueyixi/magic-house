@@ -17,7 +17,11 @@ public class ConfigUtil {
 
     public static void init(Context context) {
         if (sp == null) {
-            sp = new XPreference(context, "config");
+            sp = XPreference.newBuilder()
+                    .setTableName("config")
+                    //与androidManifest注册的保持一致
+                    .setProviderAuthority("com.lu.magic")
+                    .create(context);
         }
     }
 

@@ -2,7 +2,7 @@ package com.lu.magic.frame.xp.provider;
 
 import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
 import com.lu.magic.frame.xp.provider.annotation.GroupValue;
-import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
+import com.lu.magic.frame.xp.provider.annotation.PreferenceIdValue;
 
 import java.util.List;
 
@@ -10,8 +10,8 @@ import java.util.List;
  * ContentProvider约定的数据结构
  */
 public class ContractRequest {
-    @ProviderIdValue
-    protected String providerId;
+    @PreferenceIdValue
+    protected String preferenceId;
     protected String mode;
     protected String table;
     @GroupValue
@@ -21,8 +21,8 @@ public class ContractRequest {
     public ContractRequest() {
     }
 
-    public ContractRequest(String providerId, String mode, String table, String group, List<Action<?>> actions) {
-        this.providerId = providerId;
+    public ContractRequest(String preferenceId, String mode, String table, String group, List<Action<?>> actions) {
+        this.preferenceId = preferenceId;
         this.mode = mode;
         this.table = table;
         this.group = group;
