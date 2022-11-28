@@ -73,7 +73,6 @@ public class DataShareProvider extends BaseCallProvider {
         //偏好设置读取时，只有一次操作
         ContractRequest.Action<?> bundleAction = request.actions.get(0);
         String group = request.group;
-        String function = bundleAction.function;
         String key = bundleAction.key;
         Object resultV = bundleAction.value;
         switch (group) {
@@ -82,7 +81,7 @@ public class DataShareProvider extends BaseCallProvider {
                 break;
             case GroupValue.CONTAINS:
                 //TODO fix bug
-                resultV = containsKey(function, request.table, key);
+                resultV = containsKey(request.preferenceId, request.table, key);
                 break;
         }
         return new ContractResponse<>(resultV, null);
@@ -158,7 +157,7 @@ public class DataShareProvider extends BaseCallProvider {
             default:
                 break;
         }
-        return new ContractResponse<Void>(null, null);
+        return new ContractResponse<>(null, null);
     }
 
     private ContractResponse<Boolean> commitValue(ContractRequest request) {
