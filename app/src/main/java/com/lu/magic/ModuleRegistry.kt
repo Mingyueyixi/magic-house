@@ -9,28 +9,14 @@ import com.lu.magic.arts.FuckScreenMagic
 import com.lu.magic.arts.FuckVibratorMagic
 import com.lu.magic.fuckdialog.FuckDialogFragment
 import com.lu.magic.screen.ScreenOrientationFragment
+import com.lu.magic.util.config.SheetName
 
 object ModuleRegistry {
-    /** 空实现 */
-    const val KEY_EMPTY = ModuleEmpty.MODULE_KEY
-
-    /** 震动模块 */
-    const val KEY_FUCK_VIBRATOR = "KEY_FUCK_VIBRATOR"
-
-    /** 对话框模块 */
-    const val KEY_FUCK_DIALOG = "KEY_FUCK_DIALOG"
-
-    /** 高德地图模块 */
-    const val KEY_FUCK_AMAP = "KEY_FUCK_AMAP"
-
-    /** 屏幕旋转模块 */
-    const val KEY_FUCK_SCREEN_ROTATE = "KEY_FUCK_SCREEN_ROTATE"
-
 
     fun apply() {
-        ModuleProviders.put(KEY_EMPTY, ModuleEmpty())
-        ModuleProviders.put(KEY_FUCK_VIBRATOR) { FuckVibratorMagic() }
-        ModuleProviders.put(KEY_FUCK_DIALOG, object : IModuleFace {
+        ModuleProviders.put(SheetName.EMPTY, ModuleEmpty())
+        ModuleProviders.put(SheetName.FUCK_VIBRATOR) { FuckVibratorMagic() }
+        ModuleProviders.put(SheetName.FUCK_DIALOG, object : IModuleFace {
             override fun loadMagic(): BaseMagic {
                 return FuckDialogMagic()
             }
@@ -39,7 +25,7 @@ object ModuleRegistry {
                 return IModuleFace.IFragmentFactory { FuckDialogFragment() }
             }
         })
-        ModuleProviders.put(KEY_FUCK_SCREEN_ROTATE, object : IModuleFace {
+        ModuleProviders.put(SheetName.FUCK_SCREEN_ORIENTATION, object : IModuleFace {
             override fun loadMagic(): BaseMagic {
                 return FuckScreenMagic()
             }
@@ -50,7 +36,7 @@ object ModuleRegistry {
                 }
             }
         })
-        ModuleProviders.put(KEY_FUCK_AMAP, object : IModuleFace {
+        ModuleProviders.put(SheetName.AMAP_LOCATION, object : IModuleFace {
             override fun loadMagic(): BaseMagic {
                 return FuckAMapLocationMagic()
             }

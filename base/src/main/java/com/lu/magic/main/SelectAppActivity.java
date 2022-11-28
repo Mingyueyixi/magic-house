@@ -64,7 +64,7 @@ public class SelectAppActivity extends BaseActivity {
     private int filterActionId = R.id.filter_hide_system_app;
 
     public static void start(Context context, ItemModel item) {
-        if (item.getPage().getSheet().isEmpty()) {
+        if (item.getModule().getSheet().isEmpty()) {
             return;
         }
         Intent intent = new Intent(context, SelectAppActivity.class);
@@ -84,7 +84,7 @@ public class SelectAppActivity extends BaseActivity {
             return;
         }
         routeItem = (ItemModel) route;
-        if (routeItem.getPage().getSheet().isEmpty()) {
+        if (routeItem.getModule().getSheet().isEmpty()) {
             return;
         }
         viewModel = new ViewModelProvider(this).get(MagicConfigViewModel.class);
@@ -98,7 +98,7 @@ public class SelectAppActivity extends BaseActivity {
 
     private void initToolBar() {
         Toolbar toolbar = binding.appBarLayout.toolbar;
-        toolbar.setTitle(routeItem.getPage().getTitle());
+        toolbar.setTitle(routeItem.getModule().getTitle());
         //在设置setSupportActionBar之前设置toolbar标题，否则无效
         setSupportActionBar(toolbar);
         //设置导航点击监听，在setSupportActionBar之后，否则无效
@@ -295,7 +295,7 @@ public class SelectAppActivity extends BaseActivity {
     private void loadInstallInfoList() {
         WorkerUtil.loadSingle(() -> {
             HashMap<String, AppListModel> appModelMap = new HashMap<>();
-            Map<String, BaseConfig> enableMap = ConfigUtil.getSheet(routeItem.getPage().getSheet(), BaseConfig.class);
+            Map<String, BaseConfig> enableMap = ConfigUtil.getSheet(routeItem.getModule().getSheet(), BaseConfig.class);
 
             List<PackageInfo> installInfoList = PackageUtil.Companion.getInstallPackageInfoList(getContext());
             for (PackageInfo packageInfo : installInfoList) {
@@ -365,7 +365,7 @@ public class SelectAppActivity extends BaseActivity {
             itemView.setOnClickListener(v -> {
                 int clickPosition = getLayoutPosition();
                 AppListModel itemData = appListAdapter.getItem(clickPosition);
-                IModuleFace module = ModuleProviders.INSTANCE.get(routeItem.getModuleKey());
+                IModuleFace module = ModuleProviders.INSTANCE.get(routeItem.getModule().getSheet());
                 if (module == null || module.getDetailFragmentFactory() == null) {
                     return;
                 }
@@ -379,7 +379,7 @@ public class SelectAppActivity extends BaseActivity {
                 itemData.setEnable(check);
                 String packageName = itemData.getPackageName();
                 //打开指定表的配置
-                ConfigUtil.enableCell(routeItem.getPage().getSheet(), packageName, check);
+                ConfigUtil.enableCell(routeItem.getModule().getSheet(), packageName, check);
             });
         }
 

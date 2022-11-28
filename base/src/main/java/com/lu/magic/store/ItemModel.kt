@@ -1,23 +1,16 @@
 package com.lu.magic.store;
 
 
-import com.lu.magic.IModuleFace
-import com.lu.magic.IModuleFace.ModuleEmpty
+import com.lu.magic.util.config.SheetName
 import java.io.Serializable
-import kotlin.reflect.KClass
 
 open class ItemModel(
     var name: String,
-    var page: PageModel,
-    var moduleKey: String = ModuleEmpty.MODULE_KEY
+    var module: ModuleModel
 ) : Serializable
 
-class PageModel(
-    var title: String,
-    var sheet: String,
-    var land: Boolean
-) : Serializable {
-    constructor() : this("", "", false)
-    constructor(title: String, sheet: String) : this(title, sheet, false)
-
-}
+class ModuleModel(
+    var title: String = "",
+    @SheetName var sheet: String = SheetName.EMPTY,
+    var land: Boolean = false
+) : Serializable

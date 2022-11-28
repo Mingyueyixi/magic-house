@@ -21,7 +21,6 @@ public interface IModuleFace {
     }
 
     class ModuleEmpty implements IModuleFace {
-        public static final String MODULE_KEY = "";
         @Override
         public BaseMagic loadMagic() {
             return null;

@@ -11,7 +11,7 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.lu.magic.*
 import com.lu.magic.databinding.LayoutListBinding
 import com.lu.magic.store.ItemModel
-import com.lu.magic.store.PageModel
+import com.lu.magic.store.ModuleModel
 import com.lu.magic.store.TitleModel
 import com.lu.magic.ui.BaseFragment
 import com.lu.magic.ui.LifecycleAutoViewBinding
@@ -43,27 +43,21 @@ class StoreFragment : BaseFragment() {
         binding.mRecyclerView.adapter = MultiAdapter<ItemModel>()
             .addData(
                 TitleModel("测试"),
-                ItemModel("测试", PageModel()),
-                ItemModel("安全截图", PageModel()),
+                ItemModel("测试", ModuleModel()),
+                ItemModel("安全截图", ModuleModel()),
                 TitleModel("禁止"),
-                ItemModel("对话框", PageModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
+                ItemModel("对话框", ModuleModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
                 ItemModel(
                     "震动器",
-                    PageModel("禁止震动", SheetName.FUCK_VIBRATOR),
-                    ModuleRegistry.KEY_FUCK_VIBRATOR
+                    ModuleModel("禁止震动", SheetName.FUCK_VIBRATOR)
                 ),
                 TitleModel("位置"),
-                ItemModel("AMap", PageModel("高德地图", SheetName.AMAP_LOCATION), ModuleRegistry.KEY_FUCK_AMAP),
+                ItemModel("AMap", ModuleModel("高德地图", SheetName.AMAP_LOCATION)),
                 TitleModel("开发工具"),
-                ItemModel("视图捕获", PageModel("视图捕获", SheetName.VIEW_CATCH)),
+                ItemModel("视图捕获", ModuleModel("视图捕获", SheetName.VIEW_CATCH)),
                 TitleModel("其他"),
-                ItemModel(
-                    "屏幕旋转",
-                    PageModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION),
-                    ModuleRegistry.KEY_FUCK_SCREEN_ROTATE
-                ),
-                ItemModel("锁定视图", PageModel("锁定视图", SheetName.VIEW_LOCK)),
-
+                ItemModel("屏幕旋转", ModuleModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION)),
+                ItemModel("锁定视图", ModuleModel("锁定视图", SheetName.VIEW_LOCK)),
 
                 )
             .addItemType(object : MultiItemType<ItemModel> {
@@ -127,7 +121,7 @@ class StoreFragment : BaseFragment() {
                             itemView.setOnClickListener {
                                 var item = adapter.getItem(layoutPosition)
                                 item?.let {
-                                    ModuleProviders.get(item.moduleKey)
+                                    ModuleProviders.get(item.module.sheet)
                                         ?.onEntry(itemView.context, item)
                                 }
 

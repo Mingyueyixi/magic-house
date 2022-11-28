@@ -36,7 +36,7 @@ class DetailConfigActivity : BaseToolBarActivity() {
     }
 
     private fun initView() {
-        ModuleProviders.get(routeModel.moduleKey).let {
+        ModuleProviders.get(routeModel.module.sheet).let {
             if (it != null) {
                 var fragmentFactory = it.detailFragmentFactory
                 if (fragmentFactory == null) {
@@ -56,7 +56,7 @@ class DetailConfigActivity : BaseToolBarActivity() {
             }
         }
 
-        if (routeModel.page.land) {
+        if (routeModel.module.land) {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
         initToolBar()
@@ -66,7 +66,7 @@ class DetailConfigActivity : BaseToolBarActivity() {
 
     private fun attachPage() {
         fragmentNavigation = FragmentNavigation(this, binding.fragmentContainer)
-        when (routeModel.page.sheet) {
+        when (routeModel.module.sheet) {
             SheetName.AMAP_LOCATION -> {
                 binding.appBarLayout.toolbar.title = "选择位置"
             }
@@ -81,7 +81,7 @@ class DetailConfigActivity : BaseToolBarActivity() {
 
     private fun initToolBar() {
         var toolbar = binding.appBarLayout.toolbar;
-        toolbar.title = routeModel.page.title
+        toolbar.title = routeModel.module.title
         //在设置setSupportActionBar之前设置toolbar标题，否则无效
         setSupportActionBar(toolbar)
         //设置导航点击监听，在setSupportActionBar之后，否则无效

@@ -1,12 +1,12 @@
 package com.lu.magic
 
-import kotlin.reflect.KClass
+import com.lu.magic.util.config.SheetName
 
 object ModuleProviders {
     @JvmField
     var moduleFaces: MutableMap<String, IModuleFace> = mutableMapOf()
 
-    fun put(key: String, module: IModuleFace) {
+    fun put(@SheetName key: String, module: IModuleFace) {
         moduleFaces[key] = module
     }
 

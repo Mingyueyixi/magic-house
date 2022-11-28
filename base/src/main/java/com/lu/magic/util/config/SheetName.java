@@ -14,6 +14,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.SOURCE)
 @StringDef(value = {
+        EMPTY,
         FUCK_DIALOG,
         AMAP_LOCATION,
         FUCK_VIBRATOR,
@@ -22,6 +23,7 @@ import java.lang.annotation.RetentionPolicy;
         VIEW_LOCK
 })
 public @interface SheetName {
+    String EMPTY = "";
     String FUCK_DIALOG = "FuckDialog";
     String AMAP_LOCATION = "AMapLocation";
     String FUCK_VIBRATOR = "FuckVibrator";
