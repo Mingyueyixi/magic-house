@@ -2,6 +2,3 @@ apply from: rootProject.file('module.gradle')
 android {
 
 }
-dependencies {
-    implementation(project(":frame:base-utils"))
-}

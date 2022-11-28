@@ -12,10 +12,13 @@ import com.lu.magic.frame.xp.provider.ContractRequest;
 import com.lu.magic.frame.xp.provider.ContractResponse;
 import com.lu.magic.frame.xp.provider.ContractUtil;
 import com.lu.magic.frame.xp.provider.DataShareProvider;
+import com.lu.magic.frame.xp.provider.ProviderConfig;
 import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
 import com.lu.magic.frame.xp.provider.annotation.GroupValue;
 import com.lu.magic.frame.xp.provider.annotation.ModeValue;
 import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
+import com.lu.magic.frame.xp.util.log.IXPLog;
+import com.lu.magic.frame.xp.util.log.XPLogUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -238,6 +241,22 @@ public class XPreference implements SharedPreferences {
             ContractUtil.request(contentResolver, uri, request, Object.class);
         }
 
+    }
+
+    public static ConfigApply ofConfigApply() {
+        return new ConfigApply();
+    }
+
+    public static class ConfigApply {
+        public ConfigApply setProviderConfig(ProviderConfig providerConfig) {
+            DataShareProvider.initConfig(providerConfig);
+            return this;
+        }
+
+        public ConfigApply setLogger(IXPLog ixpLog) {
+            XPLogUtil.INSTANCE.setLogger(ixpLog);
+            return this;
+        }
     }
 
 }

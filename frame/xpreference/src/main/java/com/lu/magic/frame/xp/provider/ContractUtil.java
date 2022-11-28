@@ -5,9 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 
-import com.lu.magic.util.GsonUtil;
-import com.lu.magic.util.log.LogUtil;
-
 import java.io.InvalidClassException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +28,6 @@ public class ContractUtil {
             e.printStackTrace();
         }
         ContractResponse<T> response = ContractUtil.toContractResponse(bundleResponse, dataCls);
-        LogUtil.d(GsonUtil.toJson(response));
         try {
             checkResultThrow(response);
         } catch (Throwable throwable) {
