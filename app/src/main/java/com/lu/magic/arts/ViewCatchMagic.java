@@ -7,8 +7,8 @@ import android.view.ViewParent;
 import androidx.fragment.app.Fragment;
 
 import com.lu.magic.bean.ViewCatchConfig;
-import com.lu.magic.util.config.ConfigUtil;
-import com.lu.magic.util.config.SheetName;
+import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.log.LogUtil;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -21,7 +21,7 @@ public class ViewCatchMagic extends BaseMagic {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (config == null) {
-            config = ConfigUtil.getCell(SheetName.VIEW_CATCH, lpparam.packageName, ViewCatchConfig.class);
+            config = ConfigUtil.getCell(ModuleId.VIEW_CATCH, lpparam.packageName, ViewCatchConfig.class);
         }
         if (config == null) {
             return;

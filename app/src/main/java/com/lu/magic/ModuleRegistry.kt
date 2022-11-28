@@ -9,14 +9,14 @@ import com.lu.magic.arts.FuckScreenMagic
 import com.lu.magic.arts.FuckVibratorMagic
 import com.lu.magic.fuckdialog.FuckDialogFragment
 import com.lu.magic.screen.ScreenOrientationFragment
-import com.lu.magic.util.config.SheetName
+import com.lu.magic.config.ModuleId
 
 object ModuleRegistry {
 
     fun apply() {
-        ModuleProviders.put(SheetName.EMPTY, ModuleEmpty())
-        ModuleProviders.put(SheetName.FUCK_VIBRATOR) { FuckVibratorMagic() }
-        ModuleProviders.put(SheetName.FUCK_DIALOG, object : IModuleFace {
+        ModuleProviders.put(ModuleId.EMPTY, ModuleEmpty())
+        ModuleProviders.put(ModuleId.FUCK_VIBRATOR) { FuckVibratorMagic() }
+        ModuleProviders.put(ModuleId.FUCK_DIALOG, object : IModuleFace {
             override fun loadMagic(): BaseMagic {
                 return FuckDialogMagic()
             }
@@ -25,7 +25,7 @@ object ModuleRegistry {
                 return IModuleFace.IFragmentFactory { FuckDialogFragment() }
             }
         })
-        ModuleProviders.put(SheetName.FUCK_SCREEN_ORIENTATION, object : IModuleFace {
+        ModuleProviders.put(ModuleId.FUCK_SCREEN_ORIENTATION, object : IModuleFace {
             override fun loadMagic(): BaseMagic {
                 return FuckScreenMagic()
             }
@@ -36,7 +36,7 @@ object ModuleRegistry {
                 }
             }
         })
-        ModuleProviders.put(SheetName.AMAP_LOCATION, object : IModuleFace {
+        ModuleProviders.put(ModuleId.AMAP_LOCATION, object : IModuleFace {
             override fun loadMagic(): BaseMagic {
                 return FuckAMapLocationMagic()
             }

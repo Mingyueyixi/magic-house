@@ -58,7 +58,7 @@ import com.lu.magic.util.CollectionUtil;
 import com.lu.magic.util.LocationUtil;
 import com.lu.magic.util.SingleStoreUtil;
 import com.lu.magic.util.ToastUtil;
-import com.lu.magic.util.config.ConfigUtil;
+import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.dialog.DialogUtil;
 import com.lu.magic.util.dialog.EditDialog;
 import com.lu.magic.util.log.LogUtil;

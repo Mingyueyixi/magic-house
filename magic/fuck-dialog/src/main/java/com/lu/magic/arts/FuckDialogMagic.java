@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 import com.lu.magic.bean.FuckDialogConfig;
 import com.lu.magic.util.GsonUtil;
 import com.lu.magic.util.ToastUtil;
-import com.lu.magic.util.config.ConfigUtil;
+import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.log.LogUtil;
 import com.lu.magic.util.view.ViewUtil;
 

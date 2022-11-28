@@ -3,7 +3,7 @@ package com.lu.magic.arts;
 import android.location.LocationManager;
 
 import com.lu.magic.bean.AMapConfig;
-import com.lu.magic.util.config.ConfigUtil;
+import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.log.LogUtil;
 
 import java.lang.reflect.InvocationHandler;

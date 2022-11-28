@@ -4,8 +4,8 @@ import android.app.Service;
 
 import com.lu.magic.bean.BaseConfig;
 import com.lu.magic.util.AppUtil;
-import com.lu.magic.util.config.ConfigUtil;
-import com.lu.magic.util.config.SheetName;
+import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.log.LogUtil;
 
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -18,7 +18,7 @@ public class FuckVibratorMagic extends BaseMagic {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (config == null) {
-            config = ConfigUtil.getCell(SheetName.FUCK_VIBRATOR, lpparam.processName, BaseConfig.class);
+            config = ConfigUtil.getCell(ModuleId.FUCK_VIBRATOR, lpparam.processName, BaseConfig.class);
         }
         if (config == null) {
             return;

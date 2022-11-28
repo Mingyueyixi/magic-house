@@ -7,8 +7,8 @@ import com.lu.magic.bean.BaseConfig;
 import com.lu.magic.screen.OrientationDTO;
 import com.lu.magic.screen.ScreenOrientationUtil;
 import com.lu.magic.util.GsonUtil;
-import com.lu.magic.util.config.ConfigUtil;
-import com.lu.magic.util.config.SheetName;
+import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.log.LogUtil;
 
 import java.lang.reflect.Type;
@@ -40,7 +40,7 @@ public class FuckScreenMagic extends BaseMagic {
 
     private BaseConfig<OrientationDTO> loadConfig(String pkgName) {
         Type configType = GsonUtil.getType(BaseConfig.class, OrientationDTO.class);
-        return ConfigUtil.getCellForType(SheetName.FUCK_SCREEN_ORIENTATION, pkgName, configType);
+        return ConfigUtil.getCellForType(ModuleId.FUCK_SCREEN_ORIENTATION, pkgName, configType);
     }
 
     private void handleMagic(XC_LoadPackage.LoadPackageParam lpparam, OrientationDTO.ActItem actItem) {

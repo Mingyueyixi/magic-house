@@ -41,7 +41,7 @@ import com.lu.magic.ui.recycler.MultiViewHolder;
 import com.lu.magic.ui.recycler.SimpleItemType;
 import com.lu.magic.util.PackageUtil;
 import com.lu.magic.util.SingleStoreUtil;
-import com.lu.magic.util.config.ConfigUtil;
+import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.load.LoaderCacheUtil;
 import com.lu.magic.util.thread.WorkerUtil;
 
@@ -64,7 +64,7 @@ public class SelectAppActivity extends BaseActivity {
     private int filterActionId = R.id.filter_hide_system_app;
 
     public static void start(Context context, ItemModel item) {
-        if (item.getModule().getSheet().isEmpty()) {
+        if (item.getModule().getModuleId().isEmpty()) {
             return;
         }
         Intent intent = new Intent(context, SelectAppActivity.class);
@@ -84,7 +84,7 @@ public class SelectAppActivity extends BaseActivity {
             return;
         }
         routeItem = (ItemModel) route;
-        if (routeItem.getModule().getSheet().isEmpty()) {
+        if (routeItem.getModule().getModuleId().isEmpty()) {
             return;
         }
         viewModel = new ViewModelProvider(this).get(MagicConfigViewModel.class);
@@ -295,7 +295,7 @@ public class SelectAppActivity extends BaseActivity {
     private void loadInstallInfoList() {
         WorkerUtil.loadSingle(() -> {
             HashMap<String, AppListModel> appModelMap = new HashMap<>();
-            Map<String, BaseConfig> enableMap = ConfigUtil.getSheet(routeItem.getModule().getSheet(), BaseConfig.class);
+            Map<String, BaseConfig> enableMap = ConfigUtil.getSheet(routeItem.getModule().getModuleId(), BaseConfig.class);
 
             List<PackageInfo> installInfoList = PackageUtil.Companion.getInstallPackageInfoList(getContext());
             for (PackageInfo packageInfo : installInfoList) {
@@ -365,7 +365,7 @@ public class SelectAppActivity extends BaseActivity {
             itemView.setOnClickListener(v -> {
                 int clickPosition = getLayoutPosition();
                 AppListModel itemData = appListAdapter.getItem(clickPosition);
-                IModuleFace module = ModuleProviders.INSTANCE.get(routeItem.getModule().getSheet());
+                IModuleFace module = ModuleProviders.INSTANCE.get(routeItem.getModule().getModuleId());
                 if (module == null || module.getDetailFragmentFactory() == null) {
                     return;
                 }
@@ -379,7 +379,7 @@ public class SelectAppActivity extends BaseActivity {
                 itemData.setEnable(check);
                 String packageName = itemData.getPackageName();
                 //打开指定表的配置
-                ConfigUtil.enableCell(routeItem.getModule().getSheet(), packageName, check);
+                ConfigUtil.enableCell(routeItem.getModule().getModuleId(), packageName, check);
             });
         }
 

@@ -8,8 +8,8 @@ import android.widget.TextView;
 import com.lu.magic.bean.ViewLockConfig;
 import com.lu.magic.util.TextUtil;
 import com.lu.magic.util.ToastUtil;
-import com.lu.magic.util.config.ConfigUtil;
-import com.lu.magic.util.config.SheetName;
+import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.dialog.DialogUtil;
 import com.lu.magic.util.dialog.EditDialog;
 import com.lu.magic.util.log.LogUtil;
@@ -29,7 +29,7 @@ public class ViewLockMagic extends BaseMagic {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (config == null) {
-            config = ConfigUtil.getCell(SheetName.VIEW_LOCK, lpparam.packageName, ViewLockConfig.class);
+            config = ConfigUtil.getCell(ModuleId.VIEW_LOCK, lpparam.packageName, ViewLockConfig.class);
         }
         if (config == null) {
             return;

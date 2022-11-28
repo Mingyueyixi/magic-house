@@ -1,4 +1,4 @@
-package com.lu.magic.util.config;
+package com.lu.magic.config;
 
 import android.content.Context;
 
@@ -68,26 +68,26 @@ public class ConfigUtil {
     }
 
     public static FuckDialogConfig getFuckDialogConfig(String processName) {
-        return getCell(SheetName.FUCK_DIALOG, processName, FuckDialogConfig.class);
+        return getCell(ModuleId.FUCK_DIALOG, processName, FuckDialogConfig.class);
     }
 
     public static void setFuckDialogConfig(String processName, FuckDialogConfig fuckDialogConfig) {
-        setCell(SheetName.FUCK_DIALOG, processName, fuckDialogConfig);
+        setCell(ModuleId.FUCK_DIALOG, processName, fuckDialogConfig);
     }
 
     public static Map<String, FuckDialogConfig> getFuckDialogConfigAll() {
-        return getSheet(SheetName.FUCK_DIALOG, FuckDialogConfig.class);
+        return getSheet(ModuleId.FUCK_DIALOG, FuckDialogConfig.class);
     }
 
     public static Map<String, AMapConfig> getAllAMapConfig() {
-        return getSheet(SheetName.AMAP_LOCATION, AMapConfig.class);
+        return getSheet(ModuleId.AMAP_LOCATION, AMapConfig.class);
     }
 
     public static AMapConfig getAMapConfig(String processName) {
-        return getCell(SheetName.AMAP_LOCATION, processName, AMapConfig.class);
+        return getCell(ModuleId.AMAP_LOCATION, processName, AMapConfig.class);
     }
 
     public static void setAMapConfig(String processName, AMapConfig config) {
-        setCell(SheetName.AMAP_LOCATION, processName, config);
+        setCell(ModuleId.AMAP_LOCATION, processName, config);
     }
 }

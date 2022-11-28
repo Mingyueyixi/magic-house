@@ -10,7 +10,7 @@ import com.lu.magic.store.ItemModel
 import com.lu.magic.ui.BaseToolBarActivity
 import com.lu.magic.ui.FragmentNavigation
 import com.lu.magic.util.SingleStoreUtil
-import com.lu.magic.util.config.SheetName
+import com.lu.magic.config.ModuleId
 
 class DetailConfigActivity : BaseToolBarActivity() {
     private lateinit var pageFragment: Fragment
@@ -36,7 +36,7 @@ class DetailConfigActivity : BaseToolBarActivity() {
     }
 
     private fun initView() {
-        ModuleProviders.get(routeModel.module.sheet).let {
+        ModuleProviders.get(routeModel.module.moduleId).let {
             if (it != null) {
                 var fragmentFactory = it.detailFragmentFactory
                 if (fragmentFactory == null) {
@@ -66,8 +66,8 @@ class DetailConfigActivity : BaseToolBarActivity() {
 
     private fun attachPage() {
         fragmentNavigation = FragmentNavigation(this, binding.fragmentContainer)
-        when (routeModel.module.sheet) {
-            SheetName.AMAP_LOCATION -> {
+        when (routeModel.module.moduleId) {
+            ModuleId.AMAP_LOCATION -> {
                 binding.appBarLayout.toolbar.title = "选择位置"
             }
 //            else -> {

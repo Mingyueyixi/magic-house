@@ -15,7 +15,7 @@ import com.lu.magic.store.ItemModel;
 import com.lu.magic.store.TitleModel;
 import com.lu.magic.ui.BindingFragment;
 import com.lu.magic.util.SingleStoreUtil;
-import com.lu.magic.util.config.ConfigUtil;
+import com.lu.magic.config.ConfigUtil;
 
 /**
  * @author lu

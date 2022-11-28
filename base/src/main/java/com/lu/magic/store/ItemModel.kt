@@ -1,7 +1,7 @@
 package com.lu.magic.store;
 
 
-import com.lu.magic.util.config.SheetName
+import com.lu.magic.config.ModuleId
 import java.io.Serializable
 
 open class ItemModel(
@@ -11,6 +11,6 @@ open class ItemModel(
 
 class ModuleModel(
     var title: String = "",
-    @SheetName var sheet: String = SheetName.EMPTY,
+    @ModuleId var moduleId: String = ModuleId.EMPTY,
     var land: Boolean = false
 ) : Serializable

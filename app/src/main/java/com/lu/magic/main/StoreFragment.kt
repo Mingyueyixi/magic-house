@@ -19,7 +19,7 @@ import com.lu.magic.ui.recycler.MultiAdapter
 import com.lu.magic.ui.recycler.MultiItemType
 import com.lu.magic.ui.recycler.MultiViewHolder
 import com.lu.magic.util.PackageUtil
-import com.lu.magic.util.config.SheetName
+import com.lu.magic.config.ModuleId
 
 class StoreFragment : BaseFragment() {
     private var binding: LayoutListBinding by LifecycleAutoViewBinding()
@@ -46,18 +46,18 @@ class StoreFragment : BaseFragment() {
                 ItemModel("测试", ModuleModel()),
                 ItemModel("安全截图", ModuleModel()),
                 TitleModel("禁止"),
-                ItemModel("对话框", ModuleModel("对话框-禁止显示", SheetName.FUCK_DIALOG)),
+                ItemModel("对话框", ModuleModel("对话框-禁止显示", ModuleId.FUCK_DIALOG)),
                 ItemModel(
                     "震动器",
-                    ModuleModel("禁止震动", SheetName.FUCK_VIBRATOR)
+                    ModuleModel("禁止震动", ModuleId.FUCK_VIBRATOR)
                 ),
                 TitleModel("位置"),
-                ItemModel("AMap", ModuleModel("高德地图", SheetName.AMAP_LOCATION)),
+                ItemModel("AMap", ModuleModel("高德地图", ModuleId.AMAP_LOCATION)),
                 TitleModel("开发工具"),
-                ItemModel("视图捕获", ModuleModel("视图捕获", SheetName.VIEW_CATCH)),
+                ItemModel("视图捕获", ModuleModel("视图捕获", ModuleId.VIEW_CATCH)),
                 TitleModel("其他"),
-                ItemModel("屏幕旋转", ModuleModel("屏幕旋转模式", SheetName.FUCK_SCREEN_ORIENTATION)),
-                ItemModel("锁定视图", ModuleModel("锁定视图", SheetName.VIEW_LOCK)),
+                ItemModel("屏幕旋转", ModuleModel("屏幕旋转模式", ModuleId.FUCK_SCREEN_ORIENTATION)),
+                ItemModel("锁定视图", ModuleModel("锁定视图", ModuleId.VIEW_LOCK)),
 
                 )
             .addItemType(object : MultiItemType<ItemModel> {
@@ -121,7 +121,7 @@ class StoreFragment : BaseFragment() {
                             itemView.setOnClickListener {
                                 var item = adapter.getItem(layoutPosition)
                                 item?.let {
-                                    ModuleProviders.get(item.module.sheet)
+                                    ModuleProviders.get(item.module.moduleId)
                                         ?.onEntry(itemView.context, item)
                                 }
 

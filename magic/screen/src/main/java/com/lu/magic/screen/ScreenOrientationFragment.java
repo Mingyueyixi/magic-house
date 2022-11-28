@@ -38,8 +38,8 @@ import com.lu.magic.util.GsonUtil;
 import com.lu.magic.util.SingleStoreUtil;
 import com.lu.magic.util.TextUtil;
 import com.lu.magic.util.ToastUtil;
-import com.lu.magic.util.config.ConfigUtil;
-import com.lu.magic.util.config.SheetName;
+import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.dialog.DialogUtil;
 import com.lu.magic.util.dialog.EditDialog;
 
@@ -215,15 +215,15 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
 
     private BaseConfig<OrientationDTO> loadConfig() {
         Type configType = GsonUtil.getType(BaseConfig.class, OrientationDTO.class);
-        return ConfigUtil.getCellForType(SheetName.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), configType);
+        return ConfigUtil.getCellForType(ModuleId.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), configType);
     }
 
     private void saveConfig() {
-        ConfigUtil.setCell(SheetName.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), mViewConfig);
+        ConfigUtil.setCell(ModuleId.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), mViewConfig);
     }
 
     private boolean checkHasChangeConfig() {
-        JsonElement localJson = ConfigUtil.getCellForType(SheetName.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), JsonObject.class);
+        JsonElement localJson = ConfigUtil.getCellForType(ModuleId.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), JsonObject.class);
         JsonElement viewJson = GsonUtil.toJsonTree(mViewConfig);
         if (("" + localJson).equals("" + viewJson)) {
             return false;

@@ -16,8 +16,8 @@ import com.lu.magic.ui.recycler.MultiAdapter
 import com.lu.magic.ui.recycler.MultiViewHolder
 import com.lu.magic.ui.recycler.SimpleItemType
 import com.lu.magic.util.SingleStoreUtil
-import com.lu.magic.util.config.ConfigUtil
-import com.lu.magic.util.config.SheetName
+import com.lu.magic.config.ConfigUtil
+import com.lu.magic.config.ModuleId
 import java.util.ArrayList
 
 class ViewCatchFragment : BindingFragment<LayoutListBinding>() {
@@ -34,7 +34,7 @@ class ViewCatchFragment : BindingFragment<LayoutListBinding>() {
         val routeItem = SingleStoreUtil.get(TitleModel::class.java)
 
         var c: ViewCatchConfig? = ConfigUtil.getCell(
-            SheetName.VIEW_CATCH,
+            ModuleId.VIEW_CATCH,
             appListModel.packageName,
             ViewCatchConfig::class.java
         )
@@ -50,7 +50,7 @@ class ViewCatchFragment : BindingFragment<LayoutListBinding>() {
     }
 
     override fun onBackPressed(): Boolean {
-        ConfigUtil.setCell(SheetName.VIEW_CATCH, appListModel.packageName, config)
+        ConfigUtil.setCell(ModuleId.VIEW_CATCH, appListModel.packageName, config)
         return super.onBackPressed()
     }
 
@@ -72,14 +72,20 @@ class ViewCatchFragment : BindingFragment<LayoutListBinding>() {
                     parent: ViewGroup,
                     viewType: Int
                 ): MultiViewHolder<Model> {
-                    var view = layoutInflater.inflate(com.lu.magic.base.R.layout.item_enable_list, parent, false)
+                    var view = layoutInflater.inflate(
+                        com.lu.magic.base.R.layout.item_enable_list,
+                        parent,
+                        false
+                    )
                     return object : MultiViewHolder<Model>(view) {
                         private var sbSwitch: SwitchButton
                         private var tvBodyTitle: TextView
 
                         init {
-                            tvBodyTitle = itemView.findViewById<TextView>(com.lu.magic.base.R.id.tvBodyTitle)
-                            sbSwitch = itemView.findViewById<SwitchButton>(com.lu.magic.base.R.id.sbEnableItem)
+                            tvBodyTitle =
+                                itemView.findViewById<TextView>(com.lu.magic.base.R.id.tvBodyTitle)
+                            sbSwitch =
+                                itemView.findViewById<SwitchButton>(com.lu.magic.base.R.id.sbEnableItem)
                             itemView.findViewById<TextView>(com.lu.magic.base.R.id.tvBodySubTitle)
                                 .visibility = View.GONE
 

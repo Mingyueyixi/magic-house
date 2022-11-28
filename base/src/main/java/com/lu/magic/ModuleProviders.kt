@@ -1,12 +1,12 @@
 package com.lu.magic
 
-import com.lu.magic.util.config.SheetName
+import com.lu.magic.config.ModuleId
 
 object ModuleProviders {
     @JvmField
     var moduleFaces: MutableMap<String, IModuleFace> = mutableMapOf()
 
-    fun put(@SheetName key: String, module: IModuleFace) {
+    fun put(@ModuleId key: String, module: IModuleFace) {
         moduleFaces[key] = module
     }
 

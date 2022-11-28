@@ -1,6 +1,6 @@
-package com.lu.magic.util.config;
+package com.lu.magic.config;
 
-import static com.lu.magic.util.config.SheetName.*;
+import static com.lu.magic.config.ModuleId.*;
 
 import androidx.annotation.StringDef;
 
@@ -22,7 +22,7 @@ import java.lang.annotation.RetentionPolicy;
         VIEW_CATCH,
         VIEW_LOCK
 })
-public @interface SheetName {
+public @interface ModuleId {
     String EMPTY = "";
     String FUCK_DIALOG = "FuckDialog";
     String AMAP_LOCATION = "AMapLocation";

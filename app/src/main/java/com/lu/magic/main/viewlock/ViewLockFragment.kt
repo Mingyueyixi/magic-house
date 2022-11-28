@@ -10,8 +10,8 @@ import com.lu.magic.databinding.FragmentLockViewBinding
 import com.lu.magic.main.AppListModel
 import com.lu.magic.ui.BindingFragment
 import com.lu.magic.util.SingleStoreUtil
-import com.lu.magic.util.config.ConfigUtil
-import com.lu.magic.util.config.SheetName
+import com.lu.magic.config.ConfigUtil
+import com.lu.magic.config.ModuleId
 
 class ViewLockFragment : BindingFragment<FragmentLockViewBinding>() {
     private lateinit var mAppModel: AppListModel
@@ -24,7 +24,7 @@ class ViewLockFragment : BindingFragment<FragmentLockViewBinding>() {
     ): FragmentLockViewBinding {
         mAppModel = SingleStoreUtil.get(AppListModel::class.java)
         var config = ConfigUtil.getCell(
-            SheetName.VIEW_LOCK,
+            ModuleId.VIEW_LOCK,
             mAppModel.packageName,
             ViewLockConfig::class.java
         )
@@ -119,7 +119,7 @@ class ViewLockFragment : BindingFragment<FragmentLockViewBinding>() {
 
     private fun saveConfig() {
         ConfigUtil.setCell(
-            SheetName.VIEW_LOCK,
+            ModuleId.VIEW_LOCK,
             mAppModel.packageName,
             config
         )

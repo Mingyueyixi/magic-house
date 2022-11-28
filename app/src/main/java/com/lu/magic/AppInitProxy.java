@@ -3,7 +3,7 @@ package com.lu.magic;
 import android.content.Context;
 
 import com.lu.magic.util.AppUtil;
-import com.lu.magic.util.config.ConfigUtil;
+import com.lu.magic.config.ConfigUtil;
 
 /**
  * 这个类将此app与被hook的app的配置的初始化任务，统一到一起
