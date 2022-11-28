@@ -1,7 +1,6 @@
 package com.lu.magic;
 
 import android.os.Bundle;
-import android.os.VibratorManager;
 
 import androidx.annotation.Nullable;
 

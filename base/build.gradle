@@ -3,4 +3,5 @@ apply from: rootProject.file('module.gradle')
 dependencies {
     api project(":frame:xpreference")
     api project(":frame:base-utils")
+    api project(":frame:ui")
 }

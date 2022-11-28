@@ -35,6 +35,7 @@ dependencyResolutionManagement {
 rootProject.name = "MagicHouse"
 include ':frame:xpreference'
 include ':frame:base-utils'
+include ':frame:ui'
 include ':base'
 include ':magic:amap'
 include ':magic:screen'

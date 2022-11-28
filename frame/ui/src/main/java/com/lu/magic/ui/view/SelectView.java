@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 
-import com.lu.magic.base.R;
+import com.lu.magic.frame.ui.R;
 
 
 /**
