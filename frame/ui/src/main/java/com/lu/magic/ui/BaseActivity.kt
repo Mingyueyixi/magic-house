@@ -18,6 +18,7 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        //fix memory leak
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (!onBackPressedDispatcher.hasEnabledCallbacks()) {
                 finishAfterTransition()

@@ -17,6 +17,7 @@ import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
 import com.lu.magic.frame.xp.provider.annotation.GroupValue;
 import com.lu.magic.frame.xp.provider.annotation.ModeValue;
 import com.lu.magic.frame.xp.provider.annotation.ProviderIdValue;
+import com.lu.magic.frame.xp.util.log.DefaultLogger;
 import com.lu.magic.frame.xp.util.log.IXPLog;
 import com.lu.magic.frame.xp.util.log.XPLogUtil;
 
