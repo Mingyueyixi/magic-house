@@ -62,13 +62,23 @@ class PermissionUtil() {
             }
             return true
         }
+
+        internal fun allValueGranted(vararg result: Int): Boolean {
+            for (value in result) {
+                if (value != PermissionChecker.PERMISSION_GRANTED) {
+                    return false
+                }
+            }
+            return true
+        }
     }
 
     @FunctionalInterface
-    interface CallBack {
+    fun interface CallBack {
         fun onRequestPermissionsResult(
             requestCode: Int,
-            result: Map<String, Int>
+            result: Map<String, Int>,
+            allGranted: Boolean
         )
     }
 
@@ -81,27 +91,27 @@ class PermissionUtil() {
         constructor(permissions: Array<out String>) : this(REQUEST_CODE, permissions)
 
         var callback: CallBack = object : CallBack {
-            override fun onRequestPermissionsResult(requestCode: Int, result: Map<String, Int>) {
+            override fun onRequestPermissionsResult(requestCode: Int, result: Map<String, Int>, allGranted: Boolean) {
 
             }
         }
 
-        fun call(context: Context? = null) {
+        fun call(context: Context? = AppUtil.getContext()) {
             if (hasPermission(*permissions)) {
                 callback.onRequestPermissionsResult(
                     requestCode,
                     permissions.indices.associate {
                         permissions[it] to PermissionChecker.PERMISSION_GRANTED
-                    }
+                    },
+                    true
                 )
                 return
             }
-
             val intent = Intent(
-                context ?: AppUtil.getContext(),
+                context,
                 PermissionActivity::class.java
             )
-
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             intent.putStringArrayListExtra(
                 KEY_PERMISSION_LIST,
                 permissions.toCollection(ArrayList<String>())
@@ -152,10 +162,10 @@ class PermissionActivity : Activity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        val m = permissions.indices.associate {
+        val result = permissions.indices.associate {
             Pair(permissions[it], grantResults[it])
         }
-        callBack.onRequestPermissionsResult(requestCode, m)
+        callBack.onRequestPermissionsResult(requestCode, result, PermissionUtil.allValueGranted(*grantResults))
         finish()
     }
 

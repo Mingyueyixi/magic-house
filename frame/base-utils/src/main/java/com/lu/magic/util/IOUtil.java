@@ -1,5 +1,6 @@
 package com.lu.magic.util;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.CharArrayWriter;
 import java.io.Closeable;
@@ -112,7 +113,7 @@ public class IOUtil {
 
 
     public static void writeByString(String data, OutputStream oStream, Charset charset) {
-        if (data == null) {
+        if (data == null || oStream == null) {
             return;
         }
         try {

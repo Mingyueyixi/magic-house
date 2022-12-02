@@ -207,7 +207,7 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.ACCESS_FINE_LOCATION
-        ).onResult((requestCode, result) -> {
+        ).onResult((requestCode, result, allGranted) -> {
             if (10086 != requestCode) {
                 return;
             }

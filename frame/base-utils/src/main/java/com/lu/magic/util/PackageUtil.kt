@@ -9,7 +9,7 @@ class PackageUtil {
     companion object {
         fun getInstallPackageNameListByShell(): List<String> {
             var result = CmdUtil.exec("pm list package")
-            var lines = result.successMsg.split("\n")
+            var lines = result.success.split("\n")
 
             return lines.map { it ->
                 it.trim().replace("package:", "")

@@ -7,7 +7,6 @@ import com.lu.magic.arts.BaseMagic;
 import com.lu.magic.arts.DisableFlagSecureMagic;
 import com.lu.magic.arts.MagicRepository;
 import com.lu.magic.arts.TestMagic;
-import com.lu.magic.arts.ViewCatchMagic;
 import com.lu.magic.arts.ViewLockMagic;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.log.LogUtil;
@@ -32,13 +31,15 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         repository.add(new DisableFlagSecureMagic());
         repository.add(new TestMagic());
 //        repository.add(new LocationMagic());
-        repository.add(new ViewCatchMagic());
         repository.add(new ViewLockMagic());
 
         ModuleRegistry.INSTANCE.apply();
         for (Map.Entry<String, IModuleFace> ele : ModuleProviders.moduleFaces.entrySet()) {
             IModuleFace module = ele.getValue();
-            repository.add(module.loadMagic());
+            BaseMagic magic = module.loadMagic();
+            if (magic != null) {
+                repository.add(magic);
+            }
         }
     }
 

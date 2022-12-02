@@ -1,89 +1,107 @@
-package com.lu.magic.util;
+package com.lu.magic.util
 
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Arrays;
+import android.os.Build
+import com.lu.magic.util.log.LogUtil
+import java.io.Closeable
+import java.io.IOException
+import java.io.InputStream
+import java.io.InputStreamReader
 
-public class CmdUtil {
+object CmdUtil {
+    private const val LINE_SEP = "\n"
 
-    private static String LINE_SEP = "\n";
-
-    public static void run(String... commands) {
-        exec(commands, false, false);
+    @JvmStatic
+    fun run(vararg commands: String?) {
+        if (NullUtil.isAllNull(commands)) {
+            return
+        }
+        OnceShell.open(false).exec(commands, false)
     }
 
-    public static CommandResult exec(String command) {
-        return exec(new String[]{command}, false, true);
+    @JvmStatic
+    fun exec(vararg command: String?): Result {
+        return exec(arrayOf(*command), false)
     }
 
-    public static CommandResult exec(String[] commands, boolean isRooted, boolean isNeedResultMsg) {
-        int pExitCode = -1;
-        if (commands == null || commands.length == 0) {
-            return new CommandResult(pExitCode, "", "", commands);
-        }
-
-        Process process = null;
-        OutputStream outStream = null;
-        InputStream errorStream = null;
-        InputStream successStream = null;
-        String successMsg = null;
-        String errorMsg = null;
-        try {
-            process = Runtime.getRuntime().exec(isRooted ? "su" : "sh");
-            outStream = process.getOutputStream();
-            for (String command : commands) {
-                if (command == null) continue;
-                IOUtil.writeByString(command + "\n", outStream);
-                outStream.flush();
-            }
-            //退出
-            IOUtil.writeByString("exit\n", outStream);
-            outStream.flush();
-
-            //等待结果
-            pExitCode = process.waitFor();
-            if (isNeedResultMsg) {
-                successStream = process.getInputStream();
-                errorStream = process.getErrorStream();
-
-                successMsg = IOUtil.readToString(successStream);
-                errorMsg = IOUtil.readToString(errorStream);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            IOUtil.closeQuietly(outStream, successStream, errorStream);
-            if (process != null) {
-                process.destroy();
-            }
-        }
-        successMsg = (successMsg == null) ? "" : successMsg;
-        errorMsg = (errorMsg == null) ? "" : errorMsg;
-        return new CommandResult(pExitCode, successMsg, errorMsg, commands);
+    @JvmStatic
+    fun exec(commands: Array<String?>?, root: Boolean = false): Result {
+        return OnceShell.open(root).exec(commands, true)
     }
 
+    interface Shell : Closeable {
+        fun exec(commands: Array<out String?>?, isNeedResult: Boolean): Result
+    }
 
-    public static class CommandResult {
-        public int code;
-        public String successMsg;
-        public String errorMsg;
-        public String[] commands;
+// 暂时无法实现只打开一个进程，完成执行一次命令，读取一次结果，不关闭进程读取会在读取一行后卡住
 
-        public CommandResult(int code, String successMsg, String errorMsg, String[] commands) {
-            this.code = code;
-            this.successMsg = successMsg;
-            this.errorMsg = errorMsg;
-            this.commands = commands;
+    class OnceShell private constructor(val process: Process, val root: Boolean) : Shell {
+        companion object {
+            @JvmStatic
+            fun open(root: Boolean = false): Shell {
+                val process = Runtime.getRuntime().exec(if (root) "su" else "sh")
+                return OnceShell(process, root)
+            }
         }
 
-        @Override
-        public String toString() {
-            return "CommandResult{" +
-                    "code=" + code +
-                    ", successMsg='" + successMsg + '\'' +
-                    ", errorMsg='" + errorMsg + '\'' +
-                    ", commands=" + Arrays.toString(commands) +
-                    '}';
+        /**
+         * 执行一次即关闭
+         */
+        override fun exec(commands: Array<out String?>?, isNeedResult: Boolean): Result {
+            var pExitCode = -1
+            if (commands.isNullOrEmpty() || NullUtil.isAllNull(commands)) {
+                return Result(pExitCode, "", "", commands)
+            }
+            var successMsg: String? = null
+            var errorMsg: String? = null
+            var outputStream = process.outputStream
+            var successStream: InputStream? = null
+            var errorStream: InputStream? = null
+
+            try {
+                for (command in commands) {
+                    if (command == null) continue
+                    IOUtil.writeByString("\n$command\n", outputStream)
+                    outputStream?.flush()
+                }
+                //退出
+                IOUtil.writeByString("exit\n", outputStream)
+                outputStream.flush()
+
+                //等待结果
+                pExitCode = process.waitFor()
+                if (isNeedResult) {
+                    successStream = process.inputStream
+                    errorStream = process.errorStream
+                    successMsg = IOUtil.readToString(successStream)
+                    errorMsg = IOUtil.readToString(errorStream)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                IOUtil.closeQuietly(outputStream, successStream, errorStream)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    process.destroyForcibly()
+                } else {
+                    process.destroy()
+                }
+            }
+            return Result(pExitCode, successMsg ?: "", errorMsg ?: "", commands)
+        }
+
+        override fun close() {
+            //empty
+        }
+
+    }
+
+    class Result(var code: Int, var success: String, var error: String, var commands: Array<out String?>?) {
+        override fun toString(): String {
+            return """CmdUtil.Result: {
+    "code": $code,
+    "successMsg": "$success",
+    "errorMsg": "$error",
+    "commands": "${commands.contentToString()}"
+}""".trimMargin()
         }
     }
 }

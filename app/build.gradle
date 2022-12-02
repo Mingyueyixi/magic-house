@@ -44,6 +44,12 @@ android {
 //    buildFeatures {
 //        dataBinding true
 //    }
+
+    packagingOptions {
+        exclude 'META-INF/**'
+    }
+
+
 }
 
 
@@ -58,6 +64,7 @@ dependencies {
     implementation project(":magic:fuck-vibrator")
     implementation project(path: ':magic:fuck-dialog')
     api project(':base')
+    implementation project(path: ':magic:catch-log')
 
 
 //  内存泄露

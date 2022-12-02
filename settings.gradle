@@ -11,8 +11,8 @@ pluginManagement {
 //        maven { url 'https://repo1.maven.org/maven2/' }
 
 //        gradlePluginPortal()
-        google()
-        mavenCentral()
+//        google()
+//        mavenCentral()
     }
 }
 dependencyResolutionManagement {
@@ -28,8 +28,8 @@ dependencyResolutionManagement {
         maven { url 'https://mirrors.cloud.tencent.com/nexus/repository/maven-public' }
 //        maven { url 'https://repo1.maven.org/maven2/' }
 
-        google()
-        mavenCentral()
+//        google()
+//        mavenCentral()
     }
 }
 rootProject.name = "MagicHouse"
@@ -41,5 +41,6 @@ include ':magic:amap'
 include ':magic:screen'
 include ':magic:fuck-vibrator'
 include ':magic:fuck-dialog'
+include ':magic:catch-log'
 include ':app'
 include ':demo:TestDemo'

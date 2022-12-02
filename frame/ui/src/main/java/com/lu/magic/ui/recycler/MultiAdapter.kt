@@ -82,7 +82,7 @@ open class MultiAdapter<E> : RecyclerView.Adapter<MultiViewHolder<E>>() {
         return this
     }
 
-    open fun getData(): List<E> {
+    open fun getData(): MutableList<E> {
         return data
     }
 

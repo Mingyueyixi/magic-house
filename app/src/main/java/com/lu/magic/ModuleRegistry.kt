@@ -1,15 +1,18 @@
 package com.lu.magic
 
+import android.content.Context
+import android.content.Intent
 import com.lu.magic.IModuleFace.ModuleEmpty
 import com.lu.magic.amap.FuckAMapFragment
-import com.lu.magic.arts.BaseMagic
-import com.lu.magic.arts.FuckAMapLocationMagic
-import com.lu.magic.arts.FuckDialogMagic
-import com.lu.magic.arts.FuckScreenMagic
-import com.lu.magic.arts.FuckVibratorMagic
-import com.lu.magic.fuckdialog.FuckDialogFragment
-import com.lu.magic.screen.ScreenOrientationFragment
+import com.lu.magic.arts.*
+import com.lu.magic.catchlog.LogViewFragment
 import com.lu.magic.config.ModuleId
+import com.lu.magic.fuckdialog.FuckDialogFragment
+import com.lu.magic.main.AppRouter
+import com.lu.magic.main.DetailConfigActivity
+import com.lu.magic.screen.ScreenOrientationFragment
+import com.lu.magic.store.ItemModel
+import com.lu.magic.util.NullUtil
 
 object ModuleRegistry {
 
@@ -45,6 +48,24 @@ object ModuleRegistry {
                 return IModuleFace.IFragmentFactory {
                     FuckAMapFragment()
                 }
+            }
+        })
+        ModuleProviders.put(ModuleId.DEVELOP_CATCH_LOG, object : IModuleFace {
+            override fun loadMagic(): BaseMagic {
+                //这个模块暂不需要magic hook
+                return Magics.MAGIC_EMPTY
+            }
+
+            override fun onEntry(context: Context?, itemModel: ItemModel?) {
+                if (context != null && itemModel != null) {
+                    //直接进入DetailConfigActivity
+                    AppRouter.routeDetailConfigPage(context, itemModel, null)
+                }
+            }
+
+            override fun getDetailFragmentFactory(): IModuleFace.IFragmentFactory {
+                //为DetailConfigActivity配置fragment
+                return IModuleFace.IFragmentFactory { LogViewFragment() }
             }
         })
     }

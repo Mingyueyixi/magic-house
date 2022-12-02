@@ -54,7 +54,7 @@ class StoreFragment : BaseFragment() {
                 TitleModel("位置"),
                 ItemModel("AMap", ModuleModel("高德地图", ModuleId.AMAP_LOCATION)),
                 TitleModel("开发工具"),
-                ItemModel("视图捕获", ModuleModel("视图捕获", ModuleId.VIEW_CATCH)),
+                ItemModel("日志捕捉", ModuleModel("日志捕捉", ModuleId.DEVELOP_CATCH_LOG)),
                 TitleModel("其他"),
                 ItemModel("屏幕旋转", ModuleModel("屏幕旋转模式", ModuleId.FUCK_SCREEN_ORIENTATION)),
                 ItemModel("锁定视图", ModuleModel("锁定视图", ModuleId.VIEW_LOCK)),

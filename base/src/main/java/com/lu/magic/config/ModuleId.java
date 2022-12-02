@@ -19,7 +19,7 @@ import java.lang.annotation.RetentionPolicy;
         AMAP_LOCATION,
         FUCK_VIBRATOR,
         FUCK_SCREEN_ORIENTATION,
-        VIEW_CATCH,
+        DEVELOP_CATCH_LOG,
         VIEW_LOCK
 })
 public @interface ModuleId {
@@ -28,6 +28,6 @@ public @interface ModuleId {
     String AMAP_LOCATION = "AMapLocation";
     String FUCK_VIBRATOR = "FuckVibrator";
     String FUCK_SCREEN_ORIENTATION = "fuckScreenRotate";
-    String VIEW_CATCH = "ViewCatch";
+    String DEVELOP_CATCH_LOG = "DevCatchLog";
     String VIEW_LOCK = "ViewLock";
 }

@@ -57,7 +57,6 @@ import java.util.Set;
 public class SelectAppActivity extends BaseActivity {
     private LayoutSelectAppBinding binding;
     private ItemModel routeItem;
-    private MagicConfigViewModel viewModel;
     private MultiAdapter<AppListModel> appListAdapter;
     private HashMap<String, AppListModel> installAppModelMap = new HashMap<>();
     private int sortActionId = R.id.sort_package_name_A_Z;
@@ -87,7 +86,6 @@ public class SelectAppActivity extends BaseActivity {
         if (routeItem.getModule().getModuleId().isEmpty()) {
             return;
         }
-        viewModel = new ViewModelProvider(this).get(MagicConfigViewModel.class);
         initToolBar();
 
         initViewForAppList();
@@ -106,14 +104,6 @@ public class SelectAppActivity extends BaseActivity {
             finish();
         });
 
-    }
-
-    private void routeDetailConfigPage(AppListModel itemData) {
-        viewModel.setAppListModel(itemData);
-        SingleStoreUtil.put(routeItem);
-        SingleStoreUtil.put(itemData);
-        Intent intent = new Intent(this, DetailConfigActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -369,7 +359,7 @@ public class SelectAppActivity extends BaseActivity {
                 if (module == null || module.getDetailFragmentFactory() == null) {
                     return;
                 }
-                routeDetailConfigPage(itemData);
+                AppRouter.INSTANCE.routeDetailConfigPage(SelectAppActivity.this, routeItem, itemData);
             });
             sbEnableItem.setOnClickListener(v -> {
                 CompoundButton compoundButton = ((CompoundButton) v);
