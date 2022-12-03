@@ -48,8 +48,7 @@ public class SelectView extends FrameLayout {
     }
 
     public SelectView(Context context, AttributeSet attrs, int defStyleAttr) {
-        //使用TextView样式
-        this(context, attrs, defStyleAttr, android.R.attr.textViewStyle);
+        this(context, attrs, defStyleAttr, 0);
     }
 
     public SelectView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
