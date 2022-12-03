@@ -29,7 +29,7 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
         MultiAdapter<String>()
     }
     private val vm by lazy {
-        ViewModelProvider(this)[LogcatCmdViewModel::class.java]
+        ViewModelProvider(this)[LogViewModel::class.java]
     }
     private val mLinearLayoutManager by lazy {
         LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false).also {
@@ -42,7 +42,9 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
     }
 
     override fun onViewBinding(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): FragmentLogviewBinding {
         return FragmentLogviewBinding.inflate(inflater, container, false)
     }
@@ -92,7 +94,7 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
             updateLogView()
         }
         binding.tvLogPath.setOnClickListener {
-            kotlin.runCatching {
+            runCatching {
                 val file = File(vm.logTextPath)
                 val intent = Intent(Intent.ACTION_VIEW)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -116,10 +118,12 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
             if (!agreeRoot) {
                 DialogUtil.buildAlertDialog(it.context)
                     .setMessage(R.string.request_root_for_logcat_des)
-                    .setNegativeButton(null, null)
-                    .setNeutralButton(R.string.agree) { dialog, which ->
+                    .setNegativeButton(R.string.agree) { dialog, whick ->
                         agreeRoot = true
                         clickStartLogcatAction()
+                    }
+                    .setNeutralButton(R.string.cancel) { dialog, which ->
+                        dialog.cancel()
                     }
                     .setOnCancelListener {
                         agreeRoot = false
@@ -128,7 +132,6 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
                 clickStartLogcatAction()
             }
         }
-
     }
 
     private fun clickStartLogcatAction() {

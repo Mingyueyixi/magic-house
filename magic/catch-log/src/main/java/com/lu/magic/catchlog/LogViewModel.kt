@@ -1,11 +1,10 @@
 package com.lu.magic.catchlog
 
-import android.os.Build
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.lu.magic.util.sh.ContinuousShell
 import com.lu.magic.util.AppUtil
-import com.lu.magic.util.CmdUtil
 import com.lu.magic.util.IOUtil
 import com.lu.magic.util.log.LogUtil
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +18,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 
-class LogcatCmdViewModel : ViewModel() {
+class LogViewModel : ViewModel() {
     @Volatile
     var alive = false
 
@@ -46,61 +45,25 @@ class LogcatCmdViewModel : ViewModel() {
 
     fun startLogcat() {
         viewModelScope.launch {
-            kotlin.runCatching {
-                Runtime.getRuntime().exec("su").let {
-                    process = it
-                    alive = true
-                    withContext(Dispatchers.IO) {
-                        IOUtil.writeByString("logcat > $logTextPath\n", it.outputStream)
-                        val bufferWriter = it.outputStream.bufferedWriter()
-                        bufferWriter.flush()
-                    }
-                }
-            }.onFailure {
-                LogUtil.e(it)
+            withContext(Dispatchers.IO) {
+                val shell = ContinuousShell.open(true)
+                shell.exec(arrayOf("logcat > $logTextPath"), false)
+                process = shell.process
+                alive = true
             }
         }
     }
 
-    fun exitLogcatWithBlock() {
-        process?.let {
-            IOUtil.writeByString("exit", it.outputStream)
-            it.outputStream.flush()
-            IOUtil.closeQuietly(it.inputStream, it.errorStream, it.outputStream)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                it.destroyForcibly()
-            } else {
-                it.destroy()
-            }
-            it.waitFor()
-            process = null
+    fun destroyLogcat() {
+        if (alive) {
+            LogcatKiller.kill(process)
+            alive = false
         }
-        var shell: CmdUtil.Shell? = null
-        try {
-            val result = CmdUtil.exec(arrayOf("ps -A | grep logcat"), true)
-            LogUtil.i("cmd--ps--> $result")
-            result.success.split("\n").map {
-                val m = Regex("\\s\\d+\\s").find(it)
-                if (m == null) {
-                    ""
-                } else {
-                    "kill ${m.value.trim()}"
-                }
-            }.toList().let {
-                LogUtil.i("will exec cmd", it)
-                CmdUtil.exec(it.toTypedArray(), true)
-            }
-        } catch (e: Exception) {
-            LogUtil.e(e)
-        } finally {
-            IOUtil.closeQuietly(shell)
-        }
-
     }
 
     override fun onCleared() {
         super.onCleared()
-        exitLogcatWithBlock()
+        destroyLogcat()
         readingLog = false
     }
 
@@ -114,7 +77,6 @@ class LogcatCmdViewModel : ViewModel() {
                 val iStream = File(logTextPath).inputStream()
                 val iReader = InputStreamReader(iStream)
                 val bufferReader = BufferedReader(iReader)
-                var onFileEnd = false
                 val preList = LinkedList<String>()
                 var lastPostMills = System.currentTimeMillis()
 
@@ -132,7 +94,6 @@ class LogcatCmdViewModel : ViewModel() {
                     //第一次读取到文件末尾。通知更新
                     cacheLines.addAll(preList)
                     preList.clear()
-                    updateLogLive.postValue(!(updateLogLive.value ?: true))
                     updateLogLive.postValue(!(updateLogLive.value ?: true))
 
                     while (readingLog) {
