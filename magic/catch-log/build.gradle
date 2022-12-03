@@ -7,5 +7,4 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
     // https://mvnrepository.com/artifact/dev.mobile/dadb
     api project(":base")
-    implementation "com.blankj:utilcodex:1.31.1"
 }
