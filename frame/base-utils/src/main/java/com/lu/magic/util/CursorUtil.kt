@@ -8,9 +8,13 @@ import androidx.core.database.getStringOrNull
 
 object CursorUtil {
 
-    fun getAll(cursor: Cursor): MutableList<MutableMap<String, Any?>> {
+    fun getAll(cursor: Cursor?): MutableList<MutableMap<String, Any?>> {
         val lst = mutableListOf<MutableMap<String, Any?>>()
+        if (cursor == null) {
+            return lst
+        }
         while (cursor.moveToNext()) {
+            val row = mutableMapOf<String, Any?>()
             for (columnName in cursor.columnNames) {
                 val columnIndex = cursor.getColumnIndex(columnName)
                 val value = when (cursor.getType(columnIndex)) {
@@ -21,13 +25,17 @@ object CursorUtil {
                     Cursor.FIELD_TYPE_NULL -> null
                     else -> null
                 }
-                lst.add(mutableMapOf(columnName to value))
+                row.put(columnName, value)
             }
+            lst.add(row)
         }
         return lst
     }
 
-    fun <T> getAll(cursor: Cursor, itemType: Class<T>): MutableList<T> {
+    fun <T> getAll(cursor: Cursor?, itemType: Class<T>): MutableList<T> {
+        if (cursor == null) {
+            return arrayListOf()
+        }
         val lst = getAll(cursor)
         return runCatching {
             val json = GsonUtil.toJson(lst)
