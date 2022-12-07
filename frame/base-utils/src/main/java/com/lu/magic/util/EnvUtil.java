@@ -1,10 +1,8 @@
 package com.lu.magic.util;
 
-import de.robv.android.xposed.XposedBridge;
-
 public class EnvUtil {
 
-    private static Class<XposedBridge> xposedBridge;
+    private static Class xposedBridge;
 
     static {
         check();
@@ -12,7 +10,7 @@ public class EnvUtil {
 
     public static void check() {
         try {
-            xposedBridge = (Class<XposedBridge>) Class.forName("de.robv.android.XposedBridge");
+            xposedBridge = Class.forName("de.robv.android.XposedBridge");
         } catch (ClassNotFoundException e) {
 //            e.printStackTrace();
         }

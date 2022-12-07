@@ -9,9 +9,9 @@
     <string name="only_show_system_application">Only System App</string>
     <string name="hide_system_application">Hide System App</string>
     <string name="only_show_debug_application">Only Debug App</string>
-    <string name="action_search" >Search</string>
+    <string name="action_search">Search</string>
 
-<!--    Activity旋转配置-->
+    <!--    Activity旋转配置-->
     <string name="screen_orientation_landscape">screen orientation landscape</string>
     <string name="screen_orientation_portrait">screen orientation portrait</string>
     <string name="screen_orientation_reverse_landscape">screen orientation reverse landscape</string>
@@ -26,4 +26,12 @@
     <string name="screen_orientation_user_portrait">screen orientation user portrait</string>
     <string name="screen_orientation_user_landscape">screen orientation user landscape</string>
     <string name="screen_orientation_unspecified">screen orientation unspecified</string>
+
+    <string name="module_not_active">Module is not active</string>
+    <string name="module_have_active">Module have been active</string>
+    <string name="about_this_module">About this module</string>
+    <string name="donate">Donate</string>
+    <string name="save_success">save success</string>
+    <string name="save_fail">save fail</string>
+
 </resources>

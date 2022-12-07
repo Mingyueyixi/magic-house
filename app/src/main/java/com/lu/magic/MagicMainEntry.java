@@ -54,10 +54,10 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
     }
 
     private void handleMain(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
+//        if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
 //            dispatchMagics(lpparam);
-            return;
-        }
+//            return;
+//        }
         if (AppInitProxy.hasAttachContext()) {
             LogUtil.d("已经初始化", lpparam.packageName, lpparam.processName, lpparam.isFirstApplication, lpparam.appInfo.uid);
             dispatchMagics(lpparam);
@@ -88,7 +88,11 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         for (Map.Entry<String, BaseMagic> entity : repository.getMagicRepoMap().entrySet()) {
             BaseMagic magic = entity.getValue();
             LogUtil.d("handle magic:", magic.getClass().getSimpleName());
-            magic.handleLoadPackage(lpparam);
+            try {
+                magic.handleLoadPackage(lpparam);
+            } catch (Throwable e) {
+                LogUtil.e("error");
+            }
         }
 
     }

@@ -1,4 +1,4 @@
-apply from: rootProject.file('module.gradle')
+apply from: rootProject.file('module_xp.gradle')
 
 dependencies {
     api project(":frame:xpreference")

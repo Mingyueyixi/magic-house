@@ -2,6 +2,10 @@ package com.lu.magic;
 
 import com.lu.magic.arts.BaseMagic;
 
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 /**
@@ -12,6 +16,20 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class MagicSelfEntry extends BaseMagic {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-
+        changeHookModuleState(lpparam);
     }
+
+    private void changeHookModuleState(XC_LoadPackage.LoadPackageParam lpparam) {
+        //不能直接使用class 来hook
+        XposedHelpers.findAndHookMethod(
+                "com.lu.magic.AppInitProxy",
+                lpparam.classLoader,
+                "isActiveHookModule",
+                XC_MethodReplacement.returnConstant(true)
+        );
+        //这里不能直接调用来验证
+        //XposedBridge.log(AppInitProxy.isActiveHookModule());
+    }
+
+
 }

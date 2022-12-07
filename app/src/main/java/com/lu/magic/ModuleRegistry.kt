@@ -1,7 +1,6 @@
 package com.lu.magic
 
 import android.content.Context
-import android.content.Intent
 import com.lu.magic.IModuleFace.ModuleEmpty
 import com.lu.magic.amap.FuckAMapFragment
 import com.lu.magic.arts.*
@@ -9,10 +8,8 @@ import com.lu.magic.catchlog.LogViewFragment
 import com.lu.magic.config.ModuleId
 import com.lu.magic.fuckdialog.FuckDialogFragment
 import com.lu.magic.main.AppRouter
-import com.lu.magic.main.DetailConfigActivity
 import com.lu.magic.screen.ScreenOrientationFragment
 import com.lu.magic.store.ItemModel
-import com.lu.magic.util.NullUtil
 
 object ModuleRegistry {
 

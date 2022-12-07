@@ -1,4 +1,4 @@
-apply from: rootProject.file('module.gradle')
+apply from: rootProject.file('module_xp.gradle')
 
 android {
     defaultConfig {
@@ -55,9 +55,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-
     implementation 'com.kyleduo.switchbutton:library:2.1.0'
-//    implementation 'de.robv.android.xposed:api:82'
+
+    implementation deps['org.jetbrains.kotlinx:kotlinx-coroutines-android']
+    implementation deps["androidx.lifecycle:lifecycle-viewmodel-ktx"]
 
     implementation project(':magic:amap')
     implementation project(":magic:screen")

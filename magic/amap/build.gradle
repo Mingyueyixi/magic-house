@@ -1,10 +1,11 @@
-apply from: rootProject.file('module.gradle')
+apply from: rootProject.file('module_xp.gradle')
 
 
 dependencies {
     //3D地图so及jar
 //    compile 'com.amap.api:3dmap:latest.integration'
     //2D地图，不需要最后的版本:latest.integration，防止不兼容更新，无法打包
+
     api deps['com.amap.api:map2d']
     //定位功能
     api deps['com.amap.api:location']

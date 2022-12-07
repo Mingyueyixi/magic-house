@@ -43,4 +43,10 @@ public class AppInitProxy {
     }
 
 
+    public static boolean isActiveHookModule() {
+        //默认返回false，将使用hook的方式修改为true，成功则代表已激活
+        return false;
+    }
+
+
 }

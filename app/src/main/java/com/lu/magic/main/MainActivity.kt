@@ -24,9 +24,6 @@ class MainActivity : BaseActivity() {
             PageModel(R.drawable.ic_icon_store, R.string.store) {
                 FragmentUtil.newInstance<StoreFragment>()
             },
-            PageModel(R.drawable.ic_icon_log, R.string.log) {
-                FragmentUtil.newInstance<LogFragment>()
-            },
             PageModel(R.drawable.ic_icon_about, R.string.about) {
                 FragmentUtil.newInstance<AboutFragment>()
             }
@@ -46,17 +43,13 @@ class MainActivity : BaseActivity() {
         binding.mainContentViewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         binding.mainContentViewPager.adapter = PageAdapter(this, pageModelList)
         binding.mainContentViewPager.offscreenPageLimit = pageModelList.size
-        TabLayoutMediator(binding.mainBottomTabLayout,
-            binding.mainContentViewPager,
-            true,
-            object : TabLayoutMediator.TabConfigurationStrategy {
-                override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
-                    var item = pageModelList[position]
-                    tab.setText(item.textId)
-                    tab.setIcon(item.iconId)
-                }
 
-            }).attach()
+        TabLayoutMediator(binding.mainBottomTabLayout, binding.mainContentViewPager, true) { tab, position ->
+            val item = pageModelList[position]
+            tab.setText(item.textId)
+            tab.setIcon(item.iconId)
+        }.attach()
+
         binding.mainBottomTabLayout.addOnTabSelectedListener(object :
             TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {

@@ -65,7 +65,7 @@ dependencies {
     implementation deps['androidx.constraintlayout:constraintlayout']
     implementation deps['com.google.code.gson:gson']
     // 只参与编译，不参与打包，最终由xposed提供
-    compileOnly deps['de.robv.android.xposed:api']
+//    compileOnly deps['de.robv.android.xposed:api']
     implementation deps['com.kyleduo.switchbutton:library']
     implementation deps['com.google.android.flexbox:flexbox']
 
