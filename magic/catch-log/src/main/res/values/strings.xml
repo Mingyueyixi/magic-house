@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="start">start</string>
-    <string name="pause">pause</string>
-    <string name="agree">agree</string>
-    <string name="cancel">cancel</string>
     <string name="request_root_for_logcat_des">Program need root permission to run or stop logcat.when you exit this page, please allow root permission to stop logcat, if not, the sdcard storage may run out by cache log.</string>
 
 </resources>

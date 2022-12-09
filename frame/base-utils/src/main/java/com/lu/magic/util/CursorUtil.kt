@@ -5,6 +5,7 @@ import androidx.core.database.getBlobOrNull
 import androidx.core.database.getDoubleOrNull
 import androidx.core.database.getLongOrNull
 import androidx.core.database.getStringOrNull
+import androidx.core.graphics.ColorUtils
 
 object CursorUtil {
 

@@ -118,11 +118,11 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
             if (!agreeRoot) {
                 DialogUtil.buildAlertDialog(it.context)
                     .setMessage(R.string.request_root_for_logcat_des)
-                    .setNegativeButton(R.string.agree) { dialog, whick ->
+                    .setNegativeButton(com.lu.magic.base.R.string.agree) { dialog, whick ->
                         agreeRoot = true
                         clickStartLogcatAction()
                     }
-                    .setNeutralButton(R.string.cancel) { dialog, which ->
+                    .setNeutralButton(com.lu.magic.base.R.string.cancel) { dialog, which ->
                         dialog.cancel()
                     }
                     .setOnCancelListener {
@@ -139,11 +139,11 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
             if (vm.pauseReadLog) {
                 //恢复
                 vm.pauseReadLog = false
-                binding.btnStartLogcat.setText(R.string.pause)
+                binding.btnStartLogcat.setText(com.lu.magic.base.R.string.pause)
             } else {
                 //去暂停
                 vm.pauseReadLog = true
-                binding.btnStartLogcat.setText(R.string.start)
+                binding.btnStartLogcat.setText(com.lu.magic.base.R.string.start)
             }
 
         } else {
@@ -151,7 +151,7 @@ class LogViewFragment : BindingFragment<FragmentLogviewBinding>() {
             vm.startLogcat()
             binding.btnStartLogcat.postDelayed({
                 vm.startLoadLog()
-                binding.btnStartLogcat.setText(R.string.pause)
+                binding.btnStartLogcat.setText(com.lu.magic.base.R.string.pause)
             }, 500)
         }
     }

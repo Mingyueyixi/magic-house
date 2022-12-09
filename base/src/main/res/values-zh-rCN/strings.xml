@@ -35,4 +35,10 @@
     <string name="save_success">保存成功</string>
     <string name="save_fail">保存失败</string>
 
+    <string name="start">开始</string>
+    <string name="pause">暂停</string>
+    <string name="agree">同意</string>
+    <string name="cancel">取消</string>
+    <string name="agree_and_continue">同意并继续</string>
+    <string name="cancel_and_exit">取消并退出</string>
 </resources>

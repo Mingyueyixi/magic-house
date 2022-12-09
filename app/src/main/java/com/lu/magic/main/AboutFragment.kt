@@ -58,7 +58,8 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
 
     private fun initViewAction() {
         binding.layoutAbout.setOnClickListener {
-            WebViewActivity.start(it.context, "about:blank")
+//            WebViewActivity.start(it.context, "http://192.168.3.116:5500/index.html")
+            WebViewActivity.start(it.context, WebViewActivity.URL_LOCAL_ABOUT)
         }
 
         binding.layoutDonate.setOnClickListener {
@@ -71,13 +72,12 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
                 Intent.URI_INTENT_SCHEME
             )
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            try {
-//                startActivity(intent)
-//            } catch (e: android.content.ActivityNotFoundException) {
-//                LogUtil.e("支付宝跳转失败")
-//                showDonateDialog()
-//            }
-            showDonateDialog()
+            try {
+                startActivity(intent)
+            } catch (e: android.content.ActivityNotFoundException) {
+                LogUtil.e("支付宝跳转失败")
+                showDonateDialog()
+            }
         }
 
         vm.uiToastLive.observe(this.viewLifecycleOwner) {
@@ -189,14 +189,14 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
                     LogUtil.w("MediaStore删除失败！！")
                 }
             }
-            val imageUri = context.contentResolver.insert(uri, contentValues)
+            val imageUri = resolver.insert(uri, contentValues)
             imageUri?.let { uri ->
                 val payImgByteArray = context.resources.openRawResource(payImgResId).readBytes()
-                context.contentResolver.openOutputStream(uri, "w").use { out ->
+                resolver.openOutputStream(uri, "w").use { out ->
                     out?.write(payImgByteArray)
                 }
                 contentValues.clear()
-                context.contentResolver.update(uri, contentValues, null, null)
+                resolver.update(uri, contentValues, null, null)
             }
 
         }

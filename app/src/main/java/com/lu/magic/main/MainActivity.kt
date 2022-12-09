@@ -2,24 +2,29 @@ package com.lu.magic.main
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lu.magic.R
 import com.lu.magic.databinding.ActivityMainBinding
+import com.lu.magic.main.vm.MainViewModel
 import com.lu.magic.ui.BaseActivity
 import com.lu.magic.util.FragmentUtil
+import com.lu.magic.util.dialog.DialogUtil
 
 
 class MainActivity : BaseActivity() {
     private lateinit var pageModelList: ArrayList<PageModel>
     private lateinit var binding: ActivityMainBinding
+    private val vm by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         pageModelList = arrayListOf(
             PageModel(R.drawable.ic_icon_store, R.string.store) {
                 FragmentUtil.newInstance<StoreFragment>()
@@ -97,8 +102,19 @@ class MainActivity : BaseActivity() {
 //            }
 //        })
 
+        vm.checkShowAgreement().observe(this) {
+            DialogUtil.buildAlertDialog(this)
+                .setMessage(it)
+                .setNegativeButton(com.lu.magic.base.R.string.cancel_and_exit) { dialog, _ ->
+                    finishAfterTransition()
+                }
+                .setPositiveButton(com.lu.magic.base.R.string.agree_and_continue) { dialog, _ ->
+                    vm.saveHasAgreeAgreement()
+                }
+                .setCancelable(false)
+                .show()
+        }
     }
-
 
     private class PageAdapter(var activity: MainActivity, var viewModelList: List<PageModel>) :
         FragmentStateAdapter(activity) {
@@ -110,5 +126,6 @@ class MainActivity : BaseActivity() {
             return viewModelList[position].createFragment()
         }
     }
+
 
 }

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html,
+        head,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #content {
+            padding: 1rem 1rem 0rem 1rem;
+        }
+
+        .block {
+            width: 100%;
+            word-break: normal;
+            display: block;
+            margin: 1rem 0.6rem 0rem 0.6rem;
+        }
+
+        .magic-ul li>:first-child {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .magic-ul li {
+            margin-top: 1rem;
+        }
+
+        h1,
+        .h1 {
+            font-size: 2rem;
+        }
+
+        h2,
+        .h2 {
+            font-size: 1.8rem;
+        }
+
+        h3,
+        .h3 {
+            font-size: 1.6rem;
+        }
+
+        h4,
+        .h4 {
+            font-size: 1.4rem;
+        }
+
+        h5,
+        .h5 {
+            font-size: 1.2rem;
+        }
+
+        h6,
+        .h6 {
+            font-size: 1rem;
+        }
+
+        #top-block {
+            display: block;
+            width: 100%;
+            height: 36%;
+            color: beige;
+            position: relative;
+        }
+
+        .app-info {
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .app-info> :nth-child(2n) {
+            margin-top: 0.5rem;
+        }
+
+        .app-info> :nth-child(2n-1) {
+            margin-bottom: 0.5rem;
+        }
+
+
+        .app-box {
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+
+        .v-center-wrap {
+            position: relative;
+        }
+
+        /* 父元素须position */
+        .v-center {
+            height: inherit;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #icon-back {
+            font-size: 1.3rem !important;
+            position: relative;
+            box-sizing: content-box;
+            display: inline-block;
+            color: white;
+            margin: 1rem;
+        }
+
+        #top-bar {
+            display: block;
+            width: 100%;
+            height: 4rem;
+            position: fixed;
+            top: 0px;
+        }
+
+        #top-bar> {
+            display: inline-block;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .primary-bg {
+            background-color: #4E8A44;
+        }
+
+        .license-block {
+            font-size: 0.8rem;
+        }
+
+        .license-block>:first-child {
+            font-size: 1rem;
+        }
+
+        .author-wrap {
+            position: relative;
+            height: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .author-wrap>.icon-avatar {
+            display: inline-block;
+            position: relative;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+        }
+
+        .author-wrap>.author-text {
+            display: inline-block;
+            position: absolute;
+            height: inherit;
+            top: 50%;
+            margin-left: 1rem;
+            transform: translateY(-50%);
+        }
+    </style>
+    <link rel="stylesheet" href="./iconfont.css">
+
+</head>
+
+<body>
+    <div class="app-box">
+
+        <div id="top-block" class="v-center-wrap primary-bg">
+            <header id="top-bar" class="primary-bg">
+                <span id="icon-back" class="iconfont icon-xitongfanhui"></span>
+                <span class="appName h4 hidden">魔法屋</span>
+            </header>
+            <div class="app-info v-center">
+                <div class="appName h4">魔法屋</div>
+                <div class="appVersion">v1.0</div>
+            </div>
+
+
+        </div>
+
+
+        <div id="content">
+
+            <div class="h2 block">关于和帮助</div>
+            <div class="block">
+                <p>这是一个用于改变一些应用功能的模块。</p>
+                <p>在这个应用中，为其他应用提供行为变更的能力称为“魔法”。</p>
+                <p>目前存在以下“魔法”：</p>
+                <ul class="magic-ul">
+                    <li>
+                        <div>禁止</div>
+                        <div>对话框：对应用的对话框进行屏蔽，例如更新对话框。仅对原生应用生效，web/flutter/游戏等应用不生效</div>
+                        <div>震动器：禁止应用的震动</div>
+                    </li>
+                    <li>
+                        <div>位置</div>
+                        <div>AMap：修改使用了高德定位sdk的应用的位置信息</div>
+                    </li>
+                    <li>
+                        <div>开发工具</div>
+                        <div>日志捕捉：在手机上查看logcat（需root权限）</div>
+                    </li>
+                    <li>
+                        <div>其他</div>
+                        <div>屏幕旋转：自定义应用的旋转方式，如固定竖屏、强制旋转</div>
+                    </li>
+                </ul>
+            </div>
+            <div class="h2 block">法律与合规</div>
+            <div class="block" id="agreement-block">
+                <p>此模块的旨在学习开发，请勿用作其他用途。</p>
+                <p>您同意仅将此模块（即魔法屋，下同）用于合法合规用途，如因违反该声明而造成的任何后果，与本模块作者无关。</p>
+                <p>继续使用此模块，即视为您同意上述条款和内容。</p>
+            </div>
+
+            <div class="h2 block">主页</div>
+            <a class="block" href="https://github.com/Mingyueyixi/magic-house">
+                <div class="author-wrap">
+                    <img class="icon-avatar" alt="" src="https://avatars.githubusercontent.com/u/19200895?v=4" />
+                    <span class="author-text">Mingyueyixi</span>
+                </div>
+                <div>https://github.com/Mingyueyixi/magic-house</div>
+            </a>
+            <div class="h2 block">开源许可</div>
+            <a class="block license-block" href="https://mvnrepository.com/artifact/de.robv.android.xposed/api">
+                <div>de.robv.android.xposed</div>
+                <div>https://mvnrepository.com/artifact/de.robv.android.xposed/api</div>
+                <div>Apache License 2.0</div>
+            </a>
+            <a class="block license-block" href="https://github.com/kyleduo/SwitchButton">
+                <div>kyleduo/SwitchButton</div>
+                <div>https://github.com/kyleduo/SwitchButton</div>
+                <div>Apache License 2.0</div>
+            </a>
+            <a class="block license-block" href="https://github.com/google/gson">
+                <div>google/gson</div>
+                <div>https://github.com/google/gson</div>
+                <div>Apache License 2.0</div>
+            </a>
+            <div class="block license-block"></div>
+
+        </div>
+
+
+    </div>
+    <script>
+        //rem自适应
+        (function (w, d) {
+            function setSize() {
+                var screenWidth = d.documentElement.clientWidth;
+                var currentFontSize = screenWidth * 100 / 2560;
+                d.documentElement.style.fontSize = currentFontSize + 'px';
+            }
+            w.addEventListener('resize', setSize);
+            w.addEventListener('pageShow', setSize)
+            w.addEventListener('DOMContentLoaded', setSize)
+        })(window, document)
+
+        var rem = window.getComputedStyle(document.documentElement)["fontSize"]
+
+        var appNameEle = document.querySelector(".app-info > .appName")
+        var topBarAppNameEle = document.querySelector("#top-bar > .appName")
+        var appBoxEle = document.querySelector(".app-box")
+        var appInfoEle = document.querySelector(".app-info")
+
+        rem = parseFloat(rem.replace("px", ""))
+        if (window.Magic) {
+            Magic = window.Magic
+            var appInfo = JSON.parse(Magic.getAppInfo())
+            var buildInfo = appInfo.buildInfo
+            var gitCommit = buildInfo.gitCommit.substring(0, 6)
+            var colorPrimary = appInfo.colorPrimary
+
+            document.querySelectorAll(".appName").forEach((ele, index, parent) => {
+                ele.innerText = appInfo.appName
+            })
+
+            document.querySelector("#top-block").style.backgroundColor = colorPrimary
+            document.querySelector("#top-bar").style.backgroundColor = colorPrimary
+
+            document.querySelector(".appVersion").innerText = "v" + appInfo.versionName + "-" + appInfo.buildType + "-" + gitCommit
+            document.querySelector("#icon-back").addEventListener("click", (event) => {
+                Magic.goBack()
+            })
+
+            document.querySelectorAll("a").forEach((ele, inde, parent) => {
+                ele.addEventListener("click", (event) => {
+                    //阻止默认动作：跳转
+                    event.preventDefault()
+                    console.log(ele.href)
+                    Magic.openUri(ele.href)
+                })
+            })
+
+        }
+
+        appBoxEle.onscroll = function (e) {
+            var scrollTop = e.target.scrollTop
+            if (scrollTop > 3 * rem) {
+                if (!appInfoEle.classList.contains("hidden")) {
+                    appInfoEle.classList.add("hidden")
+                    topBarAppNameEle.classList.remove("hidden")
+                }
+            } else {
+                if (appInfoEle.classList.contains("hidden")) {
+                    appInfoEle.classList.remove("hidden")
+                    topBarAppNameEle.classList.add("hidden")
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

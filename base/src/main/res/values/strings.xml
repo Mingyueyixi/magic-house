@@ -34,4 +34,10 @@
     <string name="save_success">save success</string>
     <string name="save_fail">save fail</string>
 
+    <string name="start">start</string>
+    <string name="pause">pause</string>
+    <string name="agree">agree</string>
+    <string name="cancel">cancel</string>
+    <string name="agree_and_continue">agree and continue</string>
+    <string name="cancel_and_exit">cancel and exit</string>
 </resources>

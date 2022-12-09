@@ -7,15 +7,16 @@ import android.net.http.SslError
 import android.os.Bundle
 import android.webkit.*
 import android.widget.FrameLayout
+import com.lu.magic.main.Contracts
 import com.lu.magic.ui.BaseActivity
 import com.lu.magic.util.log.LogUtil
 
 class WebViewActivity : BaseActivity() {
-    private var webUrl: String = localWebUrl
+    private var webUrl: String = URL_LOCAL_ABOUT
     private lateinit var webView: WebView
 
     companion object {
-        private val localWebUrl = "file:///android_asset/about_app/index.html"
+        const val URL_LOCAL_ABOUT = Contracts.URI_LOCAL_ABOUT
 
         @JvmStatic
         fun start(context: Context, webUrl: String) {
@@ -29,11 +30,12 @@ class WebViewActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         webView = WebView(this)
+        WebView.setWebContentsDebuggingEnabled(true)
         val contentView = FrameLayout(this).also {
             it.addView(webView, FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
         setContentView(contentView)
-        webUrl = intent.getStringExtra("webUrl") ?: localWebUrl
+        webUrl = intent.getStringExtra("webUrl") ?: URL_LOCAL_ABOUT
 
         //setting webview
 
@@ -48,8 +50,26 @@ class WebViewActivity : BaseActivity() {
         }
         webView.webViewClient = MagicWebViewClient()
         webView.webChromeClient = MagicChromeClient()
-        webView.addJavascriptInterface(MagicJavaScriptInterface(), "Magic")
+
+        webView.addJavascriptInterface(
+            MagicJavaScriptInterface(JsInterfaceProxy()),
+            "Magic"
+        )
         webView.loadUrl(webUrl)
+    }
+
+    override fun onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    inner class JsInterfaceProxy : JsInterface {
+        override fun goBack() {
+            finishAfterTransition()
+        }
     }
 
     class MagicWebViewClient : WebViewClient() {
@@ -57,18 +77,19 @@ class WebViewActivity : BaseActivity() {
         override fun onReceivedSslError(view: WebView, handler: SslErrorHandler?, error: SslError?) {
             if (!proceedReceivedSslError) {
                 AlertDialog.Builder(view.context).setNegativeButton("继续") { dialog, which ->
-                        handler?.proceed()
-                        proceedReceivedSslError = true
-                    }.setNeutralButton("取消") { dialog, which ->
-                        super.onReceivedSslError(view, handler, error)
-                    }.show()
+                    handler?.proceed()
+                    proceedReceivedSslError = true
+                }.setNeutralButton("取消") { dialog, which ->
+                    super.onReceivedSslError(view, handler, error)
+                }.show()
             } else {
                 handler?.proceed()
             }
         }
 
         override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
-            if (URLUtil.isValidUrl(request.url.toString())) {
+            val url = request.url.toString()
+            if (URLUtil.isValidUrl(url)) {
                 return super.shouldOverrideUrlLoading(view, request)
             }
             return true
