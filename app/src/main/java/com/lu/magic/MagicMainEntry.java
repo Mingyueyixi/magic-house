@@ -24,13 +24,12 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * Description: kook 入口
  */
 public class MagicMainEntry implements IXposedHookLoadPackage {
+    private static MagicSelfEntry magicSelf = new MagicSelfEntry();
     private static MagicRepository repository = MagicRepository.getInstance();
 
     static {
-        repository.add(new MagicSelfEntry());
         repository.add(new DisableFlagSecureMagic());
         repository.add(new TestMagic());
-//        repository.add(new LocationMagic());
         repository.add(new ViewLockMagic());
 
         ModuleRegistry.INSTANCE.apply();
@@ -46,18 +45,14 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         try {
-            handleMain(lpparam);
+            handleContext(lpparam);
         } catch (Throwable throwable) {
             //避免崩溃
             LogUtil.e(throwable);
         }
     }
 
-    private void handleMain(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-//        if (lpparam.packageName.equals(BuildConfig.APPLICATION_ID)) {
-//            dispatchMagics(lpparam);
-//            return;
-//        }
+    private void handleContext(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (AppInitProxy.hasAttachContext()) {
             LogUtil.d("已经初始化", lpparam.packageName, lpparam.processName, lpparam.isFirstApplication, lpparam.appInfo.uid);
             dispatchMagics(lpparam);
@@ -85,13 +80,22 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
 
     private void dispatchMagics(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         LogUtil.d("----", "apply magics for", lpparam.processName, "-----");
-        for (Map.Entry<String, BaseMagic> entity : repository.getMagicRepoMap().entrySet()) {
-            BaseMagic magic = entity.getValue();
-            LogUtil.d("handle magic:", magic.getClass().getSimpleName());
+        if (BuildConfig.APPLICATION_ID.equals(lpparam.packageName)) {
             try {
-                magic.handleLoadPackage(lpparam);
+                LogUtil.d("handle magic:", magicSelf.getClass().getSimpleName());
+                magicSelf.handleLoadPackage(lpparam);
             } catch (Throwable e) {
-                LogUtil.e("error");
+                LogUtil.e(e);
+            }
+        } else {
+            for (Map.Entry<String, BaseMagic> entity : repository.getMagicRepoMap().entrySet()) {
+                BaseMagic magic = entity.getValue();
+                LogUtil.d("handle magic:", magic.getClass().getSimpleName());
+                try {
+                    magic.handleLoadPackage(lpparam);
+                } catch (Throwable e) {
+                    LogUtil.e(e);
+                }
             }
         }
 
