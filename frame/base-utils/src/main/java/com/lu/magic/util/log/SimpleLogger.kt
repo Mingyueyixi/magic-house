@@ -49,20 +49,22 @@ open class SimpleLogger : ILogger {
 
     }
 
-    open fun buildLogText(vararg objects: Any): String {
+    open fun buildLogText(objects: Array<out Any?>): String {
         val text = StringBuffer()
-        var obj: Any
-        for (i in objects.indices) {
+        objects.forEachIndexed { i, obj ->
             if (i != 0) {
                 text.append("  ")
             }
-            obj = objects[i]
-            if (obj is Throwable) {
-                text.append(Log.getStackTraceString(obj as Throwable))
-            } else if (obj.javaClass.isArray) {
-                text.append((obj as Array<*>).contentToString())
+            if (obj == null) {
+                text.append("null")
             } else {
-                text.append(obj)
+                if (obj is Throwable) {
+                    text.append(Log.getStackTraceString(obj))
+                } else if (obj.javaClass.isArray) {
+                    text.append((obj as Array<*>).contentToString())
+                } else {
+                    text.append(obj)
+                }
             }
         }
         return text.toString()
