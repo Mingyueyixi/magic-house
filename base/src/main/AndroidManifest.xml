@@ -2,11 +2,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lu.magic.base">
 
-    <application>
-        <provider
-            android:name="com.lu.magic.frame.xp.provider.DataShareProvider"
-            android:authorities="com.lu.magic"
-            android:exported="true" />
-    </application>
-
 </manifest>

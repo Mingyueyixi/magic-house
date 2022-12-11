@@ -38,6 +38,9 @@ public class ContractUtil {
 
     private static <T> ContractResponse<T> toContractResponse(Bundle bundle, Class<T> dataClass) {
         ContractResponse<T> response = new ContractResponse<>();
+        if (bundle == null) {
+            return response;
+        }
         response.exception = (Throwable) bundle.getSerializable(DtoKey.THROW);
         Object dataValue = bundle.get(DtoKey.DATA);
         if (dataValue != null) {

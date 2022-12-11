@@ -1,7 +1,9 @@
 package com.lu.magic;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.os.Bundle;
 
 import com.lu.magic.arts.BaseMagic;
 import com.lu.magic.arts.DisableFlagSecureMagic;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -26,6 +29,8 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 public class MagicMainEntry implements IXposedHookLoadPackage {
     private static MagicSelfEntry magicSelf = new MagicSelfEntry();
     private static MagicRepository repository = MagicRepository.getInstance();
+
+    private boolean isDispatchMagic = false;
 
     static {
         repository.add(new DisableFlagSecureMagic());
@@ -69,6 +74,10 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+                            LogUtil.d("Activity create:", param.thisObject);
+                            if (isDispatchMagic) {
+                                return;
+                            }
                             Context context = (Context) param.thisObject;
                             AppInitProxy.callInit(context);
                             dispatchMagics(lpparam);
@@ -79,10 +88,11 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
 
 
     private void dispatchMagics(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
+        isDispatchMagic = true;
         LogUtil.d("----", "apply magics for", lpparam.processName, "-----");
         if (BuildConfig.APPLICATION_ID.equals(lpparam.packageName)) {
             try {
-                LogUtil.d("handle magic:", magicSelf.getClass().getSimpleName());
+                LogUtil.d("dispatch magic:", magicSelf.getClass().getSimpleName());
                 magicSelf.handleLoadPackage(lpparam);
             } catch (Throwable e) {
                 LogUtil.e(e);
@@ -90,7 +100,7 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
         } else {
             for (Map.Entry<String, BaseMagic> entity : repository.getMagicRepoMap().entrySet()) {
                 BaseMagic magic = entity.getValue();
-                LogUtil.d("handle magic:", magic.getClass().getSimpleName());
+                LogUtil.d("dispatch magic:", magic.getClass().getSimpleName());
                 try {
                     magic.handleLoadPackage(lpparam);
                 } catch (Throwable e) {

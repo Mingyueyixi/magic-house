@@ -1,24 +1,28 @@
-package com.lu.magic;
+package com.lu.magic
 
-import android.os.Bundle;
+import android.os.Bundle
+import android.view.View
+import com.blankj.utilcode.util.VibrateUtils
+import com.lu.magic.config.ConfigUtil
+import com.lu.magic.testdemo.databinding.LayoutMainBinding
+import com.lu.magic.ui.BaseActivity
+import com.lu.magic.util.GsonUtil
+import com.lu.magic.util.ToastUtil
 
-import androidx.annotation.Nullable;
+class TestMainActivity : BaseActivity() {
+    private var binding: LayoutMainBinding? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ConfigUtil.init(this)
+        binding = LayoutMainBinding.inflate(layoutInflater)
+        setContentView(binding!!.root)
+        binding!!.btnClickVibrate.setOnClickListener { v: View? -> VibrateUtils.vibrate(75L) }
+    }
 
-import com.blankj.utilcode.util.VibrateUtils;
-import com.lu.magic.testdemo.databinding.LayoutMainBinding;
-import com.lu.magic.ui.BaseActivity;
+    override fun onResume() {
+        super.onResume()
+        val data = ConfigUtil.getAll()?: mapOf()
+        ToastUtil.show(GsonUtil.toJson(data))
 
-public class TestMainActivity extends BaseActivity {
-    private LayoutMainBinding binding;
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        binding = LayoutMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        binding.btnClickVibrate.setOnClickListener((v) -> {
-            VibrateUtils.vibrate(75L);
-        });
     }
 }
