@@ -1,4 +1,4 @@
-package com.lu.magic.frame.xp.provider;
+package com.lu.magic.frame.xp.bean;
 
 public class ContractResponse<T> {
     public T data;

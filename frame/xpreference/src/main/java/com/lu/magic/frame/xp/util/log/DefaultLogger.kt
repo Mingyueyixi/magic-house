@@ -8,19 +8,19 @@ class DefaultLogger : IXPLog {
     }
 
     override fun d(vararg objects: Any?) {
-        Log.d(Companion.TAG, XPLogUtil.buildLogText(objects))
+        Log.d(TAG, XPLogUtil.buildLogText(objects))
     }
 
     override fun i(vararg objects: Any?) {
-        Log.i(Companion.TAG, XPLogUtil.buildLogText(objects))
+        Log.i(TAG, XPLogUtil.buildLogText(objects))
     }
 
     override fun w(vararg objects: Any?) {
-        Log.w(Companion.TAG, XPLogUtil.buildLogText(objects))
+        Log.w(TAG, XPLogUtil.buildLogText(objects))
     }
 
     override fun e(vararg objects: Any?) {
-        Log.e(Companion.TAG, XPLogUtil.buildLogText(objects))
+        Log.e(TAG, XPLogUtil.buildLogText(objects))
     }
 
 

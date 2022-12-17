@@ -8,14 +8,14 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 
-import com.lu.magic.frame.xp.provider.ContractRequest;
-import com.lu.magic.frame.xp.provider.ContractResponse;
+import com.lu.magic.frame.xp.annotation.FunctionValue;
+import com.lu.magic.frame.xp.annotation.GroupValue;
+import com.lu.magic.frame.xp.annotation.ModeValue;
+import com.lu.magic.frame.xp.annotation.PreferenceIdValue;
+import com.lu.magic.frame.xp.bean.ContractRequest;
+import com.lu.magic.frame.xp.bean.ContractResponse;
 import com.lu.magic.frame.xp.provider.ContractUtil;
 import com.lu.magic.frame.xp.provider.ProviderConfig;
-import com.lu.magic.frame.xp.provider.annotation.FunctionValue;
-import com.lu.magic.frame.xp.provider.annotation.GroupValue;
-import com.lu.magic.frame.xp.provider.annotation.ModeValue;
-import com.lu.magic.frame.xp.provider.annotation.PreferenceIdValue;
 import com.lu.magic.frame.xp.util.log.IXPLog;
 import com.lu.magic.frame.xp.util.log.XPLogUtil;
 
@@ -30,14 +30,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class XPreference implements SharedPreferences {
+public class CPPreference implements SharedPreferences {
     private final String tableName;
     private final ContentResolver contentResolver;
     private final String preferenceId;
     private final ProviderConfig providerConfig;
 
 
-    public XPreference(Context context, String tableName, @PreferenceIdValue String preferenceId, String authority) {
+    public CPPreference(Context context, String tableName, @PreferenceIdValue String preferenceId, String authority) {
         this.tableName = tableName;
         this.contentResolver = context.getContentResolver();
         this.preferenceId = preferenceId;
@@ -265,11 +265,11 @@ public class XPreference implements SharedPreferences {
             return this;
         }
 
-        public XPreference create(Context context) {
+        public CPPreference create(Context context) {
             if (preferenceId == null) {
                 preferenceId = PreferenceIdValue.SP;
             }
-            XPreference sp = new XPreference(context, tableName, preferenceId, authority);
+            CPPreference sp = new CPPreference(context, tableName, preferenceId, authority);
             return sp;
         }
     }

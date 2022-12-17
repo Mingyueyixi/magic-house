@@ -1,6 +1,6 @@
-package com.lu.magic.frame.xp.provider.annotation;
+package com.lu.magic.frame.xp.annotation;
 
-import static com.lu.magic.frame.xp.provider.annotation.ModeValue.*;
+import static com.lu.magic.frame.xp.annotation.ModeValue.*;
 
 import androidx.annotation.StringDef;
 

@@ -1,7 +1,7 @@
-package com.lu.magic.frame.xp.provider.annotation;
+package com.lu.magic.frame.xp.annotation;
 
 
-import static com.lu.magic.frame.xp.provider.annotation.FunctionValue.*;
+import static com.lu.magic.frame.xp.annotation.FunctionValue.*;
 
 import androidx.annotation.StringDef;
 

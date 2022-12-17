@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 
+import com.lu.magic.frame.xp.bean.ContractRequest;
+import com.lu.magic.frame.xp.bean.ContractResponse;
+
 import java.io.InvalidClassException;
 import java.io.Serializable;
 import java.util.ArrayList;

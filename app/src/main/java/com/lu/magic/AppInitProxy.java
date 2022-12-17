@@ -25,7 +25,6 @@ public class AppInitProxy {
 
     public static void callInit(Context ctx) {
         context = ctx.getApplicationContext();
-        ConfigUtil.init(ctx);
         AppUtil.attachContext(ctx);
         LogUtil.setLogger(new SimpleLogger() {
             @Override

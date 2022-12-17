@@ -16,7 +16,8 @@
 
 ```xml
 
-<provider android:name="com.lu.magic.frame.xp.provider.DataShareProvider" android:authorities="com.lu.magic"
+<provider android:name="com.lu.magic.frame.xp.provider.PreferenceServerProvider" 
+    android:authorities="com.lu.magic.server"
     android:exported="true" />
 
 ```
@@ -31,7 +32,7 @@
 
 ```java 
 
-XPreference.ofConfigApply()
+CPPreference.ofConfigApply()
             .setProviderConfig(new ProviderConfig("xxx.authority"))
             .setLogger(new DefaultLogger());
 ```

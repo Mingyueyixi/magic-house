@@ -87,8 +87,8 @@
             android:theme="@style/Theme.FoolishEgg.NoActionBar" />
 
         <provider
-            android:name="com.lu.magic.frame.xp.provider.DataShareProvider"
-            android:authorities="com.lu.magic"
+            android:name="com.lu.magic.frame.xp.provider.PreferenceServerProvider"
+            android:authorities="com.lu.magic.server"
             android:grantUriPermissions="true"
             android:exported="true" />
     </application>

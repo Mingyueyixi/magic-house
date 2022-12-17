@@ -10,8 +10,10 @@ import com.lu.magic.arts.DisableFlagSecureMagic;
 import com.lu.magic.arts.MagicRepository;
 import com.lu.magic.arts.TestMagic;
 import com.lu.magic.arts.ViewLockMagic;
+import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.log.LogUtil;
+import com.lu.magic.util.thread.AppExecutor;
 
 import java.util.Map;
 
@@ -35,7 +37,7 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
     static {
         repository.add(new DisableFlagSecureMagic());
         repository.add(new TestMagic());
-        repository.add(new ViewLockMagic());
+//        repository.add(new ViewLockMagic());
 
         ModuleRegistry.INSTANCE.apply();
         for (Map.Entry<String, IModuleFace> ele : ModuleProviders.moduleFaces.entrySet()) {
@@ -65,6 +67,7 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
             LogUtil.d("准备初始化，获取context", lpparam.packageName, lpparam.processName);
             Application app = AppUtil.getApplicationByReflect();
             if (app != null) {
+                ConfigUtil.init(app);
                 AppInitProxy.callInit(app);
                 return;
             }
@@ -79,6 +82,7 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
                                 return;
                             }
                             Context context = (Context) param.thisObject;
+                            ConfigUtil.init(context.getApplicationContext());
                             AppInitProxy.callInit(context);
                             dispatchMagics(lpparam);
                         }
@@ -88,26 +92,28 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
 
 
     private void dispatchMagics(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        isDispatchMagic = true;
-        LogUtil.d("----", "apply magics for", lpparam.processName, "-----");
-        if (BuildConfig.APPLICATION_ID.equals(lpparam.packageName)) {
-            try {
-                LogUtil.d("dispatch magic:", magicSelf.getClass().getSimpleName());
-                magicSelf.handleLoadPackage(lpparam);
-            } catch (Throwable e) {
-                LogUtil.e(e);
-            }
-        } else {
-            for (Map.Entry<String, BaseMagic> entity : repository.getMagicRepoMap().entrySet()) {
-                BaseMagic magic = entity.getValue();
-                LogUtil.d("dispatch magic:", magic.getClass().getSimpleName());
+        AppExecutor.executeIO(() -> {
+            isDispatchMagic = true;
+            LogUtil.d("----", "apply magics for", lpparam.processName, "-----");
+            if (BuildConfig.APPLICATION_ID.equals(lpparam.packageName)) {
                 try {
-                    magic.handleLoadPackage(lpparam);
+                    LogUtil.d("dispatch magic:", magicSelf.getClass().getSimpleName());
+                    magicSelf.handleLoadPackage(lpparam);
                 } catch (Throwable e) {
                     LogUtil.e(e);
                 }
+            } else {
+                for (Map.Entry<String, BaseMagic> entity : repository.getMagicRepoMap().entrySet()) {
+                    BaseMagic magic = entity.getValue();
+                    LogUtil.d("dispatch magic:", magic.getClass().getSimpleName());
+                    try {
+                        magic.handleLoadPackage(lpparam);
+                    } catch (Throwable e) {
+                        LogUtil.e(e);
+                    }
+                }
             }
-        }
+        });
 
     }
 

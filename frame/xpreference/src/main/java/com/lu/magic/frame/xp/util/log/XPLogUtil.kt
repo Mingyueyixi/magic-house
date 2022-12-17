@@ -13,37 +13,41 @@ internal object XPLogUtil {
 
     @JvmStatic
     fun d(vararg objects: Any?) {
-        logger.d(objects)
+        logger.d(*objects)
     }
 
     @JvmStatic
     fun i(vararg objects: Any?) {
-        logger.i(objects)
+        logger.i(*objects)
     }
 
     @JvmStatic
     fun w(vararg objects: Any?) {
-        logger.w(objects)
+        logger.w(*objects)
     }
 
     @JvmStatic
     fun e(vararg objects: Any?) {
-        logger.e(objects)
+        logger.e(*objects)
     }
 
     @JvmStatic
-    fun buildLogText(vararg objects: Any?): String {
+    fun buildLogText(objects: Array<out Any?>): String {
         val text = StringBuffer()
-        objects.forEachIndexed { index, obj ->
-            val objText = when (obj) {
-                is Throwable -> Log.getStackTraceString(obj)
-                is Array<*> -> Arrays.deepToString(obj)
-                else -> obj.toString()
+        objects.forEachIndexed { i, obj ->
+            if (i != 0) {
+                text.append("  ")
             }
-            if (index == 0) {
-                text.append(objText)
+            if (obj == null) {
+                text.append("null")
             } else {
-                text.append("  $objText")
+                if (obj is Throwable) {
+                    text.append(Log.getStackTraceString(obj))
+                } else if (obj.javaClass.isArray) {
+                    text.append((obj as Array<*>).contentToString())
+                } else {
+                    text.append(obj)
+                }
             }
         }
         return text.toString()

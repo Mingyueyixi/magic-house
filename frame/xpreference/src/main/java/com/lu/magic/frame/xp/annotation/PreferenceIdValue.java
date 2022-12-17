@@ -1,7 +1,7 @@
-package com.lu.magic.frame.xp.provider.annotation;
+package com.lu.magic.frame.xp.annotation;
 
 
-import static com.lu.magic.frame.xp.provider.annotation.PreferenceIdValue.*;
+import static com.lu.magic.frame.xp.annotation.PreferenceIdValue.*;
 
 import androidx.annotation.StringDef;
 

@@ -1,27 +1,40 @@
 package com.lu.magic.config;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.google.gson.JsonObject;
 import com.lu.magic.bean.AMapConfig;
 import com.lu.magic.bean.BaseConfig;
 import com.lu.magic.bean.FuckDialogConfig;
-import com.lu.magic.frame.xp.XPreference;
+import com.lu.magic.frame.xp.BRPreference;
+import com.lu.magic.frame.xp.CPPreference;
+import com.lu.magic.frame.xp.annotation.PreferenceIdValue;
+import com.lu.magic.frame.xp.broadcast.BRConfig;
 import com.lu.magic.util.GsonUtil;
 
 import java.lang.reflect.Type;
 import java.util.Map;
 
 public class ConfigUtil {
-    private static XPreference sp;
+    private static SharedPreferences sp;
 
     public static void init(Context context) {
         if (sp == null) {
-            sp = XPreference.newBuilder()
-                    .setTableName("config")
-                    //与androidManifest注册的保持一致
-                    .setProviderAuthority("com.lu.magic")
-                    .create(context);
+//            CPPreference pref = CPPreference.newBuilder()
+//                    .setTableName("config")
+//                    //与androidManifest注册的保持一致
+//                    .setProviderAuthority("com.lu.magic.server")
+//                    .create(context);
+//          基于广播的多进程SharePreferences
+            BRPreference pref = new BRPreference(
+                    context.getApplicationContext(),
+                    "config",
+                    PreferenceIdValue.SP,
+                    new BRConfig("com.lu.magic.server", "com.lu.magic.client")
+            );
+            BRPreference.Companion.registerAsClient(context.getApplicationContext(), pref.getConfig());
+            sp = pref;
         }
     }
 
