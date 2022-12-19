@@ -35,9 +35,9 @@ class ClientSession(val config: BRConfig) {
         addReceiverListener(request.requestId) { resIntent ->
             resIntent?.let {
                 val data = it.getStringExtra("response")
-                val exception = it.getStringExtra("exception")
-                val dataEntity = KxGson.GSON.fromJson(data, rClass)
-                listener?.onResponse(request, ContractResponse(dataEntity, Exception(exception)))
+                val ty = KxGson.getType(ContractResponse::class.java, rClass)
+                val response: ContractResponse<T?> = KxGson.GSON.fromJson(data, ty)
+                listener?.onResponse(request, response)
             }
         }
 

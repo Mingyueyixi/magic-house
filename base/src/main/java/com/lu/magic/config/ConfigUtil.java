@@ -21,19 +21,22 @@ public class ConfigUtil {
 
     public static void init(Context context) {
         if (sp == null) {
-//            CPPreference pref = CPPreference.newBuilder()
-//                    .setTableName("config")
-//                    //与androidManifest注册的保持一致
-//                    .setProviderAuthority("com.lu.magic.server")
-//                    .create(context);
-//          基于广播的多进程SharePreferences
-            BRPreference pref = new BRPreference(
+            CPPreference pref = new CPPreference(
                     context.getApplicationContext(),
                     "config",
                     PreferenceIdValue.SP,
-                    new BRConfig("com.lu.magic.server", "com.lu.magic.client")
+                    "com.lu.magic.server"
             );
-            BRPreference.Companion.registerAsClient(context.getApplicationContext(), pref.getConfig());
+
+//          基于广播的多进程SharePreferences
+//            BRPreference pref = new BRPreference(
+//                    context.getApplicationContext(),
+//                    "config",
+//                    PreferenceIdValue.SP,
+//                    new BRConfig("com.lu.magic.server", "com.lu.magic.client")
+//            );
+//            BRPreference.Companion.registerAsClient(context.getApplicationContext(), pref.getConfig());
+
             sp = pref;
         }
     }
@@ -107,4 +110,5 @@ public class ConfigUtil {
     public static void setAMapConfig(String processName, AMapConfig config) {
         setCell(ModuleId.AMAP_LOCATION, processName, config);
     }
+
 }

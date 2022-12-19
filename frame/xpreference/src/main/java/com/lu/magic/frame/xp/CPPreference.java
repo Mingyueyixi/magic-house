@@ -16,8 +16,6 @@ import com.lu.magic.frame.xp.bean.ContractRequest;
 import com.lu.magic.frame.xp.bean.ContractResponse;
 import com.lu.magic.frame.xp.provider.ContractUtil;
 import com.lu.magic.frame.xp.provider.ProviderConfig;
-import com.lu.magic.frame.xp.util.log.IXPLog;
-import com.lu.magic.frame.xp.util.log.XPLogUtil;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -238,48 +236,6 @@ public class CPPreference implements SharedPreferences {
             ContractUtil.request(contentResolver, uri, request, Object.class);
         }
 
-    }
-
-    public static ConfigApply ofConfigApply() {
-        return new ConfigApply();
-    }
-
-    public static Builder newBuilder() {
-        return new Builder();
-    }
-
-    public static class Builder {
-        private String tableName;
-        private String authority;
-        //sp的保存方式
-        @PreferenceIdValue
-        private String preferenceId;
-
-        public Builder setTableName(String tableName) {
-            this.tableName = tableName;
-            return this;
-        }
-
-        public Builder setProviderAuthority(String authority) {
-            this.authority = authority;
-            return this;
-        }
-
-        public CPPreference create(Context context) {
-            if (preferenceId == null) {
-                preferenceId = PreferenceIdValue.SP;
-            }
-            CPPreference sp = new CPPreference(context, tableName, preferenceId, authority);
-            return sp;
-        }
-    }
-
-    public static class ConfigApply {
-
-        public ConfigApply setLogger(IXPLog ixpLog) {
-            XPLogUtil.INSTANCE.setLogger(ixpLog);
-            return this;
-        }
     }
 
 }
