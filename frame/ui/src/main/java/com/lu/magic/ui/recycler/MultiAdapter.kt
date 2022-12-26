@@ -3,6 +3,7 @@ package com.lu.magic.ui.recycler
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
+import java.util.concurrent.CopyOnWriteArrayList
 
 open class MultiAdapter<E> : RecyclerView.Adapter<MultiViewHolder<E>>() {
     private val data: MutableList<E>
@@ -10,8 +11,8 @@ open class MultiAdapter<E> : RecyclerView.Adapter<MultiViewHolder<E>>() {
     private var customDataObserver: AdapterDataObserver
 
     init {
-        data = ArrayList()
-        this.itemTypeList = ArrayList()
+        data = CopyOnWriteArrayList()
+        this.itemTypeList = CopyOnWriteArrayList()
         customDataObserver = object : AdapterDataObserver() {
 
         }
@@ -26,9 +27,6 @@ open class MultiAdapter<E> : RecyclerView.Adapter<MultiViewHolder<E>>() {
             }
         }
         customDataObserver = dataObserver
-        if (dataObserver == null) {
-            return this
-        }
         registerAdapterDataObserver(dataObserver)
         return this
     }
