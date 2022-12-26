@@ -17,15 +17,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.kyleduo.switchbutton.SwitchButton;
 import com.lu.magic.bean.BaseConfig;
-
+import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.config.ModuleId;
 import com.lu.magic.main.AppListModel;
 import com.lu.magic.screen.databinding.FragScreenOrientationBinding;
 import com.lu.magic.store.ItemModel;
@@ -38,8 +39,6 @@ import com.lu.magic.util.GsonUtil;
 import com.lu.magic.util.SingleStoreUtil;
 import com.lu.magic.util.TextUtil;
 import com.lu.magic.util.ToastUtil;
-import com.lu.magic.config.ConfigUtil;
-import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.dialog.DialogUtil;
 import com.lu.magic.util.dialog.EditDialog;
 
@@ -130,7 +129,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
                             private TextView tvTitle;
                             private TextView tvSubTitle;
                             private ImageView ivHeadView;
-                            private SwitchButton sbCheckView;
+                            private SwitchCompat sbCheckView;
                             private ViewGroup vItemFace;
 
                             @Override
@@ -141,7 +140,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
                                 ivHeadView.setVisibility(View.GONE);
                                 sbCheckView = itemView.findViewById(com.lu.magic.base.R.id.sbEnableItem);
                                 vItemFace = itemView.findViewById(com.lu.magic.base.R.id.layoutItemFace);
-                                vBottomLayout = itemView.findViewById(com.lu.magic.base.R.id.vItemBottom);
+                                 vBottomLayout = itemView.findViewById(com.lu.magic.base.R.id.vItemBottom);
                                 vBottomLayout.setVisibility(View.VISIBLE);
 
                                 itemView.setOnClickListener(v -> {

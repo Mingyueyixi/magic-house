@@ -50,7 +50,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <com.kyleduo.switchbutton.SwitchButton
+            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/sbDeepCheck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -102,7 +102,7 @@
                     android:textStyle="bold"
                     app:layout_alignSelf="center" />
 
-                <com.kyleduo.switchbutton.SwitchButton
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/sbStrongMode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                     android:textStyle="bold"
                     app:layout_alignSelf="center" />
 
-                <com.kyleduo.switchbutton.SwitchButton
+                <androidx.appcompat.widget.SwitchCompat
                     android:id="@+id/sbOpenTip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

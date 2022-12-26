@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.collection.LruCache;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -341,7 +342,7 @@ public class SelectAppActivity extends BaseActivity {
         private TextView tvPackageName;
         private TextView tvAppName;
         private ImageView ivAppIcon;
-        private SwitchButton sbEnableItem;
+        private SwitchCompat sbEnableItem;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
