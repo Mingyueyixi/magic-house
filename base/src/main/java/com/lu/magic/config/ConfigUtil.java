@@ -2,8 +2,11 @@ package com.lu.magic.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.lu.magic.base.BuildConfig;
 import com.lu.magic.bean.AMapConfig;
 import com.lu.magic.bean.BaseConfig;
 import com.lu.magic.bean.FuckDialogConfig;
@@ -11,6 +14,7 @@ import com.lu.magic.frame.xp.BRPreference;
 import com.lu.magic.frame.xp.CPPreference;
 import com.lu.magic.frame.xp.annotation.PreferenceIdValue;
 import com.lu.magic.frame.xp.broadcast.BRConfig;
+import com.lu.magic.frame.xp.socket.SPreference;
 import com.lu.magic.util.GsonUtil;
 
 import java.lang.reflect.Type;
@@ -21,28 +25,18 @@ public class ConfigUtil {
 
     public static void init(Context context) {
         if (sp == null) {
-            CPPreference pref = new CPPreference(
-                    context.getApplicationContext(),
-                    "config",
-                    PreferenceIdValue.SP,
-                    "com.lu.magic.server"
-            );
-
-//          基于广播的多进程SharePreferences
-//            BRPreference pref = new BRPreference(
-//                    context.getApplicationContext(),
-//                    "config",
-//                    PreferenceIdValue.SP,
-//                    new BRConfig("com.lu.magic.server", "com.lu.magic.client")
-//            );
-//            BRPreference.Companion.registerAsClient(context.getApplicationContext(), pref.getConfig());
-
-            sp = pref;
+            sp = SPreference.getLocalImpl(context, "config");
         }
     }
 
-    public static Map<String, Object> getAll() {
-        return (Map<String, Object>) sp.getAll();
+    public static void initWithReadable(Context context) {
+        if (sp == null) {
+            sp = SPreference.getRemoteImpl(context, "config", PreferenceIdValue.SP, 10087);
+        }
+    }
+
+    public static Map<String, ?> getAll() {
+        return sp.getAll();
     }
 
     public static <T> Map<String, T> getSheet(String sheet, Class<T> tClass) {
@@ -66,6 +60,9 @@ public class ConfigUtil {
         Map<String, JsonObject> map = getSheet(sheet, JsonObject.class);
         if (value instanceof JsonObject) {
             map.put(key, (JsonObject) value);
+        } else if (value instanceof CharSequence) {
+            JsonObject vJson = GsonUtil.fromJson(value.toString(), JsonObject.class);
+            map.put(key, vJson);
         } else {
             JsonObject vJson = (JsonObject) GsonUtil.toJsonTree(value);
             map.put(key, vJson);
@@ -110,5 +107,6 @@ public class ConfigUtil {
     public static void setAMapConfig(String processName, AMapConfig config) {
         setCell(ModuleId.AMAP_LOCATION, processName, config);
     }
+
 
 }

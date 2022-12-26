@@ -2,11 +2,8 @@ package com.lu.magic
 
 import android.app.Application
 import android.content.Context
-import com.lu.magic.ModuleRegistry.apply
-import com.lu.magic.frame.xp.annotation.PreferenceIdValue
-import com.lu.magic.frame.xp.BRPreference
-import com.lu.magic.frame.xp.broadcast.BRConfig
-import com.lu.magic.util.AppUtil
+import com.lu.magic.config.ConfigUtil
+import com.lu.magic.frame.xp.socket.SPreference
 
 /**
  * @Author: Lu
@@ -20,16 +17,11 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        apply()
+        ModuleRegistry.apply()
+
+        SPreference.initServer(this, 10087)
+        ConfigUtil.init(this)
         AppInitProxy.callInit(this)
-
-        val sp = BRPreference(
-            this, "config", PreferenceIdValue.SP, BRConfig(
-                "com.lu.magic.server", "com.lu.magic.client"
-            )
-        )
-        BRPreference.registerAsServer(AppUtil.getContext(), sp.config)
-
     }
 
     companion object {

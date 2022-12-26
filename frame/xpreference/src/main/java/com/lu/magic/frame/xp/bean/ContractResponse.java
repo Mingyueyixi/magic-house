@@ -3,6 +3,7 @@ package com.lu.magic.frame.xp.bean;
 public class ContractResponse<T> {
     public T data;
     public Throwable exception;
+    public String responseId;
 
     public ContractResponse() {
     }

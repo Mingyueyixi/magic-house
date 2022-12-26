@@ -24,6 +24,7 @@ class PreferenceServerImpl(val context: Context) {
             ModeValue.WRITE -> response = writeValue(request)
             else -> {}
         }
+        response?.responseId = request.requestId
         return response
     }
 

@@ -67,8 +67,9 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
             LogUtil.d("准备初始化，获取context", lpparam.packageName, lpparam.processName);
             Application app = AppUtil.getApplicationByReflect();
             if (app != null) {
-                ConfigUtil.init(app);
+                ConfigUtil.initWithReadable(app);
                 AppInitProxy.callInit(app);
+                dispatchMagics(lpparam);
                 return;
             }
             LogUtil.d("通过Application获取Context", lpparam.packageName, lpparam.processName);
@@ -77,12 +78,12 @@ public class MagicMainEntry implements IXposedHookLoadPackage {
                     new XC_MethodHook() {
                         @Override
                         protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                            LogUtil.d("Activity create:", param.thisObject);
+                            LogUtil.d("Application create:", param.thisObject);
                             if (isDispatchMagic) {
                                 return;
                             }
                             Context context = (Context) param.thisObject;
-                            ConfigUtil.init(context.getApplicationContext());
+                            ConfigUtil.initWithReadable(context);
                             AppInitProxy.callInit(context);
                             dispatchMagics(lpparam);
                         }
