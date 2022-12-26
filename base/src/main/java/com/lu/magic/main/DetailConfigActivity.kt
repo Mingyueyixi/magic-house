@@ -9,7 +9,7 @@ import com.lu.magic.base.databinding.LayoutContainerBinding
 import com.lu.magic.store.ItemModel
 import com.lu.magic.ui.BaseToolBarActivity
 import com.lu.magic.ui.FragmentNavigation
-import com.lu.magic.util.SingleStoreUtil
+import com.lu.magic.util.SingleClassStoreUtil
 import com.lu.magic.config.ModuleId
 
 class DetailConfigActivity : BaseToolBarActivity() {
@@ -27,7 +27,7 @@ class DetailConfigActivity : BaseToolBarActivity() {
     }
 
     private fun initData() {
-        var preItemModel = SingleStoreUtil.get(ItemModel::class.java)
+        var preItemModel = SingleClassStoreUtil.get(ItemModel::class.java)
         if (preItemModel == null) {
             finish()
             return

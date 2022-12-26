@@ -14,7 +14,7 @@ import com.lu.magic.main.AppListModel;
 import com.lu.magic.store.ItemModel;
 import com.lu.magic.store.TitleModel;
 import com.lu.magic.ui.BindingFragment;
-import com.lu.magic.util.SingleStoreUtil;
+import com.lu.magic.util.SingleClassStoreUtil;
 import com.lu.magic.config.ConfigUtil;
 
 /**
@@ -30,8 +30,8 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
     @Override
     public FragmentFuckDialogBinding onViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         @NonNull FragmentFuckDialogBinding binding = FragmentFuckDialogBinding.inflate(inflater, container, false);
-        appListModel = SingleStoreUtil.get(AppListModel.class);
-        routeItem = SingleStoreUtil.get(TitleModel.class);
+        appListModel = SingleClassStoreUtil.get(AppListModel.class);
+        routeItem = SingleClassStoreUtil.get(TitleModel.class);
 
         String packageName = appListModel.getPackageName();
         config = ConfigUtil.getFuckDialogConfig(packageName);

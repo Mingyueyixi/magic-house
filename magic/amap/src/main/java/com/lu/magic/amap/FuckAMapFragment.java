@@ -56,7 +56,7 @@ import com.lu.magic.ui.recycler.SimpleItemType;
 import com.lu.magic.util.AMapUtil;
 import com.lu.magic.util.CollectionUtil;
 import com.lu.magic.util.LocationUtil;
-import com.lu.magic.util.SingleStoreUtil;
+import com.lu.magic.util.SingleClassStoreUtil;
 import com.lu.magic.util.ToastUtil;
 import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.dialog.DialogUtil;
@@ -98,7 +98,7 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        appListModel = SingleStoreUtil.get(AppListModel.class);
+        appListModel = SingleClassStoreUtil.get(AppListModel.class);
         mAMapConfig = ConfigUtil.getAMapConfig(appListModel.getPackageName());
         if (mAMapConfig == null) {
             mAMapConfig = new AMapConfig();

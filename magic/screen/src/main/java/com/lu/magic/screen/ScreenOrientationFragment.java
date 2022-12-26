@@ -36,7 +36,7 @@ import com.lu.magic.ui.recycler.MultiViewHolder;
 import com.lu.magic.ui.recycler.SimpleItemType;
 import com.lu.magic.ui.view.ItemMoveLayout;
 import com.lu.magic.util.GsonUtil;
-import com.lu.magic.util.SingleStoreUtil;
+import com.lu.magic.util.SingleClassStoreUtil;
 import com.lu.magic.util.TextUtil;
 import com.lu.magic.util.ToastUtil;
 import com.lu.magic.util.dialog.DialogUtil;
@@ -68,8 +68,8 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
 
     private void initData() {
         viewModel = new ViewModelProvider(this).get(ViewStateModel.class);
-        routeItem = SingleStoreUtil.get(ItemModel.class);
-        selectPkg = SingleStoreUtil.get(AppListModel.class);
+        routeItem = SingleClassStoreUtil.get(ItemModel.class);
+        selectPkg = SingleClassStoreUtil.get(AppListModel.class);
         mViewConfig = loadConfig();
 
         if (mViewConfig == null) {

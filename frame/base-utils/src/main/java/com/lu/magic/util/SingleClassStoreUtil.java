@@ -2,9 +2,9 @@ package com.lu.magic.util;
 
 import java.util.HashMap;
 
-public class SingleStoreUtil {
+public class SingleClassStoreUtil {
     private static class SingleHolder {
-        private static final Store store = new Store();
+        private static final ClassKeyStore store = new ClassKeyStore();
     }
 
     public static void remove(Class<?> key) {
@@ -19,7 +19,7 @@ public class SingleStoreUtil {
         return SingleHolder.store.get(key);
     }
 
-    private static class Store {
+    private static class ClassKeyStore {
         private HashMap<String, Object> modelStoreMap = new HashMap<>();
 
         public void remove(Class<?> key) {

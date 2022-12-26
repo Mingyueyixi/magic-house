@@ -24,11 +24,9 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.collection.LruCache;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kyleduo.switchbutton.SwitchButton;
 import com.lu.magic.IModuleFace;
 import com.lu.magic.ModuleProviders;
 import com.lu.magic.base.databinding.LayoutSelectAppBinding;
@@ -41,7 +39,7 @@ import com.lu.magic.ui.recycler.MultiAdapter;
 import com.lu.magic.ui.recycler.MultiViewHolder;
 import com.lu.magic.ui.recycler.SimpleItemType;
 import com.lu.magic.util.PackageUtil;
-import com.lu.magic.util.SingleStoreUtil;
+import com.lu.magic.util.SingleClassStoreUtil;
 import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.load.LoaderCacheUtil;
 import com.lu.magic.util.thread.WorkerUtil;
@@ -111,8 +109,8 @@ public class SelectAppActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         appListAdapter.removeDataObserver();
-        SingleStoreUtil.remove(AppListModel.class);
-        SingleStoreUtil.remove(routeItem.getClass());
+        SingleClassStoreUtil.remove(AppListModel.class);
+        SingleClassStoreUtil.remove(routeItem.getClass());
     }
 
 
