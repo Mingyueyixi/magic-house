@@ -2,19 +2,13 @@ package com.lu.magic.config;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.lu.magic.base.BuildConfig;
 import com.lu.magic.bean.AMapConfig;
 import com.lu.magic.bean.BaseConfig;
 import com.lu.magic.bean.FuckDialogConfig;
-import com.lu.magic.frame.xp.BRPreference;
-import com.lu.magic.frame.xp.CPPreference;
 import com.lu.magic.frame.xp.annotation.PreferenceIdValue;
-import com.lu.magic.frame.xp.broadcast.BRConfig;
-import com.lu.magic.frame.xp.socket.SPreference;
+import com.lu.magic.frame.xp.SPreference;
 import com.lu.magic.util.GsonUtil;
 
 import java.lang.reflect.Type;
@@ -33,6 +27,7 @@ public class ConfigUtil {
         if (sp == null) {
             sp = SPreference.getRemoteImpl(context, "config", PreferenceIdValue.SP, 10087);
         }
+
     }
 
     public static Map<String, ?> getAll() {

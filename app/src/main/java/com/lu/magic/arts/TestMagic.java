@@ -1,10 +1,12 @@
 package com.lu.magic.arts;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
 import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.frame.xp.CPPreference;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.GsonUtil;
 import com.lu.magic.util.ToastUtil;
@@ -26,10 +28,19 @@ public class TestMagic extends BaseMagic {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        if (data == null) {
-            data = ConfigUtil.getAll();
-        }
-        LogUtil.w(lpparam.packageName, "尼玛绵绵绵绵", data);
+//        XposedHelpers.findAndHookMethod(
+//                Activity.class,
+//                "onResume",
+//                new XC_MethodHook() {
+//                    @Override
+//                    protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                        super.afterHookedMethod(param);
+//                        ToastUtil.show("尼玛resume");
+//                    }
+//                }
+//
+//        );
+
     }
 
     private void handlePanQie() {

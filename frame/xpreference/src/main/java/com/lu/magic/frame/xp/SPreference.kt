@@ -1,4 +1,4 @@
-package com.lu.magic.frame.xp.socket
+package com.lu.magic.frame.xp
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,6 +8,8 @@ import com.lu.magic.frame.xp.annotation.GroupValue
 import com.lu.magic.frame.xp.annotation.ModeValue
 import com.lu.magic.frame.xp.annotation.PreferenceIdValue
 import com.lu.magic.frame.xp.bean.ContractRequest
+import com.lu.magic.frame.xp.socket.PreferencesSocketServer
+import com.lu.magic.frame.xp.socket.RequestTransfer
 import java.io.Serializable
 import java.util.concurrent.atomic.AtomicInteger
 

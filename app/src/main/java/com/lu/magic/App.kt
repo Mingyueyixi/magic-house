@@ -3,7 +3,7 @@ package com.lu.magic
 import android.app.Application
 import android.content.Context
 import com.lu.magic.config.ConfigUtil
-import com.lu.magic.frame.xp.socket.SPreference
+import com.lu.magic.frame.xp.SPreference
 
 /**
  * @Author: Lu
