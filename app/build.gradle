@@ -93,7 +93,6 @@ git.commit=$gitHash
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
-    implementation 'com.kyleduo.switchbutton:library:2.1.0'
 
     implementation deps['org.jetbrains.kotlinx:kotlinx-coroutines-android']
     implementation deps["androidx.lifecycle:lifecycle-viewmodel-ktx"]

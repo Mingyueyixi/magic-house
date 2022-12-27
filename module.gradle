@@ -66,7 +66,6 @@ dependencies {
     implementation deps['com.google.code.gson:gson']
     // 只参与编译，不参与打包，最终由xposed提供
 //    compileOnly deps['de.robv.android.xposed:api']
-    implementation deps['com.kyleduo.switchbutton:library']
     implementation deps['com.google.android.flexbox:flexbox']
 
     compileOnly deps['com.tencent:mmkv-static']
