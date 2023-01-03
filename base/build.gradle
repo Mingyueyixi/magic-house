@@ -2,9 +2,11 @@ apply from: rootProject.file('module_xp.gradle')
 
 dependencies {
 //    api project(":frame:xpreference")
-    api "com.github.Mingyueyixi:frame-multi-preference:main-SNAPSHOT"
 //    api project(":frame:base-utils")
-    api 'com.github.Mingyueyixi:frame-base-utils:main-SNAPSHOT'
 //    api project(":frame:ui")
-    api 'com.github.Mingyueyixi:frame-ui:main-SNAPSHOT'
+//v1.0
+    api deps['com.github.Mingyueyixi:frame-base-utils']
+    api  deps['com.github.Mingyueyixi:frame-ui']
+    api  deps['com.github.Mingyueyixi:frame-multi-preference']
+
 }
