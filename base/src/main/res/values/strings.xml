@@ -1,0 +1,43 @@
+<resources>
+    <string name="sort">Sort</string>
+    <string name="app_name_A_Z">App Name(A-Z)</string>
+    <string name="app_name_Z_A">App Name(Z-A)</string>
+    <string name="package_name_A_Z">Package Name(A-Z)</string>
+    <string name="package_name_Z_A">Package Name(Z-A)</string>
+    <string name="filter">Filter</string>
+    <string name="show_all_application">Show All App</string>
+    <string name="only_show_system_application">Only System App</string>
+    <string name="hide_system_application">Hide System App</string>
+    <string name="only_show_debug_application">Only Debug App</string>
+    <string name="action_search">Search</string>
+
+    <!--    Activity旋转配置-->
+    <string name="screen_orientation_landscape">screen orientation landscape</string>
+    <string name="screen_orientation_portrait">screen orientation portrait</string>
+    <string name="screen_orientation_reverse_landscape">screen orientation reverse landscape</string>
+    <string name="screen_orientation_reverse_portrait">screen orientation reverse portrait</string>
+    <string name="screen_orientation_sensor_portrait">screen orientation sensor portrait</string>
+    <string name="screen_orientation_sensor_landscape">screen orientation sensor landscape</string>
+    <string name="screen_orientation_sensor">screen orientation sensor</string>
+    <string name="screen_orientation_full_sensor">screen orientation full sensor</string>
+    <string name="screen_orientation_nosensor">screen orientation nosensor</string>
+    <string name="screen_orientation_user">screen orientation user</string>
+    <string name="screen_orientation_full_user">screen orientation full user</string>
+    <string name="screen_orientation_user_portrait">screen orientation user portrait</string>
+    <string name="screen_orientation_user_landscape">screen orientation user landscape</string>
+    <string name="screen_orientation_unspecified">screen orientation unspecified</string>
+
+    <string name="module_not_active">Module is not active</string>
+    <string name="module_have_active">Module have been active</string>
+    <string name="about_this_module">About this module</string>
+    <string name="donate">Donate</string>
+    <string name="save_success">save success</string>
+    <string name="save_fail">save fail</string>
+
+    <string name="start">start</string>
+    <string name="pause">pause</string>
+    <string name="agree">agree</string>
+    <string name="cancel">cancel</string>
+    <string name="agree_and_continue">agree and continue</string>
+    <string name="cancel_and_exit">cancel and exit</string>
+</resources>

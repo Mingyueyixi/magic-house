@@ -1,0 +1,8 @@
+apply from: rootProject.file('module.gradle')
+android {
+
+}
+dependencies {
+    implementation deps["com.blankj:utilcodex"]
+    api(project(":base"))
+}

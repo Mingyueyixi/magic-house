@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:layout_marginHorizontal="8dp"
+        android:id="@+id/tvDesBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/request_root_for_logcat_des"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_marginHorizontal="8dp"
+        android:id="@+id/tvLogPath"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:gravity="left|center_vertical"
+        android:paddingHorizontal="4dp"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toStartOf="@+id/btnStartLogcat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDesBlock" />
+
+    <Button
+        android:id="@+id/btnStartLogcat"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginHorizontal="8dp"
+        android:text="@string/start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDesBlock" />
+
+    <HorizontalScrollView
+        android:layout_marginHorizontal="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnStartLogcat">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvLogLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollbarSize="8dp"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbarThumbVertical="@color/m3_ref_palette_secondary80"
+            android:scrollbars="vertical"
+            android:verticalScrollbarPosition="left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </HorizontalScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

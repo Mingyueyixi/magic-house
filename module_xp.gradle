@@ -1,0 +1,9 @@
+apply {
+    from rootProject.file('module.gradle')
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+    // 只参与编译，不参与打包，最终由xposed提供
+    compileOnly deps['de.robv.android.xposed:api']
+}

@@ -1,0 +1,75 @@
+if (isAppModule.toBoolean()) {
+    apply plugin: 'com.android.application'
+} else {
+    apply plugin: 'com.android.library'
+}
+apply {
+    plugin 'org.jetbrains.kotlin.android'
+    from rootProject.file('props.gradle')
+}
+android {
+    compileSdk 33
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            debuggable false
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+
+//    buildFeatures {
+//        dataBinding true
+//    }
+}
+
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation deps['androidx.appcompat:appcompat']
+    implementation deps['androidx.core:core-ktx']
+    implementation deps['com.google.android.material:material']
+    implementation deps['androidx.constraintlayout:constraintlayout']
+    implementation deps['com.google.code.gson:gson']
+    // 只参与编译，不参与打包，最终由xposed提供
+//    compileOnly deps['de.robv.android.xposed:api']
+    implementation deps['com.google.android.flexbox:flexbox']
+
+    compileOnly deps['com.tencent:mmkv-static']
+    testImplementation deps['junit:junit']
+    androidTestImplementation deps['androidx.test.ext:junit']
+    androidTestImplementation deps['androidx.test.espresso:espresso-core']
+}

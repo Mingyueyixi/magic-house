@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="selectSort">
+        <item>排序</item>
+        <item>应用名</item>
+        <item>包名</item>
+        <item>安装时间</item>
+        <item>更新时间</item>
+    </string-array>
+
+    <string-array name="selectFilter">
+        <item>过滤</item>
+        <item>隐藏系统应用</item>
+        <item>只显示系统应用</item>
+    </string-array>
+
+</resources>

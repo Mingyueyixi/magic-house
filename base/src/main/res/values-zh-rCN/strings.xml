@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sort">排序</string>
+    <string name="app_name_A_Z">应用名(A-Z)</string>
+    <string name="app_name_Z_A">应用名(Z-A)</string>
+    <string name="package_name_A_Z">包名(A-Z)</string>
+    <string name="package_name_Z_A">包名(Z-A)</string>
+    <string name="filter">过滤</string>
+    <string name="show_all_application">显示所有应用</string>
+    <string name="only_show_system_application">只显示系统应用</string>
+    <string name="hide_system_application">隐藏系统应用</string>
+    <string name="only_show_debug_application">只显示Debug应用</string>
+    <string name="action_search">Search</string>
+
+    <!--    Activity旋转配置-->
+    <string name="screen_orientation_landscape">锁定横屏</string>
+    <string name="screen_orientation_portrait">锁定竖屏</string>
+    <string name="screen_orientation_reverse_landscape">锁定横屏，与正常方向相反</string>
+    <string name="screen_orientation_reverse_portrait">锁定竖屏，与正常方向相反</string>
+    <string name="screen_orientation_sensor_portrait">竖屏，基于物理传感器</string>
+    <string name="screen_orientation_sensor_landscape">横屏，基于物理传感器</string>
+    <string name="screen_orientation_sensor">基于物理传感器</string>
+    <string name="screen_orientation_full_sensor">完全基于物理传感器</string>
+    <string name="screen_orientation_nosensor">不基于物理传感器</string>
+    <string name="screen_orientation_user">基于用户设置</string>
+    <string name="screen_orientation_full_user">完全基于用户设置</string>
+    <string name="screen_orientation_user_portrait">竖屏，基于用户设置</string>
+    <string name="screen_orientation_user_landscape">横屏，基于用户设置</string>
+    <string name="screen_orientation_unspecified">未指定方向，系统默认值</string>
+
+    <string name="module_not_active">模块未激活</string>
+    <string name="module_have_active">模块已激活</string>
+    <string name="about_this_module">关于此模块</string>
+    <string name="donate">捐赠</string>
+    <string name="save_success">保存成功</string>
+    <string name="save_fail">保存失败</string>
+
+    <string name="start">开始</string>
+    <string name="pause">暂停</string>
+    <string name="agree">同意</string>
+    <string name="cancel">取消</string>
+    <string name="agree_and_continue">同意并继续</string>
+    <string name="cancel_and_exit">取消并退出</string>
+</resources>

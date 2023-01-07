@@ -1,0 +1,10 @@
+apply from: rootProject.file('module_xp.gradle')
+android {
+
+}
+dependencies {
+    implementation deps['org.jetbrains.kotlinx:kotlinx-coroutines-android']
+    implementation deps["androidx.lifecycle:lifecycle-viewmodel-ktx"]
+    // https://mvnrepository.com/artifact/dev.mobile/dadb
+    api project(":base")
+}

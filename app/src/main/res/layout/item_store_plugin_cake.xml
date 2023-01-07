@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="28dp"
+    android:layout_marginLeft="8dp"
+    android:background="#00000000"
+    android:elevation="0dp"
+    android:foreground="#00000000"
+    android:minWidth="50dp"
+    app:cardBackgroundColor="#eeeeee"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
+    tools:viewBindingIgnore="true">
+
+    <TextView
+        android:id="@+id/tvItemPluginName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp"
+        android:textColor="@color/black"
+        tools:text="呵" />
+
+</androidx.cardview.widget.CardView>
+

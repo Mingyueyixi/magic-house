@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:enabled="false"
+        android:title="@string/sort" />
+
+    <group
+        android:id="@+id/group_sort"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/sort_package_name_A_Z"
+            android:title="@string/package_name_A_Z" />
+        <item
+            android:id="@+id/sort_package_name_Z_A"
+            android:title="@string/package_name_Z_A" />
+        <item
+            android:id="@+id/sort_app_name_A_Z"
+            android:title="@string/app_name_A_Z" />
+        <item
+            android:id="@+id/sort_app_name_Z_A"
+            android:title="@string/app_name_Z_A" />
+    </group>
+
+    <item
+        android:enabled="false"
+        android:title="@string/filter" />
+
+    <group
+        android:id="@+id/group_filter"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/filter_show_all_app"
+            android:title="@string/show_all_application" />
+        <item
+            android:id="@+id/filter_hide_system_app"
+            android:title="@string/hide_system_application" />
+        <item
+            android:id="@+id/filter_only_show_system_app"
+            android:title="@string/only_show_system_application" />
+        <item
+            android:id="@+id/filter_only_show_debug_app"
+            android:title="@string/only_show_debug_application" />
+
+    </group>
+
+</menu>

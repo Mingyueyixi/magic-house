@@ -1,0 +1,111 @@
+apply from: rootProject.file('module_xp.gradle')
+
+def buildInfoText = genBuildInfoText()
+
+android {
+    defaultConfig {
+        applicationId "com.lu.magic"
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        sky {
+            storeFile file("${rootDir}/keyStore/app-test.jks")
+            storePassword "123456"
+            keyAlias "app"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sky
+            buildConfigField "String", "BUILD_INFO_TEXT", "\"$buildInfoText\""
+        }
+        release {
+            debuggable false
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sky
+            buildConfigField "String", "BUILD_INFO_TEXT", "\"$buildInfoText\""
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+
+//    buildFeatures {
+//        dataBinding true
+//    }
+
+    packagingOptions {
+        exclude 'META-INF/**'
+    }
+
+}
+
+
+// 按照java Properties格式生成构建、git分支、提交信息
+def genBuildInfoText() {
+    try {
+        println "----------Version Info------------"
+        def textLines = []
+        def versionText = ""
+        def buildMillis = System.currentTimeMillis()
+        def p = "git branch --show-current".execute()
+        def gitBranch = p.text.trim()
+        p.destroy()
+        // p = "git log -1 --pretty=fuller".execute()
+        p = "git rev-parse HEAD".execute()
+        def gitHash = p.text.trim()
+        p.destroy()
+
+        // Properties格式
+        textLines.add("build.millis=$buildMillis")
+        textLines.add("git.branch=$gitBranch")
+        textLines.add("git.commit=$gitHash")
+
+        versionText = """
+build.millis=$buildMillis
+git.branch=$gitBranch
+git.commit=$gitHash
+""".trim()
+        println(versionText)
+        return Base64.encoder.encodeToString(versionText.getBytes('UTF-8'))
+    } catch (Exception e) {
+        e.printStackTrace()
+        throw GradleException("生成编译信息失败！！！")
+    }
+    return ""
+}
+
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+
+    implementation deps['org.jetbrains.kotlinx:kotlinx-coroutines-android']
+    implementation deps["androidx.lifecycle:lifecycle-viewmodel-ktx"]
+
+    implementation project(':magic:amap')
+    implementation project(":magic:screen")
+    implementation project(":magic:fuck-vibrator")
+    implementation project(path: ':magic:fuck-dialog')
+    api project(':base')
+    implementation project(path: ':magic:catch-log')
+
+
+//  内存泄露
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
+
+}

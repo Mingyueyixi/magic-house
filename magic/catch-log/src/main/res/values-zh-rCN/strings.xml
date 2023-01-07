@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="request_root_for_logcat_des">程序需要root权限来执行/停止logcat命令。若已启动logcat，在退出时不要拒绝root请求，否则logcat无法停止，可能会导致sd卡存储因缓存日志耗尽。</string>
+</resources>
