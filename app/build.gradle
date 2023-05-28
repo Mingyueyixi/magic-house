@@ -3,8 +3,9 @@ apply from: rootProject.file('module_xp.gradle')
 def buildInfoText = genBuildInfoText()
 
 android {
+    namespace 'com.lu.magic.module'
     defaultConfig {
-        applicationId "com.lu.magic"
+        applicationId "com.lu.magic.module"
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

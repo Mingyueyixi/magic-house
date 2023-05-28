@@ -1,0 +1,72 @@
+apply {
+    from rootProject.file('module.gradle')
+}
+
+android {
+    namespace 'com.lu.magic'
+    defaultConfig {
+        applicationId "com.lu.magic"
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        sky {
+            storeFile file("${rootDir}/keyStore/app-test.jks")
+            storePassword "123456"
+            keyAlias "app"
+            keyPassword "123456"
+        }
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sky
+        }
+        release {
+            debuggable false
+            shrinkResources false
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sky
+        }
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    viewBinding {
+        enabled = true
+    }
+
+//    buildFeatures {
+//        dataBinding true
+//    }
+
+    packagingOptions {
+        exclude 'META-INF/**'
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
+    implementation deps['com.amap.api:map2d']
+    //定位功能
+    implementation deps['com.amap.api:location']
+    //搜索功能
+    implementation deps['com.amap.api:search']
+    implementation deps['com.github.Mingyueyixi:frame-base-utils']
+
+    implementation  deps['com.github.Mingyueyixi.frame-ui:ui-all']
+    implementation deps['org.jetbrains.kotlinx:kotlinx-coroutines-android']
+    implementation deps["androidx.lifecycle:lifecycle-viewmodel-ktx"]
+
+    implementation(project(":bridge"))
+}

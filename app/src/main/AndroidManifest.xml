@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lu.magic">
+    package="com.lu.magic.module">
 
     <!-- 请求网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
-        android:name="com.lu.magic.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -46,18 +46,10 @@
             android:name="xposedminversion"
             android:value="82" />
 
-        <!-- 设置key -->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="595d6b362d44fca45dbfd177f1067feb" />
 
-        <!-- 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location"-->
-        <service
-            android:name="com.amap.api.location.APSService"
-            android:foregroundServiceType="location" />
 
         <activity
-            android:name="com.lu.magic.main.MainActivity"
+            android:name=".main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -70,6 +62,7 @@
         <activity
             android:name="com.lu.magic.main.SelectAppActivity"
             android:exported="false"
+            android:launchMode="standard"
             android:theme="@style/Theme.FoolishEgg.NoActionBar" />
         <activity
             android:name="com.lu.magic.main.DetailConfigActivity"

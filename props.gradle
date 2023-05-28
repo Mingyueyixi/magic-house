@@ -22,8 +22,9 @@ ext {
             'com.amap.api:location'                           : 'com.amap.api:location:6.2.0',
             'com.amap.api:search'                             : 'com.amap.api:search:9.5.0',
 
-            'com.github.Mingyueyixi:frame-base-utils'         : 'com.github.Mingyueyixi:frame-base-utils:main-SNAPSHOT',
-            'com.github.Mingyueyixi:frame-ui'                 : 'com.github.Mingyueyixi:frame-ui:main-SNAPSHOT',
+            'com.github.Mingyueyixi:frame-base-utils'         : 'com.github.Mingyueyixi:frame-base-utils:5194a1c95f',
+            'com.github.Mingyueyixi.frame-ui:ui-all'    : 'com.github.Mingyueyixi.frame-ui:ui-all:8db89324ba',
+            'com.github.Mingyueyixi.frame-ui:ui-appcompat'    : 'com.github.Mingyueyixi.frame-ui:ui-appcompat:8db89324ba',
             'com.github.Mingyueyixi:frame-multi-preference'   : 'com.github.Mingyueyixi:frame-multi-preference:main-SNAPSHOT',
 
     ]

@@ -1,0 +1,4 @@
+apply from: rootProject.file('module_xp.gradle')
+android {
+    namespace 'com.lu.magic.bridge'
+}

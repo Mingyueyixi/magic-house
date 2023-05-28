@@ -4,6 +4,7 @@ import android.location.LocationManager;
 
 import com.lu.magic.bean.AMapConfig;
 import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.log.LogUtil;
 
 import java.lang.reflect.InvocationHandler;
@@ -54,7 +55,8 @@ public class FuckAMapLocationMagic extends BaseMagic {
     public void handleAMap(XC_LoadPackage.LoadPackageParam lpparam) throws ClassNotFoundException {
         //hook amap getLastKnownLocation
         XposedHelpers.findAndHookMethod(
-                com.amap.api.location.AMapLocationClient.class,
+                "com.amap.api.location.AMapLocationClient",
+                AppUtil.getContext().getClassLoader(),
                 "getLastKnownLocation",
                 new XC_MethodHook() {
                     @Override
@@ -69,9 +71,9 @@ public class FuckAMapLocationMagic extends BaseMagic {
         //hook amap setLocationListener
         XposedHelpers.findAndHookMethod(
                 "com.amap.api.location.AMapLocationClient",
-                lpparam.classLoader,
+                AppUtil.getContext().getClassLoader(),
                 "setLocationListener",
-                lpparam.classLoader.loadClass("com.amap.api.location.AMapLocationListener"),
+                "com.amap.api.location.AMapLocationListener",
                 new XC_MethodHook() {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
