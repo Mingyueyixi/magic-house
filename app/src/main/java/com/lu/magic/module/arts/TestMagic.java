@@ -1,9 +1,19 @@
 package com.lu.magic.module.arts;
 
+import android.app.Activity;
+import android.app.Instrumentation;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.lu.magic.arts.BaseMagic;
+import com.lu.magic.module.App;
+import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.ReflectUtil;
 import com.lu.magic.util.TextUtil;
 import com.lu.magic.util.ToastUtil;
@@ -13,6 +23,7 @@ import com.lu.magic.util.view.SelfDeepCheck;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -30,26 +41,38 @@ public class TestMagic extends BaseMagic {
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
-        XposedHelpers.findAndHookMethod(
-                View.class,
-                "performClick",
-                new XC_MethodReplacement() {
-                    @Override
-                    protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-                        View view = (View) param.thisObject;
-//                        if ("com.tencent.mm.ui.conversation.ConversationFolderItemView".equals(view.getClass())) {
-//
-//                        }
-                        boolean has = findText(view, "屈凤文");
-                        if (has) {
-                            return null;
-                        }
-                        return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
+        LogUtil.i("test handleLoadPackage");
+        Method execStartActivityMethod = ReflectUtil.getMatchingMethod(Instrumentation.class,
+                "execStartActivity",
+                Context.class,
+                IBinder.class,
+                IBinder.class,
+                Activity.class,
+                Intent.class,
+                Integer.TYPE,
+                Bundle.class);
 
-                    }
+        LogUtil.i("meeeeeeeeeeee: " + execStartActivityMethod.toString());
+        XposedBridge.hookMethod(execStartActivityMethod, new XC_MethodReplacement() {
+            @Override
+            protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+                LogUtil.i("start activity 拦截");
 
+                Intent intent = (Intent) param.args[4];
+                String pkgName = AppUtil.getPackageName();
+
+                Object act = intent.resolveActivity(AppUtil.getContext().getPackageManager());
+                Object jumPkg = ReflectUtil.invokeMethod(act, "getPackageName");
+                if (act != null && !pkgName.equals(jumPkg)) {
+                    //跳转到其他app
+                    LogUtil.w("Intent resolve null");
+                    return null;
                 }
-        );
+
+                return XposedBridge.invokeOriginalMethod(param.method, param.thisObject, param.args);
+            }
+        });
+
     }
 
     private boolean findText(View rootView, String regex) {

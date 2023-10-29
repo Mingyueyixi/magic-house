@@ -5,7 +5,7 @@ dependencies {
 //    api project(":frame:base-utils")
 //    api project(":frame:ui")
 //v1.0
-    api deps['com.github.Mingyueyixi:frame-base-utils']
+    api(deps['com.github.Mingyueyixi.frame-base-utils:all'])
     api  deps['com.github.Mingyueyixi.frame-ui:ui-all']
     api  deps['com.github.Mingyueyixi:frame-multi-preference']
     api(project(":bridge"))

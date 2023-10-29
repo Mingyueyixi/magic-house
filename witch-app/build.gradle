@@ -62,7 +62,7 @@ dependencies {
     implementation deps['com.amap.api:location']
     //搜索功能
     implementation deps['com.amap.api:search']
-    implementation deps['com.github.Mingyueyixi:frame-base-utils']
+    implementation deps['com.github.Mingyueyixi.frame-base-utils:all']
 
     implementation  deps['com.github.Mingyueyixi.frame-ui:ui-all']
     implementation deps['org.jetbrains.kotlinx:kotlinx-coroutines-android']
