@@ -4,9 +4,14 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.http.SslError
+import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.webkit.*
 import android.widget.FrameLayout
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.lu.magic.module.main.Contracts
 import com.lu.magic.ui.BaseActivity
 import com.lu.magic.util.log.LogUtil
@@ -21,7 +26,8 @@ class WebViewActivity : BaseActivity() {
         @JvmStatic
         fun start(context: Context, webUrl: String) {
             val intent = Intent(context, WebViewActivity::class.java)
-            intent.putExtra("webUrl", webUrl)
+//            intent.putExtra("webUrl", webUrl)
+            intent.putExtra("webUrl", "http://192.168.3.27:8000/about.html")
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         }
@@ -34,6 +40,16 @@ class WebViewActivity : BaseActivity() {
         val contentView = FrameLayout(this).also {
             it.addView(webView, FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
         }
+        contentView.fitsSystemWindows = true
+        ViewCompat.setOnApplyWindowInsetsListener(contentView, object : OnApplyWindowInsetsListener {
+            override fun onApplyWindowInsets(v: View, insets: WindowInsetsCompat): WindowInsetsCompat {
+                val systemInsets = WindowInsetsCompat.Type.systemBars()
+                val systemWindowInsetBottom = insets.getInsets(systemInsets).bottom
+                LogUtil.d("systemWindowInsetBottom: $systemWindowInsetBottom")
+                return insets
+            }
+
+        })
         setContentView(contentView)
         webUrl = intent.getStringExtra("webUrl") ?: URL_LOCAL_ABOUT
 

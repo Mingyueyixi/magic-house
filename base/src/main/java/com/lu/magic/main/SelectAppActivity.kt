@@ -252,6 +252,9 @@ class SelectAppActivity : BaseActivity() {
             val installInfoList: List<PackageInfo> = getInstallPackageInfoList(getContext())
             for (packageInfo in installInfoList) {
                 val appInfo = packageInfo.applicationInfo
+                if (appInfo == null) {
+                    continue
+                }
                 //                耗时操作，放到其他线程中，以免ui显示等待较长，这里只拿基本的信息
 //                String appName = appInfo.loadLabel(getContext().getPackageManager()) + "";
                 val appName = if (appInfo.name == null) "" else appInfo.name
@@ -281,6 +284,9 @@ class SelectAppActivity : BaseActivity() {
             while (it.hasNext()) {
                 val (_, model) = it.next()
                 val appInfo = model.packageInfo.applicationInfo
+                if (appInfo == null) {
+                    continue
+                }
                 val appName = appInfo.loadLabel(pm).toString() + ""
                 model.name = appName
             }
@@ -346,9 +352,9 @@ class SelectAppActivity : BaseActivity() {
                 val packageInfo = model!!.packageInfo
                 val appInfo = packageInfo.applicationInfo
                 val pm = getContext().packageManager
-                val drawable = appInfo.loadIcon(pm)
-                if (TextUtils.isEmpty(model.name) || model.name == appInfo.name) {
-                    val label = appInfo.loadLabel(pm).toString() + ""
+                val drawable = appInfo?.loadIcon(pm)
+                if (TextUtils.isEmpty(model.name) || model.name == appInfo?.name) {
+                    val label = appInfo?.loadLabel(pm).toString() + ""
                     model.name = label
                 }
                 model.icon = drawable

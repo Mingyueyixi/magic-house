@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -46,7 +48,7 @@ import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.lu.magic.R;
+import com.lu.magic.witchapp.R;
 import com.lu.magic.bridge.BridgeConstant;
 import com.lu.magic.ui.BaseFragment;
 import com.lu.magic.ui.BaseToolBarActivity;
@@ -93,6 +95,8 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
      * 关键字搜索poi监听
      */
     private PoiSearch.OnPoiSearchListener mOnPoiSearchListener;
+
+    private LatLng mSelectedLocation;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -255,22 +259,35 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     @Override
     public boolean onBackPressed() {
         LatLng lanLng = mAMap.getCameraPosition().target;
+        View dialogView = LayoutInflater.from(getContext()).inflate(R.layout.dialog_select_tip, null, false);
+        EditText etLongitude = dialogView.findViewById(R.id.et_longitude);
+        EditText etLatitude = dialogView.findViewById(R.id.et_latitude);
+        etLongitude.setText(String.valueOf(lanLng.longitude));
+        etLatitude.setText(String.valueOf(lanLng.latitude));
+
         new AlertDialog.Builder(getContext())
-                .setTitle("提示")
-                .setMessage("已选择" + lanLng.latitude + "," + lanLng.longitude)
+                .setTitle("选择坐标")
                 .setCancelable(true)
-                .setNegativeButton("取消", null)
+                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().finish();
+                    }
+                })
                 .setPositiveButton("确定", (dialog, which) -> {
+                    double longitude = Double.parseDouble(etLongitude.getText().toString());
+                    double latitude = Double.parseDouble(etLatitude.getText().toString());
+                    mSelectedLocation = AMapUtil.newLatLng(latitude, longitude);
                     handleResultData();
                     getActivity().finish();
                 })
+                .setView(dialogView)
                 .show();
         return true;
     }
 
     @Override
     public void onDestroyView() {
-        handleResultData();
         if (mAMap != null) {
             mAMap.setOnCameraChangeListener(null);
             mAMap.setOnMapLoadedListener(null);
@@ -619,13 +636,16 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
     }
 
     private void handleResultData() {
+        LatLng lanLng = mSelectedLocation;
+        if (lanLng == null) {
+            return;
+        }
         try {
             Activity activity = getActivity();
             Intent intent = activity.getIntent();
             if (intent == null) {
                 intent = new Intent();
             }
-            LatLng lanLng = mAMap.getCameraPosition().target;
             JSONObject json = new JSONObject();
             json.put("lat", lanLng.latitude);
             json.put("lng", lanLng.longitude);

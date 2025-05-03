@@ -10,8 +10,8 @@ import androidx.activity.result.ActivityResultLauncher
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap
 import com.google.android.flexbox.FlexboxLayoutManager
-import com.lu.magic.R
-import com.lu.magic.databinding.FragMainBinding
+import com.lu.magic.witchapp.R
+import com.lu.magic.witchapp.databinding.FragMainBinding
 import com.lu.magic.ui.BindingFragment
 import com.lu.magic.ui.recycler.MultiAdapter
 import com.lu.magic.ui.recycler.MultiViewHolder

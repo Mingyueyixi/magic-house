@@ -1,6 +1,15 @@
 package com.lu.magic.module.main
 
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.Window
+import android.view.WindowInsets
+import android.view.WindowManager
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -22,7 +31,9 @@ class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // 设置沉浸式模式（兼容 API 23+）
         binding = ActivityMainBinding.inflate(layoutInflater)
+        setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
 
         pageModelList = arrayListOf(
@@ -114,7 +125,22 @@ class MainActivity : BaseActivity() {
                 .setCancelable(false)
                 .show()
         }
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val bottomNavHeight = systemBars.bottom
+
+            // 设置 TabLayout 的底部 padding 为底部导航栏高度
+            binding.mainBottomTabLayout.setPadding(binding.mainBottomTabLayout.paddingLeft, binding.mainBottomTabLayout.paddingTop, binding.mainBottomTabLayout.paddingRight, bottomNavHeight)
+
+            // 设置 Toolbar 的顶部 padding 为状态栏高度
+            val toolbarPaddingTop = systemBars.top
+            binding.toolbar.setPadding(binding.toolbar.paddingLeft, toolbarPaddingTop, binding.toolbar.paddingRight, binding.toolbar.paddingBottom)
+
+            insets
+        }
     }
+
+
 
     private class PageAdapter(var activity: MainActivity, var viewModelList: List<PageModel>) :
         FragmentStateAdapter(activity) {

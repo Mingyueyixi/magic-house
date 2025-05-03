@@ -3,8 +3,8 @@ package com.lu.magic.witch
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.Toolbar
-import com.lu.magic.R
-import com.lu.magic.databinding.LayoutFragmentContainerBinding
+import com.lu.magic.witchapp.R
+import com.lu.magic.witchapp.databinding.LayoutFragmentContainerBinding
 import com.lu.magic.ui.BaseToolBarActivity
 import com.lu.magic.ui.FragmentNavigation
 import com.lu.magic.witch.amap.FuckAMapFragment
@@ -41,7 +41,7 @@ class MultipleActivity : BaseToolBarActivity() {
 
     private fun initToolBar() {
         val toolbar = binding.toolbar
-        binding.toolbarLayout.visibility = View.VISIBLE
+//        binding.toolbarLayout.visibility = View.VISIBLE
         //在设置setSupportActionBar之前设置toolbar标题，否则无效
         setSupportActionBar(toolbar)
         //设置导航点击监听，在setSupportActionBar之后，否则无效

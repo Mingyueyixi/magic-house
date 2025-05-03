@@ -3,7 +3,7 @@ apply {
 }
 
 android {
-    namespace 'com.lu.magic'
+
     defaultConfig {
         applicationId "com.lu.magic"
         versionCode 1

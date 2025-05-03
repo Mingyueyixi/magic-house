@@ -1,5 +1,8 @@
 apply from: rootProject.file('module_xp.gradle')
 
+android {
+
+}
 
 dependencies {
     //3D地图so及jar

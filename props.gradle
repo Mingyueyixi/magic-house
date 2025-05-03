@@ -19,13 +19,12 @@ ext {
             'org.jetbrains.kotlinx:kotlinx-coroutines-android': 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4',
 
             'com.amap.api:map2d'                              : 'com.amap.api:map2d:6.0.0',
-            'com.amap.api:location'                           : 'com.amap.api:location:6.2.0',
-            'com.amap.api:search'                             : 'com.amap.api:search:9.5.0',
+            'com.amap.api:location'                           : 'com.amap.api:location:6.4.2',
+            'com.amap.api:search'                             : 'com.amap.api:search:9.7.1',
 
-//            'com.github.Mingyueyixi:frame-base-utils'         : 'com.github.Mingyueyixi:frame-base-utils:5194a1c95f',
-            'com.github.Mingyueyixi.frame-base-utils:all'     : 'com.github.Mingyueyixi.frame-base-utils:all:98bd9209eb',
-            'com.github.Mingyueyixi.frame-base-utils:base'    : 'com.github.Mingyueyixi.frame-base-utils:base:98bd9209eb',
-            'com.github.Mingyueyixi.frame-base-utils:core'    : 'com.github.Mingyueyixi.frame-baseutils:core:98bd9209eb',
+            'com.github.Mingyueyixi.frame-base-utils:all'     : 'com.github.Mingyueyixi.frame-base-utils:all:40657f21dc',
+            'com.github.Mingyueyixi.frame-base-utils:base'    : 'com.github.Mingyueyixi.frame-base-utils:base:40657f21dc',
+            'com.github.Mingyueyixi.frame-base-utils:core'    : 'com.github.Mingyueyixi.frame-baseutils:core:40657f21dc',
 
             'com.github.Mingyueyixi.frame-ui:ui-all'    : 'com.github.Mingyueyixi.frame-ui:ui-all:8db89324ba',
             'com.github.Mingyueyixi.frame-ui:ui-appcompat'    : 'com.github.Mingyueyixi.frame-ui:ui-appcompat:8db89324ba',

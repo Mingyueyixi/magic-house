@@ -46,7 +46,8 @@
 
 
         <activity
-            android:name=".witch.MainActivity"
+            android:name="com.lu.magic.witch.MainActivity"
+            android:theme="@style/Theme.Witch.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,7 +55,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".witch.MultipleActivity"
+            android:name="com.lu.magic.witch.MultipleActivity"
             android:theme="@style/Theme.Witch.NoActionBar"
             android:launchMode="standard"
             android:exported="true">
