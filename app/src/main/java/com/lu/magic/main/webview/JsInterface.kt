@@ -1,4 +1,4 @@
-package com.lu.magic.module.main.webview
+package com.lu.magic.main.webview
 
 interface JsInterface {
     fun getAppInfo(): String = ""

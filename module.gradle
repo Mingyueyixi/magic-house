@@ -7,14 +7,13 @@ apply {
     plugin 'org.jetbrains.kotlin.android'
     from rootProject.file('props.gradle')
 }
-
-
-
 android {
-    compileSdk 35
+    compileSdk 36
+    buildToolsVersion "36.0.0"
+
     defaultConfig {
         minSdk 23
-        targetSdk 35
+        targetSdk 36
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -52,11 +51,12 @@ android {
         enabled = true
     }
 
-//    buildFeatures {
+    buildFeatures {
 //        dataBinding true
-//    }
-}
+        buildConfig true
+    }
 
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])

@@ -1,6 +1,5 @@
-package com.lu.magic.module.arts;
+package com.lu.magic.arts;
 
-import com.lu.magic.arts.BaseMagic;
 import com.lu.magic.util.CollectionUtil;
 
 import java.util.LinkedHashMap;

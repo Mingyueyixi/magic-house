@@ -1,13 +1,12 @@
 package com.lu.magic.witch
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.widget.Toolbar
-import com.lu.magic.witchapp.R
-import com.lu.magic.witchapp.databinding.LayoutFragmentContainerBinding
 import com.lu.magic.ui.BaseToolBarActivity
 import com.lu.magic.ui.FragmentNavigation
 import com.lu.magic.witch.amap.FuckAMapFragment
+import com.lu.magic.witchapp.R
+import com.lu.magic.witchapp.databinding.LayoutFragmentContainerBinding
 
 class MultipleActivity : BaseToolBarActivity() {
     private lateinit var mFragmentNavigation: FragmentNavigation

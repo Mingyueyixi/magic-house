@@ -1,11 +1,12 @@
-package com.lu.magic.module.main.webview
+package com.lu.magic.main.webview
 
+import android.R
 import android.content.Intent
 import android.net.Uri
 import android.webkit.JavascriptInterface
 import androidx.core.content.ContextCompat
-import com.lu.magic.module.bean.AppInfo
-import com.lu.magic.module.bean.BuildInfo
+import com.lu.magic.bean.AppInfo
+import com.lu.magic.bean.BuildInfo
 import com.lu.magic.util.AppUtil
 import com.lu.magic.util.ColorUtil
 import com.lu.magic.util.GsonUtil
@@ -19,13 +20,13 @@ class MagicJavaScriptInterface(private val jsInterfaceProxy: JsInterface) : JsIn
         val theme = context.theme
         val array = theme.obtainStyledAttributes(
             intArrayOf(
-                android.R.attr.colorPrimary,
-                android.R.attr.colorPrimaryDark,
+                R.attr.colorPrimary,
+                R.attr.colorPrimaryDark,
             )
         )
         val colorPrimary = ContextCompat.getColor(context, com.lu.magic.base.R.color.purple_200)
         val colorPrimaryDark = ContextCompat.getColor(context, com.lu.magic.base.R.color.teal_200)
-        val appInfo = AppInfo(
+        val appInfo = _root_ide_package_.com.lu.magic.bean.AppInfo(
             colorPrimary = ColorUtil.toHTMLColor(colorPrimary),
             colorPrimaryDark = ColorUtil.toHTMLColor(colorPrimaryDark),
             buildInfo = BuildInfo.value

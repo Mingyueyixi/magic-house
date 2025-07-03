@@ -11,10 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <!-- 用于提高GPS定位速度 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <!-- 写入扩展存储，向扩展卡写入数据，用于写入缓存定位数据 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 读取缓存数据 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
 
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <!-- 用于读取手机当前的状态 -->
@@ -26,13 +23,13 @@
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
-        android:name=".App"
+        android:name="com.lu.magic.App"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@android:drawable/sym_def_app_icon"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/release_network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:networkSecurityConfig="@xml/release_network_security_config"
         android:theme="@style/Theme.FoolishEgg">
 
         <meta-data
@@ -45,45 +42,51 @@
             android:name="xposedminversion"
             android:value="82" />
 
+<!--        &lt;!&ndash; 设置key &ndash;&gt;-->
+<!--        <meta-data-->
+<!--            android:name="com.amap.api.v2.apikey"-->
+<!--            android:value="595d6b362d44fca45dbfd177f1067feb" />-->
 
+<!--        &lt;!&ndash; 定位需要的服务 适配Android Q需要加上android:foregroundServiceType="location"&ndash;&gt;-->
+<!--        <service-->
+<!--            android:name="com.amap.api.location.APSService"-->
+<!--            android:foregroundServiceType="location" />-->
 
         <activity
-            android:name=".main.MainActivity"
-            android:theme="@style/Theme.FoolishEgg.NoActionBar"
+            android:name="com.lu.magic.main.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
 
-                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />
+<!--                <category android:name="de.robv.android.xposed.category.MODULE_SETTINGS" />-->
             </intent-filter>
         </activity>
         <activity
             android:name="com.lu.magic.main.SelectAppActivity"
-            android:exported="false"
-            android:launchMode="standard"
-            android:theme="@style/Theme.FoolishEgg.NoActionBar" />
+            android:exported="false" />
         <activity
             android:name="com.lu.magic.main.DetailConfigActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:theme="@style/Theme.FoolishEgg.NoActionBar" />
+             />
         <activity
             android:name="com.lu.magic.util.permission.PermissionActivity"
             android:exported="false" />
 
 
         <activity
-            android:name=".main.webview.WebViewActivity"
+            android:name="com.lu.magic.main.webview.WebViewActivity"
             android:exported="false"
-            android:theme="@style/Theme.FoolishEgg.NoActionBar" />
+             />
 
         <provider
             android:name="com.lu.magic.frame.xp.provider.PreferenceServerProvider"
             android:authorities="com.lu.magic.server"
-            android:grantUriPermissions="true"
-            android:exported="true" />
+            android:exported="true"
+            android:grantUriPermissions="true" />
     </application>
 
 </manifest>

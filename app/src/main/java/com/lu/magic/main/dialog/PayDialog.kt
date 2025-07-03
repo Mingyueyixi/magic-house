@@ -1,4 +1,4 @@
-package com.lu.magic.module.main.dialog
+package com.lu.magic.main.dialog
 
 import android.content.Context
 import android.content.DialogInterface
@@ -12,7 +12,7 @@ import com.lu.magic.module.R
 import com.lu.magic.module.databinding.DialogPayBinding
 
 class PayDialog private constructor(val P: DialogParams) :
-    AppCompatDialog(P.context, android.R.style.Theme_Material_Dialog_NoActionBar) {
+    androidx.appcompat.app.AppCompatDialog(P.context, android.R.style.Theme_Material_Dialog_NoActionBar) {
 
     private lateinit var bindding: DialogPayBinding
 

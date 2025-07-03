@@ -1,5 +1,7 @@
-package com.lu.magic.module.main
+package com.lu.magic.main
 
+import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -17,12 +19,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.lu.magic.module.AppInitProxy
 import com.lu.magic.module.BuildConfig
 import com.lu.magic.module.R
 import com.lu.magic.module.databinding.FragmentAboutBinding
-import com.lu.magic.module.main.dialog.PayDialog
-import com.lu.magic.module.main.webview.WebViewActivity
+import com.lu.magic.main.dialog.PayDialog
+import com.lu.magic.main.webview.WebViewActivity
+import com.lu.magic.AppInitProxy
 import com.lu.magic.ui.BindingFragment
 import com.lu.magic.util.CursorUtil
 import com.lu.magic.util.SizeUtil
@@ -59,7 +61,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
     private fun initViewAction() {
         binding.layoutAbout.setOnClickListener {
 //            WebViewActivity.start(it.context, "http://192.168.3.116:5500/index.html")
-            WebViewActivity.start(it.context, WebViewActivity.URL_LOCAL_ABOUT)
+            _root_ide_package_.com.lu.magic.main.webview.WebViewActivity.Companion.start(it.context, _root_ide_package_.com.lu.magic.main.webview.WebViewActivity.Companion.URL_LOCAL_ABOUT)
         }
 
         binding.layoutDonate.setOnClickListener {
@@ -74,7 +76,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             try {
                 startActivity(intent)
-            } catch (e: android.content.ActivityNotFoundException) {
+            } catch (e: ActivityNotFoundException) {
                 LogUtil.e("支付宝跳转失败")
                 showDonateDialog()
             }
@@ -92,7 +94,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
         val isAlipayImg = Random.nextBoolean()
         val payImgResId = if (isAlipayImg) R.mipmap.ic_alipay_qr else R.mipmap.ic_wxpay_qr
 
-        PayDialog.Builder(context)
+        _root_ide_package_.com.lu.magic.main.dialog.PayDialog.Builder(context)
             .setPayImgResId(payImgResId)
             .setQRIconClickListener { dialog, _ ->
                 dialog.dismiss()
@@ -112,7 +114,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
 
     private fun initViewStyle() {
         val cardColor = ContextCompat.getColor(binding.root.context, com.lu.magic.base.R.color.purple_200)
-        if (AppInitProxy.isActiveHookModule()) {
+        if (_root_ide_package_.com.lu.magic.AppInitProxy.isActiveHookModule()) {
             binding.tvModuleStateMain.setText(com.lu.magic.base.R.string.module_have_active)
             binding.tvModuleStateMain.setTextColor(Color.WHITE)
             binding.tvModuleStateSub.setTextColor(Color.WHITE)
@@ -145,7 +147,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
         super.onResume()
     }
 
-    class AboutViewModel : ViewModel() {
+    class AboutViewModel : androidx.lifecycle.ViewModel() {
         val uiToastLive by lazy { MutableLiveData<Int>() }
         private suspend fun savePayImgForQ(context: Context, payImgResId: Int, isAlipayImg: Boolean, fileName: String) {
             //mediaStore数据库返回的相对路径最后可能带有/，比较是否相等时需要注意
@@ -217,7 +219,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
                     }
                 }
             } else {
-                PermissionUtil.permission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                PermissionUtil.permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     .onResult { code, result, grant ->
                         if (grant) {
                             viewModelScope.launch {

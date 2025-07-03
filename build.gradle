@@ -12,6 +12,7 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+
 static def getModuleNameSpace(Project project) {
     def projectName = project.getName()
     return "com.lu.magic." + projectName.replace("-", "").toLowerCase(Locale.US)

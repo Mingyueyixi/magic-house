@@ -1,4 +1,4 @@
-package com.lu.magic.module.main
+package com.lu.magic.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -30,7 +30,7 @@ class StoreFragment : BaseFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val flexboxLayoutManager: FlexboxLayoutManager = object : FlexboxLayoutManager(
+        val flexboxLayoutManager: FlexboxLayoutManager = object : com.google.android.flexbox.FlexboxLayoutManager(
             context, FlexDirection.ROW, FlexWrap.WRAP
         ) {
             override fun canScrollVertically(): Boolean {

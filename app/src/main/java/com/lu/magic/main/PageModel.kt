@@ -1,4 +1,4 @@
-package com.lu.magic.module.main
+package com.lu.magic.main
 
 import androidx.core.util.Supplier
 import com.lu.magic.ui.BaseFragment

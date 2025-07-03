@@ -1,4 +1,4 @@
-package com.lu.magic.module
+package com.lu.magic
 
 import android.content.Context
 import com.lu.magic.IModuleFace

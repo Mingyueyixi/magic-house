@@ -1,4 +1,4 @@
-package com.lu.magic.module.arts;
+package com.lu.magic.arts;
 
 import android.content.Context;
 import android.view.View;

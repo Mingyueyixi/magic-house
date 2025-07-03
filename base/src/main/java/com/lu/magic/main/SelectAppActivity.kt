@@ -18,8 +18,11 @@ import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SwitchCompat
 import androidx.collection.LruCache
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.graphics.Insets
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.lu.magic.BaseUIActivity
 import com.lu.magic.ModuleProviders
 import com.lu.magic.base.R
 import com.lu.magic.base.databinding.LayoutSelectAppBinding
@@ -31,7 +34,6 @@ import com.lu.magic.config.ModuleId
 import com.lu.magic.main.AppRouter.routeDetailConfigPage
 import com.lu.magic.main.AppRouter.routeWitchApp
 import com.lu.magic.store.ItemModel
-import com.lu.magic.ui.BaseActivity
 import com.lu.magic.ui.recycler.MultiAdapter
 import com.lu.magic.ui.recycler.MultiViewHolder
 import com.lu.magic.ui.recycler.SimpleItemType
@@ -39,6 +41,7 @@ import com.lu.magic.util.GsonUtil
 import com.lu.magic.util.PackageUtil.Companion.getInstallPackageInfoList
 import com.lu.magic.util.PackageUtil.Companion.isDebugApp
 import com.lu.magic.util.PackageUtil.Companion.isSystemApp
+import com.lu.magic.util.RecyclerViewUtil
 import com.lu.magic.util.SingleClassStoreUtil
 import com.lu.magic.util.ToastUtil
 import com.lu.magic.util.load.LoaderCacheUtil
@@ -50,7 +53,7 @@ import java.util.Collections
 import java.util.Locale
 
 
-class SelectAppActivity : BaseActivity() {
+class SelectAppActivity : BaseUIActivity() {
     private var binding: LayoutSelectAppBinding? = null
     private var routeItem: ItemModel? = null
     private var appListAdapter: MultiAdapter<AppListModel>? = null
@@ -97,6 +100,17 @@ class SelectAppActivity : BaseActivity() {
         setSupportActionBar(toolbar)
         //设置导航点击监听，在setSupportActionBar之后，否则无效
         toolbar.setNavigationOnClickListener { v: View? -> finish() }
+    }
+
+
+    public override fun isContentFitSystemWindows(): Boolean {
+        return false
+    }
+
+    override fun onApplyWindowInsets(content: View, insets: WindowInsetsCompat, systemBars: Insets) {
+        content.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+        val toolbar: View = binding!!.appBarLayout.toolbar
+        toolbar.setPadding(toolbar.getPaddingLeft(), systemBars.top, toolbar.getPaddingRight(), toolbar.getPaddingBottom())
     }
 
     override fun onDestroy() {
@@ -150,10 +164,10 @@ class SelectAppActivity : BaseActivity() {
     }
 
     private fun initViewForAppList() {
-        appListAdapter = object : MultiAdapter<AppListModel>() {}.setDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onChanged() {
-                super.onChanged()
-                if (!isFinishing || isDestroyed) {
+
+        appListAdapter = object : MultiAdapter<AppListModel>() {}.setDataObserver(object : RecyclerViewUtil.EveryAdapterDataObserver() {
+            override fun onEveryChange() {
+                if (isFinishing || isDestroyed) {
                     return
                 }
                 binding!!.tvAppCount.text = "数量：" + appListAdapter!!.getData().size + ""

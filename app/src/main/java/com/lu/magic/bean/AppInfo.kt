@@ -1,4 +1,4 @@
-package com.lu.magic.module.bean
+package com.lu.magic.bean
 
 import androidx.annotation.Keep
 import com.lu.magic.module.BuildConfig

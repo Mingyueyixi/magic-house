@@ -1,16 +1,16 @@
-package com.lu.magic.module.main.vm
+package com.lu.magic.main.vm
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lu.magic.module.main.Contracts
+import com.lu.magic.main.Contracts
 import com.lu.magic.util.AppUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel : ViewModel() {
+class MainViewModel : androidx.lifecycle.ViewModel() {
 
     companion object {
         const val ID_APP = "app"
@@ -26,7 +26,7 @@ class MainViewModel : ViewModel() {
                 if (agreeAgreement) {
                     return@withContext
                 }
-                AppUtil.getContext().assets.open(Contracts.ASSET_PATH_AGREEMENT).use {
+                AppUtil.getContext().assets.open(_root_ide_package_.com.lu.magic.main.Contracts.Companion.ASSET_PATH_AGREEMENT).use {
                     live.postValue(String(it.readBytes()))
                 }
             }

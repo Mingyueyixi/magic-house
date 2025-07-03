@@ -1,40 +1,33 @@
-package com.lu.magic.module.main
+package com.lu.magic.main
 
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.Window
-import android.view.WindowInsets
-import android.view.WindowManager
-import androidx.core.view.ViewCompat
+import androidx.core.graphics.Insets
 import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
+import com.lu.magic.BaseUIActivity
 import com.lu.magic.module.R
 import com.lu.magic.module.databinding.ActivityMainBinding
-import com.lu.magic.module.main.vm.MainViewModel
-import com.lu.magic.ui.BaseActivity
+import com.lu.magic.main.vm.MainViewModel
 import com.lu.magic.util.FragmentUtil
 import com.lu.magic.util.dialog.DialogUtil
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseUIActivity() {
     private lateinit var pageModelList: ArrayList<PageModel>
     private lateinit var binding: ActivityMainBinding
-    private val vm by lazy { ViewModelProvider(this)[MainViewModel::class.java] }
+    private val vm by lazy { ViewModelProvider(this)[_root_ide_package_.com.lu.magic.main.vm.MainViewModel::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 设置沉浸式模式（兼容 API 23+）
         binding = ActivityMainBinding.inflate(layoutInflater)
-        setSupportActionBar(binding.toolbar)
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
 
         pageModelList = arrayListOf(
             PageModel(R.drawable.ic_icon_store, R.string.store) {
@@ -125,25 +118,18 @@ class MainActivity : BaseActivity() {
                 .setCancelable(false)
                 .show()
         }
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { view, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            val bottomNavHeight = systemBars.bottom
-
-            // 设置 TabLayout 的底部 padding 为底部导航栏高度
-            binding.mainBottomTabLayout.setPadding(binding.mainBottomTabLayout.paddingLeft, binding.mainBottomTabLayout.paddingTop, binding.mainBottomTabLayout.paddingRight, bottomNavHeight)
-
-            // 设置 Toolbar 的顶部 padding 为状态栏高度
-            val toolbarPaddingTop = systemBars.top
-            binding.toolbar.setPadding(binding.toolbar.paddingLeft, toolbarPaddingTop, binding.toolbar.paddingRight, binding.toolbar.paddingBottom)
-
-            insets
-        }
+    }
+    public override fun isContentFitSystemWindows(): Boolean {
+        return false
     }
 
-
-
+    override fun onApplyWindowInsets(content: View, insets: WindowInsetsCompat, systemBars: Insets) {
+        content.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+        val toolbar: View = binding.toolbar
+        toolbar.setPadding(toolbar.getPaddingLeft(), systemBars.top, toolbar.getPaddingRight(), toolbar.getPaddingBottom())
+    }
     private class PageAdapter(var activity: MainActivity, var viewModelList: List<PageModel>) :
-        FragmentStateAdapter(activity) {
+        androidx.viewpager2.adapter.FragmentStateAdapter(activity) {
         override fun getItemCount(): Int {
             return viewModelList.size
         }

@@ -1,4 +1,4 @@
-package com.lu.magic.module;
+package com.lu.magic;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,10 +6,11 @@ import android.content.Context;
 import com.lu.magic.IModuleFace;
 import com.lu.magic.ModuleProviders;
 import com.lu.magic.arts.BaseMagic;
-import com.lu.magic.module.arts.DisableFlagSecureMagic;
-import com.lu.magic.module.arts.MagicRepository;
-import com.lu.magic.module.arts.TestMagic;
+import com.lu.magic.arts.DisableFlagSecureMagic;
+import com.lu.magic.arts.MagicRepository;
+import com.lu.magic.arts.TestMagic;
 import com.lu.magic.config.ConfigUtil;
+import com.lu.magic.module.BuildConfig;
 import com.lu.magic.util.log.LogUtil;
 
 import java.util.Map;

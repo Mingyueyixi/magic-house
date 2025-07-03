@@ -1,18 +1,15 @@
-package com.lu.magic.module.arts;
+package com.lu.magic.arts;
 
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
 import com.lu.magic.arts.BaseMagic;
-import com.lu.magic.module.App;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.ReflectUtil;
 import com.lu.magic.util.TextUtil;
@@ -23,7 +20,6 @@ import com.lu.magic.util.view.SelfDeepCheck;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +28,6 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class TestMagic extends BaseMagic {

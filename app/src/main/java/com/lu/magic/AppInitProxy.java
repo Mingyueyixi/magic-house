@@ -1,10 +1,9 @@
-package com.lu.magic.module;
+package com.lu.magic;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.EnvUtil;
 import com.lu.magic.util.log.LogUtil;
@@ -37,6 +36,7 @@ public class AppInitProxy {
                     }
 
                 }
+                android.util.Log.e(">>>", buildLogText(objects) + " " + msg);
             }
         });
     }

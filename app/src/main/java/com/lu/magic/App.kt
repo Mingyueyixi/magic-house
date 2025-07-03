@@ -1,4 +1,4 @@
-package com.lu.magic.module
+package com.lu.magic
 
 import android.app.Application
 import android.content.Context
@@ -10,7 +10,7 @@ import com.lu.magic.frame.xp.SPreference
  * Date: 2022/02/18
  * Description: Application
  */
-class App : Application() {
+class App : android.app.Application() {
     init {
         instance = this
     }

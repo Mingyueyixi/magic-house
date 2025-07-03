@@ -1,4 +1,4 @@
-package com.lu.magic.module.bean
+package com.lu.magic.bean
 
 import android.util.Base64
 import androidx.annotation.Keep

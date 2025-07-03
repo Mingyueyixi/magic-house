@@ -1,7 +1,6 @@
 package com.lu.magic;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -17,6 +16,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class Main implements IXposedHookLoadPackage {
     private boolean haveBean = false;
+
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         XposedHelpers.findAndHookMethod(

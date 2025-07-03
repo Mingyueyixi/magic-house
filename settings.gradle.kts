@@ -2,9 +2,9 @@ import java.net.URI
 
 pluginManagement {
     repositories {
-        maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public")
-        maven("https://repo.huaweicloud.com/repository/maven")
-        maven("https://repository.mulesoft.org/nexus/content/repositories/public/")
+//        maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public")
+//        maven("https://repo.huaweicloud.com/repository/maven")
+//        maven("https://repository.mulesoft.org/nexus/content/repositories/public/")
         maven("https://maven.aliyun.com/repository/public")
         maven("https://maven.aliyun.com/repository/google")
         maven("https://maven.aliyun.com/repository/gradle-plugin")
@@ -35,10 +35,10 @@ pluginManagement {
 dependencyResolutionManagement {
 //    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public")
-        maven("https://repo.huaweicloud.com/repository/maven")
+//        maven("https://mirrors.cloud.tencent.com/nexus/repository/maven-public")
+//        maven("https://repo.huaweicloud.com/repository/maven")
+//        maven("https://repository.mulesoft.org/nexus/content/repositories/public/")
         maven("https://maven.aliyun.com/repository/public")
-        maven("https://repository.mulesoft.org/nexus/content/repositories/public/")
         maven("https://maven.aliyun.com/repository/google")
         maven("https://maven.aliyun.com/repository/gradle-plugin")
         maven("https://maven.aliyun.com/repository/central")

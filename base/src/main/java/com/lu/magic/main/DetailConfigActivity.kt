@@ -1,18 +1,21 @@
 package com.lu.magic.main
 
 import android.content.pm.ActivityInfo
+import android.media.MediaPlayer
 import android.os.Bundle
-import androidx.appcompat.widget.Toolbar
+import android.view.View
+import androidx.core.graphics.Insets
+import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
+import com.lu.magic.BaseUIActivity
 import com.lu.magic.ModuleProviders
 import com.lu.magic.base.databinding.LayoutContainerBinding
+import com.lu.magic.config.ModuleId
 import com.lu.magic.store.ItemModel
-import com.lu.magic.ui.BaseToolBarActivity
 import com.lu.magic.ui.FragmentNavigation
 import com.lu.magic.util.SingleClassStoreUtil
-import com.lu.magic.config.ModuleId
 
-class DetailConfigActivity : BaseToolBarActivity() {
+class DetailConfigActivity : BaseUIActivity() {
     private lateinit var pageFragment: Fragment
     private lateinit var binding: LayoutContainerBinding
     private lateinit var fragmentNavigation: FragmentNavigation
@@ -92,8 +95,14 @@ class DetailConfigActivity : BaseToolBarActivity() {
         }
     }
 
-    override fun getToolBar(): Toolbar {
-        return binding.appBarLayout.toolbar
+    override fun isContentFitSystemWindows(): Boolean {
+        return false
+    }
+
+    override fun onApplyWindowInsets(content: View, insets: WindowInsetsCompat, systemBars: Insets) {
+        content.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+        val toolbar: View = binding!!.appBarLayout.toolbar
+        toolbar.setPadding(toolbar.getPaddingLeft(), systemBars.top, toolbar.getPaddingRight(), toolbar.getPaddingBottom())
     }
 
     override fun onDestroy() {
