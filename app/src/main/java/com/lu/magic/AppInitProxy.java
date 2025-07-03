@@ -37,6 +37,7 @@ public class AppInitProxy {
                     }
 
                 }
+                android.util.Log.e(">>>", buildLogText(objects) + " " + msg);
             }
         });
     }

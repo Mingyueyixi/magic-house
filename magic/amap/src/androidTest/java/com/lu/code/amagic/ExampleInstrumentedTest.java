@@ -1,4 +1,4 @@
-package com.lu.code.amagic;
+package com.lu.magic.amap;
 
 import android.content.Context;
 

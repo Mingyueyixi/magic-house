@@ -3,11 +3,32 @@ buildscript {
     ext.kotlin_version = "1.7.20"
 }
 plugins {
-    id 'com.android.application' version '7.3.1' apply false
-    id 'com.android.library' version '7.3.1' apply false
+    id 'com.android.application' version '8.10.0' apply false
+    id 'com.android.library' version '8.10.0' apply false
     id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+
+subprojects {
+    afterEvaluate { project ->
+        boolean isLibrary = project.plugins.hasPlugin('com.android.library')
+        boolean isApp = project.plugins.hasPlugin('com.android.application')
+        if (isLibrary || isApp) {
+            def finalNameSpace = "com.lu.magic"
+            if (isLibrary) {
+                def lastName = "${project.name}"
+                lastName = lastName.replace("-", "")
+                lastName = lastName.replace("_", "")
+                finalNameSpace = "com.lu.magic." + lastName.toLowerCase(Locale.getDefault())
+            }
+            android.namespace = finalNameSpace
+        } else {
+            println("${project.name} is not android project")
+        }
+
+    }
 }

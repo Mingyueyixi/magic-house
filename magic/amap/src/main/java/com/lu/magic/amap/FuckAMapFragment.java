@@ -45,7 +45,7 @@ import com.amap.api.services.geocoder.RegeocodeQuery;
 import com.amap.api.services.geocoder.RegeocodeResult;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
-import com.lu.code.amagic.R;
+import com.lu.magic.amap.R;
 import com.lu.magic.bean.AMapConfig;
 import com.lu.magic.main.AppListModel;
 import com.lu.magic.ui.BaseFragment;
@@ -604,7 +604,7 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
             ViewUtil.setVisibility(View.GONE, mTvPrompt);
             mSearchPoiAdapter.setBeginAddress(regeocodeAddress.getProvince() + regeocodeAddress.getCity() + regeocodeAddress.getDistrict());
             mSearchPoiAdapter.setSelectedPosition(0);
-            mSearchPoiAdapter.updateData(poiItemList);
+            mSearchPoiAdapter.updateDataAt(poiItemList);
         }
 
         @Override
@@ -639,7 +639,7 @@ public class FuckAMapFragment extends BaseFragment implements LocationSource {
 
             mSearchPoiAdapter.setSelectedPosition(0);
             mSearchPoiAdapter.setBeginAddress(null);
-            mSearchPoiAdapter.updateData(poiItems);
+            mSearchPoiAdapter.updateDataAt(poiItems);
 
             if (!CollectionUtil.isEmpty(poiItems)) {
                 // 移动到第一个位置

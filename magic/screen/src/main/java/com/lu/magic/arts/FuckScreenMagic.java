@@ -74,6 +74,13 @@ public class FuckScreenMagic extends BaseMagic {
                     @Override
                     protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
+                        try {
+                            LogUtil.d("setRequestedOrientation beforeHookedMethod" + param.args[0]);
+                            throw new Exception("setRequestedOrientation");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
                         int requestedOrientation = (int) param.args[0];
                         param.args[0] = actItem.getOrientation();
 

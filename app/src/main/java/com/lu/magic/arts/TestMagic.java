@@ -1,24 +1,13 @@
 package com.lu.magic.arts;
 
-import android.app.Activity;
-import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
+import android.view.View;
 
-import com.lu.magic.config.ConfigUtil;
-import com.lu.magic.frame.xp.CPPreference;
-import com.lu.magic.util.AppUtil;
-import com.lu.magic.util.GsonUtil;
-import com.lu.magic.util.ToastUtil;
-import com.lu.magic.util.log.LogUtil;
-import com.lu.magic.util.thread.AppExecutor;
-import com.lu.magic.util.thread.WorkerUtil;
-
-import java.io.File;
 import java.util.Map;
 
-import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
@@ -41,10 +30,7 @@ public class TestMagic extends BaseMagic {
 //
 //        );
 
-    }
-
-    private void handlePanQie() {
-
+        
     }
 
 

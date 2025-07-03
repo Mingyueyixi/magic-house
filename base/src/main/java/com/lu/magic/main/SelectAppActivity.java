@@ -24,9 +24,12 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.appcompat.widget.Toolbar;
 import androidx.collection.LruCache;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.graphics.Insets;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.lu.magic.BaseUIActivity;
 import com.lu.magic.IModuleFace;
 import com.lu.magic.ModuleProviders;
 import com.lu.magic.base.databinding.LayoutSelectAppBinding;
@@ -44,6 +47,8 @@ import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.load.LoaderCacheUtil;
 import com.lu.magic.util.thread.WorkerUtil;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +58,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SelectAppActivity extends BaseActivity {
+public class SelectAppActivity extends BaseUIActivity {
     private LayoutSelectAppBinding binding;
     private ItemModel routeItem;
     private MultiAdapter<AppListModel> appListAdapter;
@@ -103,6 +108,18 @@ public class SelectAppActivity extends BaseActivity {
             finish();
         });
 
+    }
+
+    @Override
+    public boolean isContentFitSystemWindows() {
+        return false;
+    }
+
+    @Override
+    protected void onApplyWindowInsets(@NotNull View content, @NotNull WindowInsetsCompat insets, @NotNull Insets systemBars) {
+        content.setPadding(systemBars.left,0, systemBars.right, systemBars.bottom);
+        View toolbar = binding.appBarLayout.toolbar;
+        toolbar.setPadding(toolbar.getPaddingLeft(), systemBars.top, toolbar.getPaddingRight(), toolbar.getPaddingBottom());
     }
 
     @Override
@@ -202,7 +219,7 @@ public class SelectAppActivity extends BaseActivity {
             sortApp(filterApp);
             return filterApp;
         }).intoMain(appListModels -> {
-            appListAdapter.updateData(appListModels);
+            appListAdapter.updateDataAt(appListModels);
             binding.rvAppList.smoothScrollToPosition(0);
         });
 
@@ -211,7 +228,7 @@ public class SelectAppActivity extends BaseActivity {
     private void queryAndShowAppListView(String keyWord) {
         List<AppListModel> filterApp = filterApp(installAppModelMap, keyWord);
         sortApp(filterApp);
-        appListAdapter.updateData(filterApp);
+        appListAdapter.updateDataAt(filterApp);
     }
 
     private List<AppListModel> filterApp(Map<String, AppListModel> appInfoMap) {
@@ -304,7 +321,7 @@ public class SelectAppActivity extends BaseActivity {
             sortApp(filterList);
             return filterList;
         }).intoMain(filterList -> {
-            appListAdapter.updateData(filterList);
+            appListAdapter.updateDataAt(filterList);
             binding.rvAppList.smoothScrollToPosition(0);
 
             updateAppNameAsync();

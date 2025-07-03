@@ -7,11 +7,12 @@ import android.net.http.SslError
 import android.os.Bundle
 import android.webkit.*
 import android.widget.FrameLayout
+import com.lu.magic.BaseUIActivity
 import com.lu.magic.main.Contracts
 import com.lu.magic.ui.BaseActivity
 import com.lu.magic.util.log.LogUtil
 
-class WebViewActivity : BaseActivity() {
+class WebViewActivity : BaseUIActivity() {
     private var webUrl: String = URL_LOCAL_ABOUT
     private lateinit var webView: WebView
 
@@ -58,6 +59,9 @@ class WebViewActivity : BaseActivity() {
         webView.loadUrl(webUrl)
     }
 
+    override fun isContentFitSystemWindows(): Boolean {
+        return false
+    }
     override fun onBackPressed() {
         if (webView.canGoBack()) {
             webView.goBack()

@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.View
 import com.blankj.utilcode.util.VibrateUtils
 import com.lu.magic.config.ConfigUtil
+import com.lu.magic.databinding.LayoutMainBinding
 import com.lu.magic.frame.xp.BRPreference
-import com.lu.magic.testdemo.databinding.LayoutMainBinding
 import com.lu.magic.ui.BaseActivity
 
 class TestMainActivity : BaseActivity() {
