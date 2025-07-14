@@ -28,7 +28,7 @@ ext {
 
             'com.github.Mingyueyixi.frame-ui:ui-all'    : 'com.github.Mingyueyixi.frame-ui:ui-all:8db89324ba',
             'com.github.Mingyueyixi.frame-ui:ui-appcompat'    : 'com.github.Mingyueyixi.frame-ui:ui-appcompat:8db89324ba',
-            'com.github.Mingyueyixi:frame-multi-preference'   : 'com.github.Mingyueyixi:frame-multi-preference:main-SNAPSHOT',
+            'com.github.Mingyueyixi:frame-multi-preference'   : 'com.github.Mingyueyixi:frame-multi-preference:c7216e0da4',
 
     ]
 }

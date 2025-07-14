@@ -68,7 +68,14 @@
             width: 100%;
             height: 36%;
             color: beige;
-            position: relative;
+        }
+
+        #top-bar {
+            display: block;
+            width: 100%;
+            position: fixed;
+            min-height: 4rem;
+            padding-top: env(safe-area-inset-top);
         }
 
         .app-info {
@@ -120,13 +127,6 @@
             margin: 1rem;
         }
 
-        #top-bar {
-            display: block;
-            width: 100%;
-            min-height: 4rem;
-            position: fixed;
-            padding-top: env(safe-area-inset-top);
-        }
 
         .hidden {
             display: none !important;
@@ -181,7 +181,7 @@
 <body>
 <div class="app-box">
 
-    <div id="top-block" class="v-center-wrap primary-bg">
+    <div id="top-block" class="v-center-wrap">
         <header id="top-bar" class="primary-bg">
             <span id="icon-back" class="iconfont icon-xitongfanhui"></span>
             <span class="appName h4 hidden">魔法屋</span>
@@ -268,6 +268,9 @@
         w.addEventListener('resize', setSize);
         w.addEventListener('pageShow', setSize)
         w.addEventListener('DOMContentLoaded', setSize)
+
+
+
     })(window, document)
 
     var rem = window.getComputedStyle(document.documentElement)["fontSize"]
@@ -290,7 +293,6 @@
         })
 
         document.querySelector("#top-block").style.backgroundColor = colorPrimary
-        document.querySelector("#top-bar").style.backgroundColor = colorPrimary
 
         document.querySelector(".appVersion").innerText = "v" + appInfo.versionName + "-" + appInfo.buildType + "-" + gitCommit
         document.querySelector("#icon-back").addEventListener("click", (event) => {
