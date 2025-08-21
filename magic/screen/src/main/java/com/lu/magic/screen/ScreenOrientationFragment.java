@@ -22,9 +22,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.lu.magic.bean.BaseConfig;
+import com.lu.magic.bean.Config;
 import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.config.ModuleId;
 import com.lu.magic.main.AppListModel;
@@ -35,21 +33,21 @@ import com.lu.magic.ui.recycler.MultiAdapter;
 import com.lu.magic.ui.recycler.MultiViewHolder;
 import com.lu.magic.ui.recycler.SimpleItemType;
 import com.lu.magic.ui.view.ItemMoveLayout;
-import com.lu.magic.util.GsonUtil;
 import com.lu.magic.util.SingleClassStoreUtil;
 import com.lu.magic.util.TextUtil;
-import com.lu.magic.util.ToastUtil;
+import com.lu.magic.util.ToastUtils;
 import com.lu.magic.util.dialog.DialogUtil;
 import com.lu.magic.util.dialog.EditDialog;
 
-import java.lang.reflect.Type;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class ScreenOrientationFragment extends BindingFragment<FragScreenOrientationBinding> {
     private ItemModel routeItem;
     private AppListModel selectPkg;
-    private BaseConfig<OrientationDTO> mViewConfig;
+    private Config<OrientationDTO> mViewConfig;
     private ViewStateModel viewModel;
     private MultiAdapter<OrientationDTO.ActItem> templateAdapter;
 
@@ -73,7 +71,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
         mViewConfig = loadConfig();
 
         if (mViewConfig == null) {
-            mViewConfig = new BaseConfig<>();
+            mViewConfig = new Config<>();
         }
         OrientationDTO dataDTO = mViewConfig.getData();
         if (dataDTO == null) {
@@ -140,7 +138,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
                                 ivHeadView.setVisibility(View.GONE);
                                 sbCheckView = itemView.findViewById(com.lu.magic.base.R.id.sbEnableItem);
                                 vItemFace = itemView.findViewById(com.lu.magic.base.R.id.layoutItemFace);
-                                 vBottomLayout = itemView.findViewById(com.lu.magic.base.R.id.vItemBottom);
+                                vBottomLayout = itemView.findViewById(com.lu.magic.base.R.id.vItemBottom);
                                 vBottomLayout.setVisibility(View.VISIBLE);
 
                                 itemView.setOnClickListener(v -> {
@@ -212,9 +210,9 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
     }
 
 
-    private BaseConfig<OrientationDTO> loadConfig() {
-        Type configType = GsonUtil.getType(BaseConfig.class, OrientationDTO.class);
-        return ConfigUtil.getCellForType(ModuleId.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), configType);
+    private Config<OrientationDTO> loadConfig() {
+        JSONObject cell = ConfigUtil.getCell(ModuleId.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName());
+        return Config.fromJson(cell, OrientationDTO::fromJson);
     }
 
     private void saveConfig() {
@@ -222,8 +220,8 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
     }
 
     private boolean checkHasChangeConfig() {
-        JsonElement localJson = ConfigUtil.getCellForType(ModuleId.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName(), JsonObject.class);
-        JsonElement viewJson = GsonUtil.toJsonTree(mViewConfig);
+        JSONObject localJson = ConfigUtil.getCell(ModuleId.FUCK_SCREEN_ORIENTATION, selectPkg.getPackageName());
+        JSONObject viewJson = mViewConfig.toJson();
         if (("" + localJson).equals("" + viewJson)) {
             return false;
         }
@@ -302,14 +300,14 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
 
     private void addActItemToListView(OrientationDTO.ActItem actItem, int position) {
         if (TextUtil.isEmpty(actItem.getActClass())) {
-            ToastUtil.show("Activity不能为空");
+            ToastUtils.show("Activity不能为空");
             return;
         }
         List<OrientationDTO.ActItem> dataList = templateAdapter.getData();
         if (position == templateAdapter.getData().size()) {
             //新增的重复存在了
             if (checkHasOnActItem(actItem.getActClass(), dataList)) {
-                ToastUtil.show("无法添加，Activity已存在");
+                ToastUtils.show("无法添加，Activity已存在");
                 return;
             }
             templateAdapter.addData(actItem);
@@ -318,7 +316,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
             ArrayList<OrientationDTO.ActItem> noCurrList = new ArrayList<>(dataList);
             noCurrList.remove(position);
             if (checkHasOnActItem(actItem.getActClass(), noCurrList)) {
-                ToastUtil.show("修改失败，Activity已存在");
+                ToastUtils.show("修改失败，Activity已存在");
                 return;
             }
             templateAdapter.notifyItemChanged(position);
@@ -343,14 +341,14 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
                 .setPositiveButton("确定", (dialog, which) -> {
                     String text = builder.getEditText().getText().toString();
                     if (TextUtil.isEmpty(text)) {
-                        ToastUtil.show("Activity不能为空");
+                        ToastUtils.show("Activity不能为空");
                         return;
                     }
                     if (position == templateAdapter.getData().size()) {
                         //新增
                         if (checkHasOnActItem(text, dataList)) {
                             dialog.dismiss();
-                            ToastUtil.show("添加失败，Activity已存在");
+                            ToastUtils.show("添加失败，Activity已存在");
                             return;
                         }
                     } else {
@@ -358,7 +356,7 @@ public class ScreenOrientationFragment extends BindingFragment<FragScreenOrienta
                         noCurrList.remove(position);
                         if (checkHasOnActItem(text, noCurrList)) {
                             dialog.dismiss();
-                            ToastUtil.show("修改失败，Activity已存在");
+                            ToastUtils.show("修改失败，Activity已存在");
                             return;
                         }
                     }

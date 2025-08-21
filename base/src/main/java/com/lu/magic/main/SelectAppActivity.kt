@@ -21,13 +21,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.graphics.Insets
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.lu.magic.BaseUIActivity
 import com.lu.magic.ModuleProviders
 import com.lu.magic.base.R
 import com.lu.magic.base.databinding.LayoutSelectAppBinding
-import com.lu.magic.bean.AMapConfig
-import com.lu.magic.bean.BaseConfig
+import com.lu.magic.bean.AMapData
+import com.lu.magic.bean.Config
 import com.lu.magic.bridge.BridgeConstant
 import com.lu.magic.config.ConfigUtil
 import com.lu.magic.config.ModuleId
@@ -37,13 +36,12 @@ import com.lu.magic.store.ItemModel
 import com.lu.magic.ui.recycler.MultiAdapter
 import com.lu.magic.ui.recycler.MultiViewHolder
 import com.lu.magic.ui.recycler.SimpleItemType
-import com.lu.magic.util.GsonUtil
 import com.lu.magic.util.PackageUtil.Companion.getInstallPackageInfoList
 import com.lu.magic.util.PackageUtil.Companion.isDebugApp
 import com.lu.magic.util.PackageUtil.Companion.isSystemApp
 import com.lu.magic.util.RecyclerViewUtil
 import com.lu.magic.util.SingleClassStoreUtil
-import com.lu.magic.util.ToastUtil
+import com.lu.magic.util.ToastUtils
 import com.lu.magic.util.load.LoaderCacheUtil
 import com.lu.magic.util.load.LoaderCacheUtil.ObjectLoader
 import com.lu.magic.util.log.LogUtil
@@ -110,7 +108,12 @@ class SelectAppActivity : BaseUIActivity() {
     override fun onApplyWindowInsets(content: View, insets: WindowInsetsCompat, systemBars: Insets) {
         content.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
         val toolbar: View = binding!!.appBarLayout.toolbar
-        toolbar.setPadding(toolbar.getPaddingLeft(), systemBars.top, toolbar.getPaddingRight(), toolbar.getPaddingBottom())
+        toolbar.setPadding(
+            toolbar.getPaddingLeft(),
+            systemBars.top,
+            toolbar.getPaddingRight(),
+            toolbar.getPaddingBottom()
+        )
     }
 
     override fun onDestroy() {
@@ -165,7 +168,8 @@ class SelectAppActivity : BaseUIActivity() {
 
     private fun initViewForAppList() {
 
-        appListAdapter = object : MultiAdapter<AppListModel>() {}.setDataObserver(object : RecyclerViewUtil.EveryAdapterDataObserver() {
+        appListAdapter = object : MultiAdapter<AppListModel>() {}.setDataObserver(object :
+            RecyclerViewUtil.EveryAdapterDataObserver() {
             override fun onEveryChange() {
                 if (isFinishing || isDestroyed) {
                     return
@@ -173,7 +177,11 @@ class SelectAppActivity : BaseUIActivity() {
                 binding!!.tvAppCount.text = "数量：" + appListAdapter!!.getData().size + ""
             }
         }).addItemType(object : SimpleItemType<AppListModel>() {
-            override fun createViewHolder(adapter: MultiAdapter<AppListModel>, parent: ViewGroup, viewType: Int): MultiViewHolder<AppListModel> {
+            override fun createViewHolder(
+                adapter: MultiAdapter<AppListModel>,
+                parent: ViewGroup,
+                viewType: Int
+            ): MultiViewHolder<AppListModel> {
                 val v = LayoutInflater.from(getContext()).inflate(R.layout.item_enable_list, parent, false)
                 return ItemViewHolder(v)
             }
@@ -262,7 +270,10 @@ class SelectAppActivity : BaseUIActivity() {
     private fun loadInstallInfoList() {
         WorkerUtil.loadSingle {
             val appModelMap = HashMap<String, AppListModel>()
-            val enableMap = ConfigUtil.getSheet(routeItem!!.module.moduleId, BaseConfig::class.java)
+            val enableMap = ConfigUtil.getSheet(routeItem!!.module.moduleId) { data ->
+                Config.fromJson(data);
+            }
+
             val installInfoList: List<PackageInfo> = getInstallPackageInfoList(getContext())
             for (packageInfo in installInfoList) {
                 val appInfo = packageInfo.applicationInfo
@@ -411,19 +422,24 @@ class SelectAppActivity : BaseUIActivity() {
             var lat = json.optDouble("lat", 0.0)
             var lng = json.optDouble("lng", 0.0)
             if (lat == 0.0 && lng == 0.0) {
-                ToastUtil.show("位置获取失败")
+                ToastUtils.show("位置获取失败")
             }
             if (mClickItemData != null) {
                 val configPackage = mClickItemData!!.packageName
 
                 var aMapConfig = ConfigUtil.getAMapConfig(configPackage)
                 if (aMapConfig == null) {
-                    aMapConfig = AMapConfig()
+                    aMapConfig = Config(false, AMapData())
                 }
-                aMapConfig.setLng(lng)
-                aMapConfig.setLat(lat)
+                if (aMapConfig.data == null) {
+                    aMapConfig.data == AMapData()
+                }
+                aMapConfig.data.let {
+                    it.lng = lng
+                    it.lat = lat
+                }
                 ConfigUtil.setAMapConfig(configPackage, aMapConfig)
-                LogUtil.d("位置更新：", GsonUtil.toJson(ConfigUtil.getAMapConfig(configPackage)))
+                LogUtil.d("位置更新：", aMapConfig)
             }
         }
 

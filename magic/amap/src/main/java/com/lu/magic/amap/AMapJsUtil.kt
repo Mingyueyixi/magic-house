@@ -2,8 +2,10 @@ package com.lu.magic.amap
 
 import android.content.Context
 import android.webkit.WebView
-import com.lu.magic.util.GsonUtil
+import com.lu.magic.bean.JsonBean
 import com.lu.magic.util.IOUtil
+import com.lu.magic.util.JSONX
+import org.json.JSONObject
 import java.io.InputStream
 
 class H5AMapBridge {
@@ -21,18 +23,18 @@ class H5AMapBridge {
             if (it == null) {
                 hasError = true
             }
-            var value = GsonUtil.fromJson<H5SelectLocation>(it, H5SelectLocation::class.java)
-            if (value.error.isNotEmpty()) {
+
+            val value = H5SelectLocation.fromJson(it)
+            if (value?.error?.isNotEmpty() == true) {
                 hasError = true
             }
-
             if (hasError) {
                 callback.onReceiveValue(null, null)
                 return@evaluateJavascript
             }
 
-            var lot = value.lon.toFloatOrNull()
-            var lat = value.lat.toFloatOrNull()
+            val lot = value?.lon?.toFloatOrNull()
+            val lat = value?.lat?.toFloatOrNull()
             callback.onReceiveValue(lot, lat)
         }
     }
@@ -42,4 +44,31 @@ class H5AMapBridge {
     }
 }
 
-class H5SelectLocation(var lon: String, var lat: String, var error: String)
+
+class H5SelectLocation(var lon: String, var lat: String, var error: String) : JsonBean() {
+    override fun toJson(): JSONObject {
+        return JSONObject().apply {
+            put("lon", lon)
+            put("lat", lat)
+            put("error", error)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun fromJson(it: String?): H5SelectLocation? {
+            if (it.isNullOrEmpty()) return null
+            return try {
+                val json = JSONObject(it)
+                H5SelectLocation(
+                    JSONX.optString(json, "lon"),
+                    JSONX.optString(json, "lat"),
+                    JSONX.optString(json, "error")
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
+}

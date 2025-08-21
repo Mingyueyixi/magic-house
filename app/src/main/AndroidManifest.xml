@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- 请求网络 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- 需要运行时注册的权限 -->
@@ -12,7 +13,6 @@
     <!-- 用于提高GPS定位速度 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
 
-
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <!-- 用于读取手机当前的状态 -->
     <!--    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
@@ -21,6 +21,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!--如果您的应用需要后台定位权限，且有可能运行在Android Q设备上,并且设置了target>28，必须增加这个权限声明-->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <!--  读取wifi状态  -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:name="com.lu.magic.App"
@@ -81,6 +84,7 @@
             android:name="com.lu.magic.main.webview.WebViewActivity"
             android:exported="false"
              />
+
 
         <provider
             android:name="com.lu.magic.frame.xp.provider.PreferenceServerProvider"

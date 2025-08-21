@@ -8,5 +8,7 @@
     <string name="js">JS</string>
     <string name="dev">开发</string>
     <string name="app_xposed_description">魔法之屋</string>
+    <string name="ui_get_net_info">获取网络信息</string>
+    <string name="ui_get_wifi_scanner_info">wifi scanner</string>
 
 </resources>

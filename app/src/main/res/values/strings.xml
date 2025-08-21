@@ -8,5 +8,7 @@
     <string name="js">JS</string>
     <string name="dev">Dev</string>
     <string name="app_xposed_description">magic for house</string>
+    <string name="ui_get_net_info">Get Net Info</string>
+    <string name="ui_get_wifi_scanner_info">wifi scanner</string>
 
 </resources>

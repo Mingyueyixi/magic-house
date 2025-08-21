@@ -16,7 +16,7 @@ class WebViewActivity : BaseUIActivity() {
     private lateinit var webView: WebView
 
     companion object {
-        const val URL_LOCAL_ABOUT = _root_ide_package_.com.lu.magic.main.Contracts.Companion.URI_LOCAL_ABOUT
+        const val URL_LOCAL_ABOUT = com.lu.magic.main.Contracts.Companion.URI_LOCAL_ABOUT
 
         @JvmStatic
         fun start(context: Context, webUrl: String) {

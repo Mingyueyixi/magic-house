@@ -5,10 +5,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.lu.magic.arts.BaseMagic;
-import com.lu.magic.bean.ViewLockConfig;
+import com.lu.magic.bean.Config;
+import com.lu.magic.bean.LockTextRule;
 import com.lu.magic.util.TextUtil;
-import com.lu.magic.util.ToastUtil;
+import com.lu.magic.util.ToastUtils;
 import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.dialog.DialogUtil;
@@ -25,12 +25,12 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class ViewLockMagic extends BaseMagic {
-    private ViewLockConfig config;
+    private Config<LockTextRule> config;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (config == null) {
-            config = ConfigUtil.getCell(ModuleId.VIEW_LOCK, lpparam.packageName, ViewLockConfig.class);
+            config = ConfigUtil.getCell(ModuleId.VIEW_LOCK, lpparam.processName, jsonObject -> Config.fromJson(jsonObject, LockTextRule::fromJson));
         }
         if (config == null) {
             return;
@@ -140,7 +140,7 @@ public class ViewLockMagic extends BaseMagic {
                 .setPositiveButton("确定", (dialog, which) -> {
                     String inputText = editText.getText().toString();
                     if (TextUtil.isEmpty(inputText)) {
-                        ToastUtil.show(context, "输入为空");
+                        ToastUtils.show("输入为空");
                         return;
                     }
                     if (inputText.equals(config.getData().password)) {
@@ -151,7 +151,7 @@ public class ViewLockMagic extends BaseMagic {
                             e.printStackTrace();
                         }
                     } else {
-                        ToastUtil.show("验证失败");
+                        ToastUtils.show("验证失败");
                     }
                 })
                 .show();

@@ -9,11 +9,10 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.TextView;
 
-import com.lu.magic.arts.BaseMagic;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.ReflectUtil;
 import com.lu.magic.util.TextUtil;
-import com.lu.magic.util.ToastUtil;
+import com.lu.magic.util.ToastUtils;
 import com.lu.magic.util.log.LogUtil;
 import com.lu.magic.util.view.SelfDeepCheck;
 
@@ -125,7 +124,7 @@ public class TestMagic extends BaseMagic {
                 new InvocationHandler() {
                     @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                        ToastUtil.show("尼玛的");
+                        ToastUtils.show("尼玛的");
                         //原始方法
                         return method.invoke(sourceListener, args);
                     }

@@ -6,14 +6,12 @@ import androidx.core.graphics.Insets
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.lu.magic.BaseUIActivity
 import com.lu.magic.module.R
 import com.lu.magic.module.databinding.ActivityMainBinding
-import com.lu.magic.main.vm.MainViewModel
 import com.lu.magic.util.FragmentUtil
 import com.lu.magic.util.dialog.DialogUtil
 
@@ -21,7 +19,7 @@ import com.lu.magic.util.dialog.DialogUtil
 class MainActivity : BaseUIActivity() {
     private lateinit var pageModelList: ArrayList<PageModel>
     private lateinit var binding: ActivityMainBinding
-    private val vm by lazy { ViewModelProvider(this)[_root_ide_package_.com.lu.magic.main.vm.MainViewModel::class.java] }
+    private val vm by lazy { ViewModelProvider(this)[com.lu.magic.main.vm.MainViewModel::class.java] }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

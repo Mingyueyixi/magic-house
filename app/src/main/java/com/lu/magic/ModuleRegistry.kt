@@ -7,11 +7,13 @@ import com.lu.magic.ModuleProviders
 import com.lu.magic.arts.BaseMagic
 import com.lu.magic.arts.FuckAMapLocationMagic
 import com.lu.magic.arts.FuckDialogMagic
+import com.lu.magic.arts.FuckNetMagic
 import com.lu.magic.arts.FuckScreenMagic
 import com.lu.magic.arts.FuckVibratorMagic
 import com.lu.magic.arts.Magics
 import com.lu.magic.catchlog.LogViewFragment
 import com.lu.magic.config.ModuleId
+import com.lu.magic.feat.net.FuckNetFragment
 import com.lu.magic.fuckdialog.FuckDialogFragment
 import com.lu.magic.main.AppRouter
 import com.lu.magic.screen.ScreenOrientationFragment
@@ -64,6 +66,19 @@ object ModuleRegistry {
                 //为DetailConfigActivity配置fragment
                 return IModuleFace.IFragmentFactory { LogViewFragment() }
             }
+        })
+
+        ModuleProviders.put(ModuleId.FUCK_NET, object : IModuleFace {
+            override fun loadMagic(): BaseMagic {
+                return FuckNetMagic()
+            }
+
+            override fun getDetailFragmentFactory(): IModuleFace.IFragmentFactory? {
+                return IModuleFace.IFragmentFactory {
+                    return@IFragmentFactory FuckNetFragment()
+                }
+            }
+
         })
     }
 

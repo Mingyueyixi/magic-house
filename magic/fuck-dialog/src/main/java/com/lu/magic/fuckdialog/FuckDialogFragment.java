@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.lu.magic.bean.FuckDialogConfig;
+import com.lu.magic.bean.Config;
+import com.lu.magic.bean.FuckDialogData;
 import com.lu.magic.fuckdialog.databinding.FragmentFuckDialogBinding;
 import com.lu.magic.main.AppListModel;
 import com.lu.magic.store.ItemModel;
@@ -21,8 +22,7 @@ import com.lu.magic.config.ConfigUtil;
  * @author lu
  */
 public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBinding> {
-
-    private FuckDialogConfig config;
+    private Config<FuckDialogData> mConfig;
     private AppListModel appListModel;
     private ItemModel routeItem;
 
@@ -34,14 +34,18 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
         routeItem = SingleClassStoreUtil.get(TitleModel.class);
 
         String packageName = appListModel.getPackageName();
-        config = ConfigUtil.getFuckDialogConfig(packageName);
+        mConfig = ConfigUtil.getFuckDialogConfig(packageName);
 
-        if (config == null) {
-            config = new FuckDialogConfig();
-            config.setMode("normal");
+        if (mConfig == null) {
+            mConfig = new Config<>(false, new FuckDialogData());
+            mConfig.getData().setMode("normal");
         }
-        binding.etSearchKeyWord.setText(config.getKeyword());
-        switch (config.getMode()) {
+        FuckDialogData data = mConfig.getData();
+        if (data.getRegexMode() == null) {
+            data.setRegexMode(new FuckDialogData.RegexModeDTO());
+        }
+        binding.etSearchKeyWord.setText(data.getKeyword());
+        switch (data.getMode()) {
             case "normal":
                 binding.rbNormalMode.setChecked(true);
                 break;
@@ -51,15 +55,15 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
                 break;
         }
 
-        binding.cbDotLineOption.setChecked(config.getRegexMode().isDotLine());
-        binding.sbOpenTip.setChecked(config.isPromptTip());
-        binding.sbStrongMode.setChecked(config.isStrongHide());
+        binding.cbDotLineOption.setChecked(data.getRegexMode().isDotLine());
+        binding.sbOpenTip.setChecked(data.isPromptTip());
+        binding.sbStrongMode.setChecked(data.isStrongHide());
 
         binding.sbStrongMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            config.setStrongHide(isChecked);
+            data.setStrongHide(isChecked);
         });
         binding.sbOpenTip.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            config.setPromptTip(isChecked);
+            data.setPromptTip(isChecked);
         });
         return binding;
     }
@@ -71,18 +75,19 @@ public class FuckDialogFragment extends BindingFragment<FragmentFuckDialogBindin
 
         getBinding().btnConfirm.setOnClickListener(v -> {
             String kw = getBinding().etSearchKeyWord.getText() + "";
-            config.setKeyword(kw);
+            FuckDialogData data = mConfig.getData();
+            data.setKeyword(kw);
             if (getBinding().rbNormalMode.isChecked()) {
-                config.setMode("normal");
+                data.setMode("normal");
             } else {
-                config.setMode("regex");
+                data.setMode("regex");
             }
             if (getBinding().cbDotLineOption.isChecked()) {
-                config.getRegexMode().setDotLine(true);
+                data.getRegexMode().setDotLine(true);
             } else {
-                config.getRegexMode().setDotLine(false);
+                data.getRegexMode().setDotLine(false);
             }
-            ConfigUtil.setFuckDialogConfig(appListModel.getPackageName(), config);
+            ConfigUtil.setFuckDialogConfig(appListModel.getPackageName(), mConfig);
         });
 
     }

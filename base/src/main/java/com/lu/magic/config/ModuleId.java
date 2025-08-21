@@ -20,7 +20,8 @@ import java.lang.annotation.RetentionPolicy;
         FUCK_VIBRATOR,
         FUCK_SCREEN_ORIENTATION,
         DEVELOP_CATCH_LOG,
-        VIEW_LOCK
+        VIEW_LOCK,
+        FUCK_NET
 })
 public @interface ModuleId {
     String EMPTY = "";
@@ -30,4 +31,5 @@ public @interface ModuleId {
     String FUCK_SCREEN_ORIENTATION = "fuckScreenRotate";
     String DEVELOP_CATCH_LOG = "DevCatchLog";
     String VIEW_LOCK = "ViewLock";
+    String FUCK_NET = "fuckNet";
 }

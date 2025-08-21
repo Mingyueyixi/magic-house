@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.lu.magic.feat.AdbConnectionReceiver;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.EnvUtil;
 import com.lu.magic.util.log.LogUtil;
@@ -16,15 +17,16 @@ import de.robv.android.xposed.XposedBridge;
  */
 public class AppInitProxy {
 
-    private static Context context;
+    private static Context mContext;
 
     public static boolean hasAttachContext() {
-        return context != null;
+        return mContext != null;
     }
 
-    public static void callInit(Context ctx) {
-        context = ctx.getApplicationContext();
-        AppUtil.attachContext(ctx);
+    public static void callInit(Context context) {
+        mContext = context.getApplicationContext();
+        LibBase.init(mContext);
+        AppUtil.attachContext(context);
         LogUtil.setLogger(new SimpleLogger() {
             @Override
             public void afterLog(int level, @NonNull Object[] objects, @NonNull String msg) {

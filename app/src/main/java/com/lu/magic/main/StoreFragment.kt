@@ -59,7 +59,7 @@ class StoreFragment : BaseFragment() {
                 TitleModel("其他"),
                 ItemModel("屏幕旋转", ModuleModel("屏幕旋转模式", ModuleId.FUCK_SCREEN_ORIENTATION)),
 //                ItemModel("锁定视图", ModuleModel("锁定视图", ModuleId.VIEW_LOCK)),
-
+                ItemModel("netInfo", ModuleModel("NetInfo", ModuleId.FUCK_NET)),
             )
             .addItemType(object : MultiItemType<ItemModel> {
                 override fun getItemViewType(

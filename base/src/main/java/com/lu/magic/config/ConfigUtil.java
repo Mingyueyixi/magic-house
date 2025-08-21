@@ -3,15 +3,21 @@ package com.lu.magic.config;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.JsonObject;
-import com.lu.magic.bean.AMapConfig;
-import com.lu.magic.bean.BaseConfig;
-import com.lu.magic.bean.FuckDialogConfig;
-import com.lu.magic.frame.xp.annotation.PreferenceIdValue;
+import com.lu.magic.bean.AMapData;
+import com.lu.magic.bean.Config;
+import com.lu.magic.bean.FuckDialogData;
+import com.lu.magic.bean.FuckNetData;
 import com.lu.magic.frame.xp.SPreference;
-import com.lu.magic.util.GsonUtil;
+import com.lu.magic.frame.xp.annotation.PreferenceIdValue;
+import com.lu.magic.util.JSONX;
+import com.lu.magic.util.JsonDecoder;
+import com.lu.magic.util.JsonEncoder;
 
-import java.lang.reflect.Type;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ConfigUtil {
@@ -34,74 +40,102 @@ public class ConfigUtil {
         return sp.getAll();
     }
 
-    public static <T> Map<String, T> getSheet(String sheet, Class<T> tClass) {
+    public static JSONObject getSheet(String sheet) {
         String json = sp.getString(sheet, "{}");
-        Type type = GsonUtil.getMapType(String.class, tClass);
-        Map<String, T> map = GsonUtil.fromJson(json, type);
-        return map;
+        try {
+            return new JSONObject(json);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return new JSONObject();
     }
 
-    public static <T> T getCell(String sheet, String key, Class<T> cls) {
-        return getCellForType(sheet, key, cls);
+    public static <T extends JsonEncoder> Map<String, T> getSheet(String sheet, JsonDecoder<T> factory) {
+        JSONObject json = getSheet(sheet);
+        Iterator<String> iter = json.keys();
+        LinkedHashMap<String, T> result = new LinkedHashMap<>();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            JSONObject value = json.optJSONObject(key);
+            T data = factory.fromJson(value);
+            result.put(key, data);
+        }
+        return result;
+
     }
 
-    public static <T> T getCellForType(String sheet, String key, Type type) {
-        Map<String, JsonObject> map = getSheet(sheet, JsonObject.class);
-        JsonObject json = map.get(key);
-        return GsonUtil.fromJson(json, type);
+    public static <T> T getCell(String sheet, String key, JsonDecoder<T> factory) {
+        JSONObject json = getCell(sheet, key);
+        return factory.fromJson(json);
     }
+
+    public static JSONObject getCell(String sheet, String key) {
+        JSONObject sheetJson = getSheet(sheet);
+        return JSONX.optJSONObject(sheetJson, key, new JSONObject());
+    }
+
+    public static Config<JSONObject> getBaseConfigCell(String sheet, String key) {
+        return Config.fromJson(getCell(sheet, key));
+    }
+
 
     public static void setCell(String sheet, String key, Object value) {
-        Map<String, JsonObject> map = getSheet(sheet, JsonObject.class);
-        if (value instanceof JsonObject) {
-            map.put(key, (JsonObject) value);
-        } else if (value instanceof CharSequence) {
-            JsonObject vJson = GsonUtil.fromJson(value.toString(), JsonObject.class);
-            map.put(key, vJson);
-        } else {
-            JsonObject vJson = (JsonObject) GsonUtil.toJsonTree(value);
-            map.put(key, vJson);
+        JSONObject map = getSheet(sheet);
+        try {
+            if (value instanceof JsonEncoder) {
+                map.put(key, ((JsonEncoder) value).toJson());
+            } else {
+                map.putOpt(key, value);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        String json = GsonUtil.toJson(map);
-        sp.edit().putString(sheet, json).apply();
+        sp.edit().putString(sheet, map.toString()).apply();
     }
 
     public static void enableCell(String sheet, String key, boolean enable) {
-        JsonObject config = getCell(sheet, key, JsonObject.class);
+        JSONObject config = getCell(sheet, key);
         if (config == null) {
-            BaseConfig baseConfig = new BaseConfig();
-            baseConfig.setEnable(true);
-            config = (JsonObject) GsonUtil.toJsonTree(baseConfig);
+            Config<?> baseConfig = new Config<>();
+            baseConfig.setEnable(enable);
+            config = baseConfig.toJson();
         } else {
             //必须与BaseConfig字段名保持一致
-            config.addProperty("enable", enable);
+            JSONX.putOpt(config, "enable", enable);
         }
         setCell(sheet, key, config);
     }
 
-    public static FuckDialogConfig getFuckDialogConfig(String processName) {
-        return getCell(ModuleId.FUCK_DIALOG, processName, FuckDialogConfig.class);
+    public static Config<FuckDialogData> getFuckDialogConfig(String processName) {
+        return getCell(ModuleId.FUCK_DIALOG,processName, jsonObject -> Config.fromJson(jsonObject, FuckDialogData::fromJson));
     }
 
-    public static void setFuckDialogConfig(String processName, FuckDialogConfig fuckDialogConfig) {
+    public static void setFuckDialogConfig(String processName, Config<FuckDialogData> fuckDialogConfig) {
         setCell(ModuleId.FUCK_DIALOG, processName, fuckDialogConfig);
     }
 
-    public static Map<String, FuckDialogConfig> getFuckDialogConfigAll() {
-        return getSheet(ModuleId.FUCK_DIALOG, FuckDialogConfig.class);
+    public static Map<String, Config<FuckDialogData>> getFuckDialogConfigAll() {
+        return getSheet(ModuleId.FUCK_DIALOG, jsonObject -> Config.fromJson(jsonObject, FuckDialogData::fromJson));
     }
 
-    public static Map<String, AMapConfig> getAllAMapConfig() {
-        return getSheet(ModuleId.AMAP_LOCATION, AMapConfig.class);
+    public static Map<String, Config<AMapData>> getAllAMapConfig() {
+        return getSheet(ModuleId.AMAP_LOCATION, jsonObject -> Config.fromJson(jsonObject, AMapData::fromJson));
     }
 
-    public static AMapConfig getAMapConfig(String processName) {
-        return getCell(ModuleId.AMAP_LOCATION, processName, AMapConfig.class);
+    public static Config<AMapData> getAMapConfig(String processName) {
+        return getCell(ModuleId.AMAP_LOCATION, processName, jsonObject -> Config.fromJson(jsonObject, AMapData::fromJson));
     }
 
-    public static void setAMapConfig(String processName, AMapConfig config) {
+    public static void setAMapConfig(String processName, Config<AMapData> config) {
         setCell(ModuleId.AMAP_LOCATION, processName, config);
     }
 
+    public static Config<FuckNetData> getFuckNetConfig(String processName) {
+        return getCell(ModuleId.FUCK_NET, processName, jsonObject -> Config.fromJson(jsonObject, FuckNetData::fromJson));
+    }
+
+    public static void setNetConfig(String processName, Config<FuckNetData> config) {
+        setCell(ModuleId.FUCK_NET, processName, config);
+    }
 
 }

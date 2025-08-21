@@ -6,7 +6,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 import com.lu.magic.util.AppUtil;
-import com.lu.magic.util.ToastUtil;
+import com.lu.magic.util.ToastUtils;
 import com.lu.magic.util.log.LogUtil;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -45,7 +45,7 @@ public class Main implements IXposedHookLoadPackage {
                     @Override
                     protected void afterHookedMethod(MethodHookParam param) throws Throwable {
                         super.afterHookedMethod(param);
-                        ToastUtil.show("尼玛" + param.thisObject);
+                        ToastUtils.show("尼玛" + param.thisObject);
                     }
                 }
         );

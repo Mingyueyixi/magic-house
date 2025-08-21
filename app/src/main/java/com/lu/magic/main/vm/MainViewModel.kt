@@ -26,7 +26,7 @@ class MainViewModel : androidx.lifecycle.ViewModel() {
                 if (agreeAgreement) {
                     return@withContext
                 }
-                AppUtil.getContext().assets.open(_root_ide_package_.com.lu.magic.main.Contracts.Companion.ASSET_PATH_AGREEMENT).use {
+                AppUtil.getContext().assets.open(com.lu.magic.main.Contracts.Companion.ASSET_PATH_AGREEMENT).use {
                     live.postValue(String(it.readBytes()))
                 }
             }

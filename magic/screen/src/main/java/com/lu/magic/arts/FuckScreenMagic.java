@@ -3,15 +3,15 @@ package com.lu.magic.arts;
 import android.content.Context;
 import android.os.Bundle;
 
-import com.lu.magic.bean.BaseConfig;
+import com.lu.magic.bean.Config;
 import com.lu.magic.screen.OrientationDTO;
 import com.lu.magic.screen.ScreenOrientationUtil;
-import com.lu.magic.util.GsonUtil;
 import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.config.ModuleId;
 import com.lu.magic.util.log.LogUtil;
 
-import java.lang.reflect.Type;
+import org.json.JSONObject;
+
 import java.util.List;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -20,7 +20,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class FuckScreenMagic extends BaseMagic {
 
-    private BaseConfig<OrientationDTO> config;
+    private Config<OrientationDTO> config;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
@@ -38,9 +38,9 @@ public class FuckScreenMagic extends BaseMagic {
 
     }
 
-    private BaseConfig<OrientationDTO> loadConfig(String pkgName) {
-        Type configType = GsonUtil.getType(BaseConfig.class, OrientationDTO.class);
-        return ConfigUtil.getCellForType(ModuleId.FUCK_SCREEN_ORIENTATION, pkgName, configType);
+    private Config<OrientationDTO> loadConfig(String pkgName) {
+        JSONObject json = ConfigUtil.getCell(ModuleId.FUCK_SCREEN_ORIENTATION, pkgName);
+        return Config.fromJson(json, OrientationDTO::fromJson);
     }
 
     private void handleMagic(XC_LoadPackage.LoadPackageParam lpparam, OrientationDTO.ActItem actItem) {

@@ -16,19 +16,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.lu.magic.module.BuildConfig
 import com.lu.magic.module.R
 import com.lu.magic.module.databinding.FragmentAboutBinding
-import com.lu.magic.main.dialog.PayDialog
-import com.lu.magic.main.webview.WebViewActivity
-import com.lu.magic.AppInitProxy
 import com.lu.magic.ui.BindingFragment
 import com.lu.magic.util.CursorUtil
 import com.lu.magic.util.SizeUtil
-import com.lu.magic.util.ToastUtil
+import com.lu.magic.util.ToastUtils
 import com.lu.magic.util.log.LogUtil
 import com.lu.magic.util.permission.PermissionUtil
 import com.lu.magic.util.ripple.RectangleRippleBuilder
@@ -61,7 +57,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
     private fun initViewAction() {
         binding.layoutAbout.setOnClickListener {
 //            WebViewActivity.start(it.context, "http://192.168.3.116:5500/index.html")
-            _root_ide_package_.com.lu.magic.main.webview.WebViewActivity.Companion.start(it.context, _root_ide_package_.com.lu.magic.main.webview.WebViewActivity.Companion.URL_LOCAL_ABOUT)
+            com.lu.magic.main.webview.WebViewActivity.Companion.start(it.context, com.lu.magic.main.webview.WebViewActivity.Companion.URL_LOCAL_ABOUT)
         }
 
         binding.layoutDonate.setOnClickListener {
@@ -83,7 +79,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
         }
 
         vm.uiToastLive.observe(this.viewLifecycleOwner) {
-            ToastUtil.show(it)
+            ToastUtils.show(it)
         }
 
     }
@@ -94,7 +90,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
         val isAlipayImg = Random.nextBoolean()
         val payImgResId = if (isAlipayImg) R.mipmap.ic_alipay_qr else R.mipmap.ic_wxpay_qr
 
-        _root_ide_package_.com.lu.magic.main.dialog.PayDialog.Builder(context)
+        com.lu.magic.main.dialog.PayDialog.Builder(context)
             .setPayImgResId(payImgResId)
             .setQRIconClickListener { dialog, _ ->
                 dialog.dismiss()
@@ -114,7 +110,7 @@ class AboutFragment : BindingFragment<FragmentAboutBinding>() {
 
     private fun initViewStyle() {
         val cardColor = ContextCompat.getColor(binding.root.context, com.lu.magic.base.R.color.purple_200)
-        if (_root_ide_package_.com.lu.magic.AppInitProxy.isActiveHookModule()) {
+        if (com.lu.magic.AppInitProxy.isActiveHookModule()) {
             binding.tvModuleStateMain.setText(com.lu.magic.base.R.string.module_have_active)
             binding.tvModuleStateMain.setTextColor(Color.WHITE)
             binding.tvModuleStateSub.setTextColor(Color.WHITE)

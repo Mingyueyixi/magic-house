@@ -9,9 +9,9 @@ import android.view.Window;
 import android.widget.PopupWindow;
 
 
-import com.lu.magic.bean.FuckDialogConfig;
-import com.lu.magic.util.GsonUtil;
-import com.lu.magic.util.ToastUtil;
+import com.lu.magic.bean.Config;
+import com.lu.magic.bean.FuckDialogData;
+import com.lu.magic.util.ToastUtils;
 import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.log.LogUtil;
 import com.lu.magic.util.view.ViewUtil;
@@ -32,14 +32,14 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage;
  * Description: fuck dialog
  */
 public class FuckDialogMagic extends BaseMagic {
-    private FuckDialogConfig mFuckDialogConfig;
+    private Config<FuckDialogData> mFuckDialogConfig;
 
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam lpparam) throws Throwable {
         if (mFuckDialogConfig == null) {
             handleLoadConfig(lpparam);
         }
-        LogUtil.d(lpparam.packageName, lpparam.processName, "FuckDialog配置:", GsonUtil.toJson(mFuckDialogConfig));
+        LogUtil.d(lpparam.packageName, lpparam.processName, "FuckDialog配置:", mFuckDialogConfig);
         if (mFuckDialogConfig == null || !mFuckDialogConfig.isEnable()) {
             return;
         }
@@ -49,8 +49,8 @@ public class FuckDialogMagic extends BaseMagic {
 
 
     private void handleLoadConfig(XC_LoadPackage.LoadPackageParam lpparam) {
-        Map<String, FuckDialogConfig> configMap = ConfigUtil.getFuckDialogConfigAll();
-        FuckDialogConfig config = configMap.get(lpparam.packageName);
+        Map<String, Config<FuckDialogData>> configMap = ConfigUtil.getFuckDialogConfigAll();
+        Config<FuckDialogData> config = configMap.get(lpparam.packageName);
         //app可能存在多进程，从包名中找不到配置，于是取进程名配置。
         if (config == null) {
             config = configMap.get(lpparam.processName);
@@ -140,8 +140,9 @@ public class FuckDialogMagic extends BaseMagic {
         if (checkNeedHide(contentView)) {
             popupWindow.setOnDismissListener(null);
             //啥都不执行
-            if (mFuckDialogConfig.isPromptTip()) {
-                ToastUtil.show("hide a dialog");
+            FuckDialogData data = mFuckDialogConfig.getData();
+            if (data != null && data.isPromptTip()) {
+                ToastUtils.show("hide a dialog");
             }
             LogUtil.d(lpparam.processName, "hide a PopupWindow", popupWindow);
             return null;
@@ -151,7 +152,12 @@ public class FuckDialogMagic extends BaseMagic {
     }
 
     private void strongHidePopupWindowIfNeed(XC_LoadPackage.LoadPackageParam lpackageParam, XC_MethodHook.MethodHookParam param) {
-        if (!mFuckDialogConfig.isStrongHide()) {
+        FuckDialogData data = mFuckDialogConfig.getData();
+        if (data == null) {
+            LogUtil.d(lpackageParam.processName, "FuckDialogData is null");
+            return;
+        }
+        if (!data.isStrongHide()) {
             return;
         }
         PopupWindow popupWindow = (PopupWindow) param.thisObject;
@@ -165,8 +171,8 @@ public class FuckDialogMagic extends BaseMagic {
                 }
                 popupWindow.setOnDismissListener(null);
                 popupWindow.dismiss();
-                if (mFuckDialogConfig.isPromptTip()) {
-                    ToastUtil.show("hide a PopupWindow");
+                if (data.isPromptTip()) {
+                    ToastUtils.show("hide a PopupWindow");
                 }
                 LogUtil.d(lpackageParam.processName, "strong hide a PopupWindow", popupWindow);
             };
@@ -178,7 +184,11 @@ public class FuckDialogMagic extends BaseMagic {
     }
 
     private void strongHideDialogIfNeed(XC_LoadPackage.LoadPackageParam lpackageParam, XC_MethodHook.MethodHookParam param) {
-        if (!mFuckDialogConfig.isStrongHide()) {
+        FuckDialogData data = mFuckDialogConfig.getData();
+        if (data == null) {
+            return;
+        }
+        if (!data.isStrongHide()) {
             return;
         }
         Dialog dialog = (Dialog) param.thisObject;
@@ -195,8 +205,8 @@ public class FuckDialogMagic extends BaseMagic {
                 dialog.setOnDismissListener(null);
                 dialog.setOnCancelListener(null);
                 dialog.dismiss();
-                if (mFuckDialogConfig.isPromptTip()) {
-                    ToastUtil.show("hide a dialog");
+                if (data.isPromptTip()) {
+                    ToastUtils.show("hide a dialog");
                 }
                 LogUtil.d(lpackageParam.processName, "strong hide a dialog", dialog);
             };
@@ -213,14 +223,18 @@ public class FuckDialogMagic extends BaseMagic {
         if (view == null) {
             return false;
         }
-        if ("regex".equals(mFuckDialogConfig.getMode())) {
+        FuckDialogData data = mFuckDialogConfig.getData();
+        if (data == null) {
+            return false;
+        }
+        if ("regex".equals(data.getMode())) {
             int flag = Pattern.CASE_INSENSITIVE;
-            if (mFuckDialogConfig.getRegexMode().isDotLine()) {
+            if (data.getRegexMode().isDotLine()) {
                 flag = Pattern.CASE_INSENSITIVE | Pattern.DOTALL;
             }
-            needHide = ViewUtil.textCheck().findText(view, mFuckDialogConfig.getKeyword(), flag);
+            needHide = ViewUtil.textCheck().findText(view, data.getKeyword(), flag);
         } else {
-            needHide = ViewUtil.textCheck().haveText(view, mFuckDialogConfig.getKeyword());
+            needHide = ViewUtil.textCheck().haveText(view, data.getKeyword());
         }
         return needHide;
     }

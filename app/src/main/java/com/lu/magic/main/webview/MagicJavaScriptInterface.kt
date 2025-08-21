@@ -9,7 +9,6 @@ import com.lu.magic.bean.AppInfo
 import com.lu.magic.bean.BuildInfo
 import com.lu.magic.util.AppUtil
 import com.lu.magic.util.ColorUtil
-import com.lu.magic.util.GsonUtil
 import com.lu.magic.util.log.LogUtil
 
 class MagicJavaScriptInterface(private val jsInterfaceProxy: JsInterface) : JsInterface {
@@ -26,12 +25,11 @@ class MagicJavaScriptInterface(private val jsInterfaceProxy: JsInterface) : JsIn
         )
         val colorPrimary = ContextCompat.getColor(context, com.lu.magic.base.R.color.purple_200)
         val colorPrimaryDark = ContextCompat.getColor(context, com.lu.magic.base.R.color.teal_200)
-        val appInfo = _root_ide_package_.com.lu.magic.bean.AppInfo(
+        return AppInfo(
             colorPrimary = ColorUtil.toHTMLColor(colorPrimary),
             colorPrimaryDark = ColorUtil.toHTMLColor(colorPrimaryDark),
             buildInfo = BuildInfo.value
-        )
-        return GsonUtil.toJson(appInfo) ?: "{}"
+        ).toJson().toString()
     }
 
     @JavascriptInterface

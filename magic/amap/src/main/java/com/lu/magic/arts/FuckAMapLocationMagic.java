@@ -2,7 +2,8 @@ package com.lu.magic.arts;
 
 import android.location.LocationManager;
 
-import com.lu.magic.bean.AMapConfig;
+import com.lu.magic.bean.AMapData;
+import com.lu.magic.bean.Config;
 import com.lu.magic.config.ConfigUtil;
 import com.lu.magic.util.AppUtil;
 import com.lu.magic.util.log.LogUtil;
@@ -18,7 +19,7 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 public class FuckAMapLocationMagic extends BaseMagic {
-    private AMapConfig config;
+    private Config<AMapData> config;
     private Random mRandom = new Random();
 
     @Override
@@ -27,7 +28,6 @@ public class FuckAMapLocationMagic extends BaseMagic {
             config = ConfigUtil.getAMapConfig(lpparam.packageName);
         }
 
-        
         if (config == null || !config.isEnable()) {
             return;
         }
@@ -164,8 +164,13 @@ public class FuckAMapLocationMagic extends BaseMagic {
      * @param locationObj
      */
     private void changeLocationData(Object locationObj) {
-        double latitude = config.getLat();
-        double longitude = config.getLng();
+        AMapData data = config.getData();
+        if (data == null) {
+            LogUtil.d("changeLocationData", "data is null");
+            return;
+        }
+        double latitude = data.getLat();
+        double longitude = data.getLng();
 
         if (latitude == 0 || longitude == 0) {
             return;

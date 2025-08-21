@@ -41,8 +41,6 @@ android {
 
     kotlinOptions {
         jvmTarget = '1.8'
-        freeCompilerArgs += ["-P", "plugin:androidx.compose.compiler.plugins.kotlin:suppressUnusedParameter=true"]
-
     }
     viewBinding {
         enabled = true
@@ -104,7 +102,7 @@ dependencies {
     implementation project(":magic:screen")
     implementation project(":magic:fuck-vibrator")
     implementation project(path: ':magic:fuck-dialog')
-    api project(':base')
+    implementation project(path: ':base')
     implementation project(path: ':magic:catch-log')
 
 
